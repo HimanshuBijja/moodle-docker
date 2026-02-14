@@ -1,0 +1,186 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+    /**
+     * Main template for the EDUdashboard plugin, displaying site statistics and blocks.
+     *
+     * @package     local_edudashboard
+     * @copyright   2025 edudigital <geral@edudigital-learn.com>
+     * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+     */
+
+    /**
+     * @template local_edudashboard_edudashboard
+     * @example {
+     *   "fastreport": true,
+     *   "users": 150,
+     *   "suspendedusers": 10,
+     *   "active_suspend_users": "Active / Suspended Users",
+     *   "courses": 25,
+     *   "courses_label": "Total Courses",
+     *   "completionpercent": 75,
+     *   "courses_conclusio_label": "Course Completion Rate",
+     *   "todaysusers": 50,
+     *   "authentications_today_label": "Authentications Today",
+     *   "wwwroot": "https://example.com/moodle",
+     *   "more_information": "More info",
+     *   "blocks": [
+     *     {"content": "<p>Block 1 content</p>"},
+     *     {"content": "<p>Block 2 content</p>"}
+     *   ],
+     *   "courses_size": [
+     *     {"content": "<p>Course size data</p>"}
+     *   ],
+     *   "crondisk": false,
+     *   "disk_space": "Disk Space: ",
+     *   "moodledata_size": "1.5 GB",
+     *   "disk_no_data": "No disk data available",
+     *   "showadmin": true,
+     *   "site_user_courses": [
+     *     {"content": "<p>User courses overview</p>"}
+     *   ],
+     *   "shou_config": true,
+     *   "configtext": "Configure EDUdashboard"
+     * }
+     */
+}}
+
+<div class="contain" style="padding-top:20px">
+  
+  {{#fastreport}}
+   
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{users}} / {{suspendedusers}}</h3>
+            <p>{{active_suspend_users}}</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-person-add back-ic"></i>
+          </div>
+          <a href="{{wwwroot}}/admin/user.php" class="small-box-footer">{{more_information}} <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{courses}}</h3>
+            <p>{{courses_label}}</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-book back-ic"></i>
+          </div>
+          <a href="{{wwwroot}}/course/management.php" class="small-box-footer">{{more_information}} <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>{{completionpercent}}<sup>%</sup></h3>
+            <p>{{courses_conclusio_label}}</p>
+          </div>
+          <div class="icon">
+            <i class="fa fa-graduation-cap back-ic"></i>
+          </div>
+          <a href="{{wwwroot}}/local/edudashboard/coursereport.php" class="small-box-footer">{{more_information}} <i class="fa fa-arrow-circle-right"></i> </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{todaysusers}}</h3>
+            <p>{{authentications_today_label}}</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph back-ic"></i>
+          </div>
+          <a href="{{wwwroot}}/local/edudashboard/authenticationreport.php" class="small-box-footer">{{more_information}} <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+  {{/fastreport}}
+  <div class="edudashboard-main">  
+    <div class="row">
+      {{#blocks}}
+        <div class="col" >
+          {{{content}}}            
+        </div> 
+      {{/blocks}}
+    </div>
+   
+    <div class="row">
+      {{#courses_size}}
+        <div class="col" >
+          {{{content}}}            
+        </div> 
+      {{/courses_size}}
+
+      {{#fastreport}}
+        <div class="col" >
+
+          <div class="progress-conteiner" style="background: white;min-width: 310px;
+            max-width: 800px;
+            margin: 1em auto;
+            height: 400px;
+            padding: 1em 0;border: #ddd;
+            border-style: solid;
+            border-width: 1px;
+            color: #555;" >           
+            <center>
+              <div style="display:inline-grid;">          
+                {{^crondisk}}
+        
+                <div id="radialchart"></div>
+           
+                <b>{{disk_space}}</b>{{moodledata_size}}
+
+                {{/crondisk}}
+
+                {{#crondisk}}
+
+                <p>{{disk_no_data}}</p>
+                {{/crondisk}}       
+
+              </div>
+            </center>
+          </div>
+        </div>
+      {{/fastreport}}
+    </div>
+
+    {{#showadmin}}
+      {{#site_user_courses}}
+        <div class="row">
+          <div class="col-lg-12"> 
+        
+            {{{content}}} 
+
+          </div>
+                   
+        </div>
+      {{/site_user_courses}}
+    {{/showadmin}}
+    {{#shou_config}}
+      <a href="{{wwwroot}}/admin/category.php?category=edudashboard" class="small-box-footer float-right">{{configtext}} <i class="fa fa-arrow-circle-right"></i></a>
+    {{/shou_config}} 
+  </div>
+</div>
