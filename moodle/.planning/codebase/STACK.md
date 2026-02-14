@@ -1,6 +1,6 @@
 # Technology Stack
 
-**Analysis Date:** 2025-02-14
+**Analysis Date:** 2025-02-17
 
 ## Languages
 
@@ -54,19 +54,6 @@
 - MariaDB 10.11.6 - Primary database in Docker setup.
 - Redis 7 - Session and MUC (Moodle Universal Cache) storage.
 
-**Charting & Visualization (Plugins):**
-- Plotly.js 1.35.2 - Used in `local_learning_analytics` (`js/plotly.min.js`).
-- Highcharts 10.1.0 / Highstock - Used in `local_edudashboard` and `block_analytics_graphs`.
-- ApexCharts 3.37.2 - Used in `local_edudashboard`.
-- Chart.js 4.4.0 - Used in `local_edudashboard`.
-
-**UI Components (Plugins):**
-- DataTables - Used in `local_kopere_dashboard`.
-- Dropzone.js - Used in `local_kopere_dashboard`.
-- jQuery / jQuery UI - Used in legacy-style plugins like `block_analytics_graphs`.
-- Highslide JS - Used for image/content popups in `block_analytics_graphs`.
-- Bootstrap 4 - Used in `local_kopere_dashboard` and `local_edudashboard`.
-
 ## Configuration
 
 **Environment:**
@@ -91,4 +78,4 @@
 
 ---
 
-*Stack analysis: 2025-02-14*
+*Stack analysis: 2025-02-17*

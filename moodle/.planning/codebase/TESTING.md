@@ -5,119 +5,128 @@
 ## Test Framework
 
 **Runner:**
-- **PHPUnit:** 9.6.18+ (Config: `phpunit.xml.dist`). Used for unit and integration testing.
-- **Behat:** 3.14.* (Config: `behat.yml.dist`). Used for E2E browser testing.
+- **PHPUnit:** 9.6.18+ (Config: `phpunit.xml.dist`)
+- **Behat:** 3.14.* (Config: `behat.yml.dist`)
 
 **Assertion Library:**
-- PHPUnit built-in assertions (`assertEquals`, `assertInstanceOf`, `assertCount`, etc.).
+- PHPUnit built-in assertions.
 
 **Run Commands:**
 ```bash
 # PHPUnit
-vendor/bin/phpunit --testsuite [component_name]  # Run tests for a specific component
-vendor/bin/phpunit path/to/file_test.php        # Run a specific test file
+vendor/bin/phpunit                         # Run all tests
+vendor/bin/phpunit path/to/test.php        # Run specific test
 
 # Behat
-# Requires a running selenium/chromedriver and initialized behat environment
-php admin/tool/behat/cli/init.php
-vendor/bin/behat path/to/feature.feature
+php admin/tool/behat/cli/util.php --enable # Enable Behat
+vendor/bin/behat                           # Run Behat tests
+
+# Grunt (for linting)
+grunt gherkinlint                          # Lint feature files
 ```
 
 ## Test File Organization
 
 **Location:**
-- **PHPUnit:** `[component]/tests/` for core tests. For plugins, always use a `tests/` directory.
-- **Behat:** `[component]/tests/behat/`.
+- PHPUnit: Co-located in `tests/` directories within components, e.g., `lib/tests/`, `admin/tests/`.
+- Behat: Located in `tests/behat/` directories within components, e.g., `lib/tests/behat/`.
 
 **Naming:**
-- **PHPUnit:** `[name]_test.php`. The class name must match the filename and end in `_test`.
-- **Behat:** `[description].feature`.
+- PHPUnit: `*_test.php`, e.g., `accesslib_test.php`.
+- Behat: `*.feature`, e.g., `action_menu.feature`.
 
 **Structure:**
 ```
-[plugin_root]/
+[component]/
 ├── tests/
-│   ├── unit_test.php       # Unit tests
-│   ├── integration_test.php # Integration tests
-│   ├── generator/          # Custom data generators
+│   ├── *_test.php          # PHPUnit tests
+│   ├── fixtures/           # Test fixtures
 │   └── behat/
-│       └── basic_flow.feature # Behat features
+│       └── *.feature       # Behat features
 ```
 
 ## Test Structure
 
 **Suite Organization:**
-- Use `advanced_testcase` for most tests (enables DB and global state management).
-- Use `basic_testcase` for pure unit tests that don't need Moodle's environment.
-
 ```php
-namespace local_analytics;
+final class accesslib_test extends advanced_testcase {
+    protected function setUp(): void {
+        parent::setUp();
+        $this->resetAfterTest();
+    }
 
-defined('MOODLE_INTERNAL') || die();
-
-final class processor_test extends \advanced_testcase {
-    public function test_processing_logic(): void {
-        $this->resetAfterTest(); // Essential for any DB changes
-        $user = $this->getDataGenerator()->create_user();
-        
-        $processor = new \local_analytics\processor();
-        $result = $processor->process_user($user->id);
-        
-        $this->assertEquals('expected', $result);
+    public function test_functionality(): void {
+        // ...
     }
 }
 ```
 
+**Patterns:**
+- **Setup:** `setUp()` method often calls `$this->resetAfterTest()` to ensure a clean database state.
+- **Data Generation:** Use of `$this->getDataGenerator()` to create courses, users, and modules.
+- **Mocking:** PHPUnit built-in mocking or Moodle's own test doubles.
+
 ## Mocking
 
-**Framework:** PHPUnit built-in Mock Objects.
+**Framework:** PHPUnit built-in `createMock()`.
 
 **Patterns:**
-- Mock external services and network calls.
-- Avoid mocking `$DB`. Instead, use `resetAfterTest()` and let it write to the test database.
-- Use `this->setUser($user)` to mock the current global `$USER`.
+```php
+$mock = $this->createMock(some_class::class);
+$mock->method('some_method')->willReturn('some_value');
+```
+
+**What to Mock:**
+- External APIs.
+- Complex subsystems that are not the focus of the unit test.
+
+**What NOT to Mock:**
+- Data structures and simple value objects.
+- The Database (Moodle prefers integration tests with a real test database).
 
 ## Fixtures and Factories
 
-**Data Generators:**
-- Access via `$this->getDataGenerator()`.
-- Standard methods: `create_user()`, `create_course()`, `create_category()`, `create_module('assign', [...])`.
-- Plugins can define custom generators in `tests/generator/lib.php`.
+**Test Data:**
+```php
+$user = $this->getDataGenerator()->create_user();
+$course = $this->getDataGenerator()->create_course();
+```
+
+**Location:**
+- Fixtures are often located in `tests/fixtures/` within the component.
 
 ## Coverage
 
-**Current State:**
-- Moodle Core: High coverage in critical areas (lib, admin, auth).
-- Reference Plugins: **Very low coverage.** Many analyzed plugins (`local_learning_analytics`, `block_analytics_graphs`) lack a `tests/` directory entirely.
-- **Requirement:** New features in the dashboard should include PHPUnit tests covering the data processing logic.
+**Requirements:** High coverage is expected for new core features, though not strictly enforced by a global threshold in the repo.
+
+**View Coverage:**
+```bash
+vendor/bin/phpunit --coverage-html report/
+```
 
 ## Test Types
 
 **Unit Tests:**
-- Test individual classes in isolation.
-- No DB access if possible.
+- Focus on individual functions or classes.
+- Fast execution.
 
 **Integration Tests:**
-- Most common in Moodle.
-- Verify interactions with the database and other Moodle subsystems.
+- Most PHPUnit tests in Moodle are integration tests as they interact with the database.
+- Use `advanced_testcase` to manage state.
 
-**Behat (E2E):**
-- Verify the UI is rendered correctly.
-- Test AJAX interactions.
-- Tag with `@javascript` if JS is required.
+**E2E Tests:**
+- Behat is used for browser-based testing.
+- Tests user interactions and UI workflows.
 
 ## Common Patterns
 
-**Database State:**
-- Always call `$this->resetAfterTest()` at the beginning of a test or in `setUp()`.
+**Async Testing:**
+- Behat uses `@javascript` tag for tests requiring a browser with JS support.
 
-**Output Suppression:**
-- Moodle tests often need to suppress output from functions that call `echo` or `print`.
-
-**Expect Exceptions:**
+**Error Testing:**
 ```php
-$this->expectException(\moodle_exception::class);
-$this->expectExceptionMessageMatches('/invalid/i');
+$this->expectException(moodle_exception::class);
+// ... code that throws exception
 ```
 
 ---
