@@ -1,48 +1,115 @@
 # Architecture
 
-**Analysis Date:** 2024-05-24
+**Analysis Date:** 2024-02-14
 
 ## Pattern Overview
 
-**Overall:** Modular Plugin-based Architecture (Moodle: Modular Object-Oriented Dynamic Learning Environment)
+**Overall:** Modular Plugin-based Architecture (Hooks & Events)
 
 **Key Characteristics:**
-- **Plugin-driven:** Almost every feature is a plugin (Activities, Blocks, Auth, Enrol, etc.).
-- **Global Registry:** Uses global variables (`$CFG`, `$DB`, `$PAGE`, `$USER`, `$OUTPUT`) for shared state and services.
-- **Event-Driven:** Uses an event and hook system for cross-module communication and extension.
+- **Highly Modular:** Almost every feature is a plugin (Activities, Blocks, Reports, Authentication, etc.).
+- **Hook-driven:** Communication between core and plugins happens via standard hook functions in `lib.php`.
+- **Event-driven:** System actions trigger events that plugins can observe and handle.
 
 ## Layers
 
-**Core Layer:**
-- Purpose: Provides the base infrastructure, API, and orchestration.
-- Location: `moodle/lib/`, `moodle/admin/`
-- Contains: DML/DDL (database), File storage API, Output API, Autoloader.
-
-**Plugin Layer:**
-- Purpose: Implements specific learning or system features.
-- Location: `moodle/mod/`, `moodle/auth/`, `moodle/theme/`, etc.
-- Contains: Activity logic, authentication methods, user interfaces.
-
 **Presentation Layer:**
-- Purpose: Decouples logic from display.
-- Location: `moodle/theme/`, `moodle/*/templates/`, `moodle/*/renderer.php`
-- Contains: Mustache templates and PHP Renderer classes.
+- Purpose: Handles UI rendering and user interaction.
+- Location: `templates/`, `classes/output/`, `amd/src/`
+- Contains: Mustache templates, Renderers, and JavaScript modules.
+- Depends on: Business Logic Layer, Core APIs.
+- Used by: End users.
+
+**Business Logic Layer:**
+- Purpose: Processes data and enforces rules.
+- Location: `classes/`, `lib.php`, `locallib.php`
+- Contains: Plugin-specific classes, hook implementations.
+- Depends on: Data Access Layer, Core Subsystems.
+- Used by: Presentation Layer, Web Services.
+
+**Data Access Layer (DML/DDL):**
+- Purpose: Provides an abstraction over the database.
+- Location: `lib/dml/`, `lib/ddl/`
+- Contains: Database abstraction layer (SQL generation, table management).
+- Depends on: PHP Database Extensions (PDO, etc.).
+- Used by: Business Logic Layer.
 
 ## Data Flow
 
-**Standard Web Request:**
-1. Request enters via an entry point (e.g., `moodle/index.php` or `moodle/course/view.php`).
-2. `config.php` is loaded, triggering `moodle/lib/setup.php`.
-3. Globals (`$DB`, `$USER`, etc.) are initialized.
-4. Plugin logic is executed (often via autoloaded classes in `classes/`).
-5. Output is prepared using `$PAGE` and rendered via `$OUTPUT`.
+**Standard Page Request:**
+
+1. User requests a page (e.g., `mod/assign/view.php`).
+2. `config.php` is included, initializing the `$CFG` global and database connection.
+3. Access control is checked via `require_login()` and `has_capability()`.
+4. Plugin logic processes parameters and interacts with the database via `$DB`.
+5. Data is passed to a Renderer.
+6. Renderer uses a Mustache template to generate HTML.
+7. HTML is sent to the user.
+
+**Web Service Call:**
+
+1. External system calls a Web Service endpoint (`webservice/rest/server.php`).
+2. Authentication and authorization are checked.
+3. The request is routed to a method in an `external_api` class (e.g., `mod_assign_external`).
+4. Logic is executed, and a structured response is returned.
+
+**State Management:**
+- Global `$CFG`: Site-wide configuration.
+- Global `$DB`: Database access object.
+- Global `$USER`: Current user object.
+- Global `$PAGE`: Current page configuration.
+- Global `$OUTPUT`: Standard renderer for the current page/theme.
 
 ## Key Abstractions
 
-**Database Access ($DB):**
-- Purpose: Abstraction layer for database operations (DML).
-- Location: `moodle/lib/dml/`
+**Renderer (`core\output\renderer_base`):**
+- Purpose: Separates logic from presentation.
+- Examples: `mod/assign/classes/output/renderer.php`
+- Pattern: Strategy / Decorator
 
-**Output Renderer ($OUTPUT):**
-- Purpose: Handles HTML generation and template rendering.
-- Examples: `moodle/lib/outputrenderers.php`
+**External API (`external_api`):**
+- Purpose: Standardized interface for Web Services.
+- Examples: `mod/assign/externallib.php`, `reference-plugins/analysis-dashboard/extracted/gradereport_quizanalytics_moodle50_2025051900/quizanalytics/externallib.php`
+- Pattern: Facade
+
+**Events (`core\event\base`):**
+- Purpose: Decouples system actions from side effects (logging, notifications).
+- Examples: `lib/classes/event/course_module_viewed.php`
+- Pattern: Observer
+
+## Entry Points
+
+**Web Entry Points:**
+- Location: `index.php`, `mod/*/view.php`, `admin/index.php`
+- Triggers: Browser requests.
+- Responsibilities: Initialization, access check, UI generation.
+
+**CLI Entry Points:**
+- Location: `admin/cli/*.php`
+- Triggers: Command line execution.
+- Responsibilities: Maintenance tasks, cron, installations.
+
+**Web Services:**
+- Location: `webservice/*/server.php`
+- Triggers: API calls.
+- Responsibilities: External integration.
+
+## Error Handling
+
+**Strategy:** Exception-based error handling.
+
+**Patterns:**
+- `moodle_exception`: Standard exception for user-facing errors.
+- `coding_exception`: For developer errors.
+- `dml_exception`: For database-related errors.
+
+## Cross-Cutting Concerns
+
+**Logging:** Handled by the Event system (`logstore` plugins).
+**Validation:** Handled by `moodleform` (`lib/formslib.php`) and `PARAM_*` constants for input cleaning.
+**Authentication:** Managed via `auth` plugins (`auth/`).
+**Authorization:** Controlled by the Permissions/Capabilities system (`access.php` in plugins).
+
+---
+
+*Architecture analysis: 2024-02-14*

@@ -1,6 +1,6 @@
 # External Integrations
 
-**Analysis Date:** 2025-02-17
+**Analysis Date:** 2025-02-14
 
 ## APIs & External Services
 
@@ -21,10 +21,14 @@
 **Learning Tools:**
 - LTI (Learning Tools Interoperability) - Integration with external learning tools (`moodle/auth/lti/`, `moodle/enrol/lti/`)
 
+**Media & Tags:**
+- YouTube API - Video integration in `moodle/blocks/tag_youtube/`
+- Flickr API - Image integration in `moodle/blocks/tag_flickr/`
+
 ## Data Storage
 
 **Databases:**
-- Supported: MySQL/MariaDB, PostgreSQL, MS SQL Server, Oracle.
+- Supported: MySQL/MariaDB, PostgreSQL, MS SQL Server, Oracle, SQLite (via PDO).
 - Connection: Configured in `moodle/config.php`.
 - Client: Moodle DML (Database Abstraction Layer).
 
@@ -47,6 +51,7 @@
 - LDAP - Enterprise directory integration (`moodle/auth/ldap/`).
 - CAS / Shibboleth - SSO solutions (`moodle/auth/cas/`, `moodle/auth/shibboleth/`).
 - MNet - Moodle-to-Moodle networking (`moodle/auth/mnet/`).
+- WebAuthn - Passwordless authentication (`moodle/lib/webauthn/`).
 
 ## Monitoring & Observability
 
@@ -54,7 +59,8 @@
 - Custom error handling and logging to database/files.
 
 **Logs:**
-- Standard Moodle logging system with support for database and legacy log stores (`moodle/admin/report/log/`).
+- Standard Moodle logging system (`mdl_logstore_standard_log`).
+- Plugins like `local_learning_analytics` and `local_edudashboard` consume these logs to generate reports.
 
 ## CI/CD & Deployment
 
@@ -62,7 +68,7 @@
 - Docker-based environment provided (`docker-compose.yml`).
 
 **CI Pipeline:**
-- Not explicitly detected in root or `moodle/` directory, though Moodle HQ uses Travis/GitHub Actions/Jenkins externally.
+- Moodle core uses Travis CI / GitHub Actions for automated testing.
 
 ## Environment Configuration
 
@@ -75,6 +81,7 @@
 
 **Secrets location:**
 - `moodle/config.php` contains sensitive database credentials.
+- AI provider keys and OAuth secrets are stored in Moodle's configuration database (accessible via Site Administration).
 
 ## Webhooks & Callbacks
 
@@ -83,10 +90,10 @@
 - `moodle/payment/gateway/paypal/` - PayPal payment notifications.
 
 **Outgoing:**
-- AI provider requests.
-- SMS gateway requests.
+- AI provider requests (OpenAI/Azure).
+- SMS gateway requests (AWS SNS).
 - Communication provider (Matrix) requests.
 
 ---
 
-*Integration audit: 2025-02-17*
+*Integration audit: 2025-02-14*
