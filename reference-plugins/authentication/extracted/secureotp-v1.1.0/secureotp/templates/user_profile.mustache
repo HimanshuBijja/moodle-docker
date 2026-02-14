@@ -1,0 +1,189 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template auth_secureotp/user_profile
+
+    Extended User Profile Display
+
+    Context variables:
+    * user - User object with extended data
+    * security - Security metadata
+    * can_manage - Boolean, user has management permission
+}}
+<div class="auth-secureotp-user-profile">
+    <div class="profile-header">
+        <h3>{{user.fullname}}</h3>
+        <p class="text-muted">{{user.email}}</p>
+        <span class="badge badge-{{security.status_class}}">{{security.status}}</span>
+    </div>
+
+    <div class="row">
+        <!-- Employee Details -->
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5><i class="fa fa-id-card"></i> Employee Details</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Employee ID:</th>
+                            <td>{{user.employee_id}}</td>
+                        </tr>
+                        <tr>
+                            <th>Current Rank:</th>
+                            <td>{{user.current_rank}}</td>
+                        </tr>
+                        <tr>
+                            <th>Department:</th>
+                            <td>{{user.unit_name}}</td>
+                        </tr>
+                        <tr>
+                            <th>Working Location:</th>
+                            <td>{{user.working_location}}</td>
+                        </tr>
+                        <tr>
+                            <th>Mobile:</th>
+                            <td>{{user.personal_mobile}}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Joining:</th>
+                            <td>{{user.date_of_joining_formatted}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Status -->
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5><i class="fa fa-shield"></i> Security Status</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Account Status:</th>
+                            <td><span class="badge badge-{{security.status_class}}">{{security.status}}</span></td>
+                        </tr>
+                        <tr>
+                            <th>First Login:</th>
+                            <td>{{security.first_login_formatted}}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Login:</th>
+                            <td>{{security.last_login_formatted}}</td>
+                        </tr>
+                        <tr>
+                            <th>Login Count:</th>
+                            <td>{{security.login_count}}</td>
+                        </tr>
+                        <tr>
+                            <th>Failed Attempts:</th>
+                            <td>{{security.failed_attempts}}</td>
+                        </tr>
+                        <tr>
+                            <th>Account Locked:</th>
+                            <td>
+                                {{#security.is_locked}}
+                                <span class="badge badge-danger">Yes (until {{security.locked_until_formatted}})</span>
+                                {{/security.is_locked}}
+                                {{^security.is_locked}}
+                                <span class="badge badge-success">No</span>
+                                {{/security.is_locked}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#can_manage}}
+    <!-- Admin Actions -->
+    <div class="card">
+        <div class="card-header">
+            <h5><i class="fa fa-cog"></i> Admin Actions</h5>
+        </div>
+        <div class="card-body">
+            {{#security.is_locked}}
+            <button class="btn btn-success" onclick="unlockUser({{user.id}})">
+                <i class="fa fa-unlock"></i> Unlock Account
+            </button>
+            {{/security.is_locked}}
+
+            {{#security.is_active}}
+            <button class="btn btn-warning" onclick="suspendUser({{user.id}})">
+                <i class="fa fa-ban"></i> Suspend Account
+            </button>
+            {{/security.is_active}}
+
+            {{#security.is_suspended}}
+            <button class="btn btn-success" onclick="activateUser({{user.id}})">
+                <i class="fa fa-check"></i> Activate Account
+            </button>
+            {{/security.is_suspended}}
+
+            <button class="btn btn-info" onclick="viewAuditLog({{user.id}})">
+                <i class="fa fa-file-text"></i> View Audit Log
+            </button>
+
+            <button class="btn btn-primary" onclick="sendTestOTP({{user.id}})">
+                <i class="fa fa-paper-plane"></i> Send Test OTP
+            </button>
+        </div>
+    </div>
+    {{/can_manage}}
+</div>
+
+<style>
+.auth-secureotp-user-profile {
+    padding: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.profile-header h3 {
+    margin: 0 0 10px 0;
+    color: white;
+}
+
+.badge-ACTIVE {
+    background-color: #28a745;
+}
+
+.badge-PROVISIONED {
+    background-color: #17a2b8;
+}
+
+.badge-SUSPENDED {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.badge-ARCHIVED {
+    background-color: #6c757d;
+}
+</style>

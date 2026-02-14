@@ -1,0 +1,252 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template auth_secureotp/admin_dashboard
+
+    Admin Security Dashboard
+
+    Context variables:
+    * total_users - Total users count
+    * active_users - Active users count
+    * logins_today - Today's login count
+    * failed_attempts - Today's failed attempts
+    * locked_accounts - Currently locked accounts
+    * success_rate - Login success rate percentage
+    * recent_logins - Array of recent login events
+    * security_alerts - Array of security alerts
+}}
+<div class="auth-secureotp-admin-dashboard">
+    <div class="dashboard-header">
+        <h2>{{#str}}dashboard_title, auth_secureotp{{/str}}</h2>
+        <p class="text-muted">Real-time security monitoring and analytics</p>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="row dashboard-metrics">
+        <div class="col-md-2">
+            <div class="metric-card">
+                <div class="metric-icon bg-primary">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>{{total_users}}</h3>
+                    <p>{{#str}}dashboard_total_users, auth_secureotp{{/str}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="metric-card">
+                <div class="metric-icon bg-success">
+                    <i class="fa fa-check-circle"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>{{active_users}}</h3>
+                    <p>{{#str}}dashboard_active_users, auth_secureotp{{/str}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="metric-card">
+                <div class="metric-icon bg-info">
+                    <i class="fa fa-sign-in"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>{{logins_today}}</h3>
+                    <p>{{#str}}dashboard_logins_today, auth_secureotp{{/str}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="metric-card">
+                <div class="metric-icon bg-warning">
+                    <i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>{{failed_attempts}}</h3>
+                    <p>{{#str}}dashboard_failed_attempts, auth_secureotp{{/str}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="metric-card">
+                <div class="metric-icon bg-danger">
+                    <i class="fa fa-lock"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>{{locked_accounts}}</h3>
+                    <p>{{#str}}dashboard_locked_accounts, auth_secureotp{{/str}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="metric-card">
+                <div class="metric-icon bg-success">
+                    <i class="fa fa-line-chart"></i>
+                </div>
+                <div class="metric-content">
+                    <h3>{{success_rate}}%</h3>
+                    <p>{{#str}}dashboard_success_rate, auth_secureotp{{/str}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Security Alerts -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fa fa-bell"></i> {{#str}}dashboard_security_alerts, auth_secureotp{{/str}}</h5>
+                </div>
+                <div class="card-body">
+                    {{#security_alerts}}
+                    <div class="alert alert-{{severity}} mb-2">
+                        <strong>{{event_type}}</strong><br>
+                        {{message}}<br>
+                        <small class="text-muted">{{timeago}}</small>
+                    </div>
+                    {{/security_alerts}}
+                    {{^security_alerts}}
+                    <p class="text-muted">No security alerts</p>
+                    {{/security_alerts}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Logins -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fa fa-history"></i> {{#str}}dashboard_recent_logins, auth_secureotp{{/str}}</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#recent_logins}}
+                            <tr>
+                                <td>{{username}}</td>
+                                <td><small>{{timeago}}</small></td>
+                                <td>
+                                    {{#success}}
+                                    <span class="badge badge-success">Success</span>
+                                    {{/success}}
+                                    {{^success}}
+                                    <span class="badge badge-danger">Failed</span>
+                                    {{/success}}
+                                </td>
+                            </tr>
+                            {{/recent_logins}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fa fa-bolt"></i> {{#str}}dashboard_quick_actions, auth_secureotp{{/str}}</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{{users_url}}" class="btn btn-primary">
+                        <i class="fa fa-users"></i> Manage Users
+                    </a>
+                    <a href="{{audit_url}}" class="btn btn-info">
+                        <i class="fa fa-file-text"></i> View Audit Log
+                    </a>
+                    <a href="{{reports_url}}" class="btn btn-success">
+                        <i class="fa fa-bar-chart"></i> Generate Report
+                    </a>
+                    <a href="{{settings_url}}" class="btn btn-secondary">
+                        <i class="fa fa-cog"></i> Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-secureotp-admin-dashboard {
+    padding: 20px;
+}
+
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-metrics {
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.metric-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.metric-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+.metric-content h3 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.metric-content p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+</style>

@@ -1,0 +1,363 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template auth_secureotp/otp_verify
+
+    OTP Verification form template
+
+    Context variables required for this template:
+    * error - Error message (if any)
+    * success - Success message (if any)
+    * csrf_token - CSRF protection token
+    * sitename - Site name
+    * logourl - Site logo URL
+    * masked_mobile - Masked mobile number (last 4 digits)
+    * masked_email - Masked email address
+    * otp_length - Length of OTP code
+    * validity_minutes - OTP validity in minutes
+    * can_resend - Boolean, whether resend is allowed
+    * resend_countdown - Countdown seconds before resend allowed
+
+    Example context (json):
+    {
+        "sitename": "Training Portal",
+        "logourl": "https://example.com/logo.png",
+        "csrf_token": "abc123",
+        "error": "",
+        "success": "",
+        "masked_mobile": "3210",
+        "masked_email": "",
+        "otp_length": 6,
+        "validity_minutes": 5,
+        "can_resend": false,
+        "resend_countdown": 60
+    }
+}}
+<div class="auth-secureotp-verify-container">
+    <div class="auth-secureotp-card">
+        {{#logourl}}
+        <div class="auth-secureotp-logo">
+            <img src="{{logourl}}" alt="{{sitename}}" class="img-fluid">
+        </div>
+        {{/logourl}}
+
+        <div class="auth-secureotp-header">
+            <h2>{{#str}}otp_title, auth_secureotp{{/str}}</h2>
+            {{#masked_mobile}}
+            <p class="text-muted">{{#str}}otp_sent_to, auth_secureotp, {{masked_mobile}}{{/str}}</p>
+            {{/masked_mobile}}
+            {{#masked_email}}
+            <p class="text-muted">{{#str}}otp_sent_to_email, auth_secureotp, {{masked_email}}{{/str}}</p>
+            {{/masked_email}}
+        </div>
+
+        {{#error}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa fa-exclamation-triangle"></i> {{{error}}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {{/error}}
+
+        {{#success}}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa fa-check-circle"></i> {{{success}}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {{/success}}
+
+        <form id="auth-secureotp-verify-form" method="post" action="{{action_url}}" class="auth-secureotp-form">
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+            <div class="form-group">
+                <label for="otp">{{#str}}otp_code, auth_secureotp{{/str}}</label>
+                <div class="otp-input-container">
+                    <input
+                        type="text"
+                        class="form-control form-control-lg text-center otp-input"
+                        id="otp"
+                        name="otp"
+                        placeholder="{{#str}}otp_placeholder, auth_secureotp{{/str}}"
+                        maxlength="{{otp_length}}"
+                        minlength="{{otp_length}}"
+                        required
+                        autofocus
+                        autocomplete="off"
+                        inputmode="numeric"
+                        data-otp-length="{{otp_length}}"
+                    >
+                </div>
+                <small class="form-text text-muted">
+                    <i class="fa fa-clock-o"></i>
+                    <span id="otp-timer">{{#str}}otp_expires_in, auth_secureotp, {{validity_minutes}}{{/str}}</span>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="trust_device" name="trust_device" value="1">
+                    <label class="custom-control-label" for="trust_device">
+                        {{#str}}trust_this_device, auth_secureotp{{/str}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" id="verify-otp-btn">
+                    <i class="fa fa-check"></i> {{#str}}verify_otp, auth_secureotp{{/str}}
+                </button>
+            </div>
+
+            <div class="form-group text-center">
+                {{#can_resend}}
+                <button type="button" class="btn btn-link" id="resend-otp-btn">
+                    <i class="fa fa-refresh"></i> {{#str}}resend_otp, auth_secureotp{{/str}}
+                </button>
+                {{/can_resend}}
+                {{^can_resend}}
+                <button type="button" class="btn btn-link" id="resend-otp-btn" disabled>
+                    <i class="fa fa-clock-o"></i> {{#str}}resend_otp, auth_secureotp{{/str}}
+                    (<span id="resend-countdown">{{resend_countdown}}</span>s)
+                </button>
+                {{/can_resend}}
+            </div>
+
+            <div class="form-group text-center">
+                <a href="{{login_url}}" class="btn btn-link">
+                    <i class="fa fa-arrow-left"></i> {{#str}}change_identifier, auth_secureotp{{/str}}
+                </a>
+            </div>
+        </form>
+
+        <div class="auth-secureotp-footer">
+            <small class="text-muted">
+                &copy; {{year}} {{sitename}}.
+                {{#str}}auth_secureotpdescription, auth_secureotp{{/str}}
+            </small>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-secureotp-verify-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.auth-secureotp-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.auth-secureotp-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-secureotp-logo img {
+    max-height: 80px;
+    max-width: 100%;
+}
+
+.auth-secureotp-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-secureotp-header h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.otp-input-container {
+    position: relative;
+}
+
+.otp-input {
+    font-size: 32px;
+    letter-spacing: 10px;
+    font-weight: bold;
+    font-family: "Courier New", monospace;
+    padding: 15px;
+    border: 2px solid #667eea;
+}
+
+.otp-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    border-color: #667eea;
+}
+
+#otp-timer {
+    font-weight: 600;
+    color: #e74c3c;
+}
+
+#otp-timer.expired {
+    color: #c0392b;
+}
+
+#verify-otp-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+#verify-otp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#verify-otp-btn:active {
+    transform: translateY(0);
+}
+
+#verify-otp-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#resend-otp-btn {
+    color: #667eea;
+    text-decoration: none;
+}
+
+#resend-otp-btn:hover:not(:disabled) {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+#resend-otp-btn:disabled {
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.auth-secureotp-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+</style>
+
+<script>
+require(['jquery'], function($) {
+    // Set pattern via JS to avoid Mustache brace conflict with regex {n} syntax.
+    var otpField = $('#otp');
+    var otpLen = otpField.data('otp-length') || 6;
+    otpField.attr('pattern', '[0-9]{' + otpLen + '}');
+    otpField.attr('title', otpLen + '-digit OTP code');
+
+    // Auto-format OTP input - digits only.
+    otpField.on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    // Submit form on button click
+    $('#auth-secureotp-verify-form').on('submit', function() {
+        var btn = $('#verify-otp-btn');
+        btn.prop('disabled', true);
+        btn.html('<i class="fa fa-spinner fa-spin"></i> Verifying...');
+    });
+
+    // Countdown timer for OTP expiry
+    var validityMinutes = {{validity_minutes}};
+    var expiryTime = Date.now() + (validityMinutes * 60 * 1000);
+
+    function updateTimer() {
+        var remaining = Math.floor((expiryTime - Date.now()) / 1000);
+
+        if (remaining <= 0) {
+            $('#otp-timer').addClass('expired').text('OTP Expired');
+            $('#verify-otp-btn').prop('disabled', true);
+            $('#otp').prop('disabled', true);
+            return;
+        }
+
+        var minutes = Math.floor(remaining / 60);
+        var seconds = remaining % 60;
+        $('#otp-timer').text('Expires in ' + minutes + 'm ' + seconds + 's');
+
+        setTimeout(updateTimer, 1000);
+    }
+
+    updateTimer();
+
+    // Resend countdown
+    {{^can_resend}}
+    var resendCountdown = {{resend_countdown}};
+
+    function updateResendCountdown() {
+        resendCountdown--;
+        $('#resend-countdown').text(resendCountdown);
+
+        if (resendCountdown <= 0) {
+            $('#resend-otp-btn').prop('disabled', false).html('<i class="fa fa-refresh"></i> {{#str}}resend_otp, auth_secureotp{{/str}}');
+        } else {
+            setTimeout(updateResendCountdown, 1000);
+        }
+    }
+
+    updateResendCountdown();
+    {{/can_resend}}
+
+    // Resend OTP handler - AJAX with XMLHttpRequest header so server returns JSON.
+    $('#resend-otp-btn').on('click', function() {
+        if ($(this).prop('disabled')) return;
+
+        $(this).prop('disabled', true);
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> Sending...');
+
+        $.ajax({
+            url: '{{resend_url}}',
+            type: 'POST',
+            data: {
+                sesskey: '{{sesskey}}',
+                csrf_token: '{{csrf_token}}'
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response && response.success) {
+                    location.reload();
+                } else {
+                    var errorMsg = (response && response.error) ? response.error : 'Failed to resend OTP';
+                    alert(errorMsg);
+                    $('#resend-otp-btn').prop('disabled', false).html('<i class="fa fa-refresh"></i> {{#str}}resend_otp, auth_secureotp{{/str}}');
+                }
+            },
+            error: function() {
+                // AJAX failed - fall back to page navigation (URL already has sesskey).
+                window.location.href = '{{resend_url}}';
+            }
+        });
+    });
+});
+</script>

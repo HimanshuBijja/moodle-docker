@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="auth/secureotp/db" VERSION="20260213" COMMENT="XMLDB file for Moodle auth/secureotp"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <!-- Extended user profile data from HR/Student DB -->
+    <TABLE NAME="auth_secureotp_userdata" COMMENT="Extended user profile from HR/Student database">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key to mdl_user.id"/>
+        <FIELD NAME="employee_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Unique employee/student ID"/>
+        <FIELD NAME="pao_code" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Pay and Accounts Office code"/>
+        <FIELD NAME="employee_type" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Employee category (CIVIL/POLICE/etc)"/>
+        <FIELD NAME="date_of_birth" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date of birth (Unix timestamp)"/>
+        <FIELD NAME="gender" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Gender (M/F/O)"/>
+        <FIELD NAME="education_category" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Education qualification category"/>
+        <FIELD NAME="date_of_joining" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date of joining (Unix timestamp)"/>
+        <FIELD NAME="initial_appointment_rank" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Rank at time of joining"/>
+        <FIELD NAME="current_rank" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Current rank/designation"/>
+        <FIELD NAME="working_location" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Current working location"/>
+        <FIELD NAME="cp_sp_office" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="CP/SP Office details"/>
+        <FIELD NAME="unit_name" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Unit/Department name"/>
+        <FIELD NAME="department_no" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Department number"/>
+        <FIELD NAME="personal_number" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Personal/Service number"/>
+        <FIELD NAME="personal_mobile" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Personal mobile number"/>
+        <FIELD NAME="city" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="City of residence"/>
+        <FIELD NAME="source_system" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Source system identifier (HR_MASTER/STUDENT_DB)"/>
+        <FIELD NAME="source_record_hash" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="SHA-256 hash of source record for change detection"/>
+        <FIELD NAME="last_sync_at" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Last synchronization timestamp"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="employee_id" UNIQUE="true" FIELDS="employee_id" COMMENT="Unique index on employee ID"/>
+        <INDEX NAME="personal_mobile" UNIQUE="false" FIELDS="personal_mobile"/>
+        <INDEX NAME="source_system" UNIQUE="false" FIELDS="source_system"/>
+      </INDEXES>
+    </TABLE>
+
+    <!-- Authentication and security metadata -->
+    <TABLE NAME="auth_secureotp_security" COMMENT="Authentication and security metadata per user">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key to mdl_user.id"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="PROVISIONED" SEQUENCE="false" COMMENT="User status: PROVISIONED, ACTIVE, SUSPENDED, ARCHIVED"/>
+        <FIELD NAME="first_login_at" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="First successful login timestamp"/>
+        <FIELD NAME="last_login_at" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Last successful login timestamp"/>
+        <FIELD NAME="login_count" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Total successful login count"/>
+        <FIELD NAME="failed_attempts" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Consecutive failed login attempts"/>
+        <FIELD NAME="last_failed_at" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Last failed login attempt timestamp"/>
+        <FIELD NAME="device_fingerprint_hash" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="SHA-256 hash of current device fingerprint"/>
+        <FIELD NAME="trusted_devices" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON array of trusted device fingerprints"/>
+        <FIELD NAME="last_device_change" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Timestamp of last device change"/>
+        <FIELD NAME="otp_enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="OTP authentication enabled (1=yes, 0=no)"/>
+        <FIELD NAME="password_enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Password authentication enabled (1=yes, 0=no)"/>
+        <FIELD NAME="password_last_changed" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Password last changed timestamp"/>
+        <FIELD NAME="is_locked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Account locked status (1=locked, 0=unlocked)"/>
+        <FIELD NAME="locked_until" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Account locked until timestamp"/>
+        <FIELD NAME="locked_reason" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Reason for account lock"/>
+        <FIELD NAME="current_otp_hash" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Fallback: current OTP bcrypt hash (use Redis primarily)"/>
+        <FIELD NAME="otp_expires_at" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Fallback: OTP expiration timestamp"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign-unique" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="status" UNIQUE="false" FIELDS="status"/>
+        <INDEX NAME="is_locked" UNIQUE="false" FIELDS="is_locked"/>
+        <INDEX NAME="last_login_at" UNIQUE="false" FIELDS="last_login_at"/>
+      </INDEXES>
+    </TABLE>
+
+    <!-- Immutable audit trail -->
+    <TABLE NAME="auth_secureotp_audit" COMMENT="Immutable audit log for all authentication events">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="event_type" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Event type: OTP_SENT, OTP_VERIFIED, LOGIN_SUCCESS, LOGIN_FAILED, ACCOUNT_LOCKED, etc"/>
+        <FIELD NAME="event_status" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="SUCCESS, FAILURE, WARNING, ERROR"/>
+        <FIELD NAME="severity" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="INFO" SEQUENCE="false" COMMENT="INFO, WARNING, CRITICAL"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Foreign key to mdl_user.id (null for failed lookups)"/>
+        <FIELD NAME="employee_id" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" COMMENT="Employee ID (even if user not found)"/>
+        <FIELD NAME="ip_address" TYPE="char" LENGTH="45" NOTNULL="false" SEQUENCE="false" COMMENT="IPv4 or IPv6 address"/>
+        <FIELD NAME="user_agent" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Browser user agent string"/>
+        <FIELD NAME="device_fingerprint" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="Device fingerprint hash"/>
+        <FIELD NAME="event_data" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Additional event data as JSON"/>
+        <FIELD NAME="signature" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" COMMENT="HMAC-SHA256 signature for tamper detection"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="employee_id" UNIQUE="false" FIELDS="employee_id"/>
+        <INDEX NAME="event_type" UNIQUE="false" FIELDS="event_type"/>
+        <INDEX NAME="event_status" UNIQUE="false" FIELDS="event_status"/>
+        <INDEX NAME="severity" UNIQUE="false" FIELDS="severity"/>
+        <INDEX NAME="timecreated" UNIQUE="false" FIELDS="timecreated" COMMENT="For time-based queries and partitioning"/>
+        <INDEX NAME="ip_address" UNIQUE="false" FIELDS="ip_address" COMMENT="For IP-based analysis"/>
+      </INDEXES>
+    </TABLE>
+
+    <!-- Bulk import tracking -->
+    <TABLE NAME="auth_secureotp_import_log" COMMENT="Bulk user import tracking and logging">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="batch_id" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Unique batch identifier (UUID)"/>
+        <FIELD NAME="source_system" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="Source system identifier (HR_MASTER/STUDENT_DB/etc)"/>
+        <FIELD NAME="source_file" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Source CSV filename"/>
+        <FIELD NAME="total_records" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Total records in import file"/>
+        <FIELD NAME="success_count" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Successfully processed records"/>
+        <FIELD NAME="failed_count" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Failed records"/>
+        <FIELD NAME="updated_count" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Updated existing records"/>
+        <FIELD NAME="created_count" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Newly created records"/>
+        <FIELD NAME="error_log" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="JSON array of error details"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="PENDING" SEQUENCE="false" COMMENT="PENDING, RUNNING, COMPLETED, FAILED"/>
+        <FIELD NAME="started_by" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="User ID who initiated the import"/>
+        <FIELD NAME="started_at" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Import start timestamp"/>
+        <FIELD NAME="completed_at" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Import completion timestamp"/>
+        <FIELD NAME="duration_seconds" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Total import duration in seconds"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="batch_id" UNIQUE="true" FIELDS="batch_id"/>
+        <INDEX NAME="source_system" UNIQUE="false" FIELDS="source_system"/>
+        <INDEX NAME="status" UNIQUE="false" FIELDS="status"/>
+        <INDEX NAME="started_at" UNIQUE="false" FIELDS="started_at"/>
+      </INDEXES>
+    </TABLE>
+
+    <!-- Database fallback for rate limiting -->
+    <TABLE NAME="auth_secureotp_rate_limit" COMMENT="Database fallback for rate limiting (Redis primary)">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="identifier" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="IP address or employee_id"/>
+        <FIELD NAME="limit_type" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" COMMENT="OTP_REQUEST, OTP_VERIFY, LOGIN_ATTEMPT"/>
+        <FIELD NAME="attempt_count" TYPE="int" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Number of attempts in current window"/>
+        <FIELD NAME="window_start" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Window start timestamp"/>
+        <FIELD NAME="window_duration" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Window duration in seconds"/>
+        <FIELD NAME="locked_until" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Locked until timestamp"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="identifier_type" UNIQUE="true" FIELDS="identifier, limit_type" COMMENT="Unique constraint on identifier + limit_type"/>
+        <INDEX NAME="window_start" UNIQUE="false" FIELDS="window_start" COMMENT="For cleanup queries"/>
+      </INDEXES>
+    </TABLE>
+
+  </TABLES>
+</XMLDB>

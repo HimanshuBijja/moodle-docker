@@ -1,0 +1,235 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template auth_secureotp/login
+
+    OTP Login form template
+
+    Context variables required for this template:
+    * error - Error message (if any)
+    * csrf_token - CSRF protection token
+    * sitename - Site name
+    * logourl - Site logo URL
+    * rate_limit_message - Rate limit warning (if applicable)
+    * languages - Available languages array
+
+    Example context (json):
+    {
+        "sitename": "Training Portal",
+        "logourl": "https://example.com/logo.png",
+        "csrf_token": "abc123",
+        "error": "",
+        "rate_limit_message": "",
+        "languages": [
+            {"code": "en", "name": "English", "selected": true},
+            {"code": "hi", "name": "हिन्दी", "selected": false},
+            {"code": "te", "name": "తెలుగు", "selected": false}
+        ]
+    }
+}}
+<div class="auth-secureotp-login-container">
+    <div class="auth-secureotp-card">
+        {{#logourl}}
+        <div class="auth-secureotp-logo">
+            <img src="{{logourl}}" alt="{{sitename}}" class="img-fluid">
+        </div>
+        {{/logourl}}
+
+        <div class="auth-secureotp-header">
+            <h2>{{#str}}login_title, auth_secureotp{{/str}}</h2>
+            <p class="text-muted">{{#str}}login_subtitle, auth_secureotp{{/str}}</p>
+        </div>
+
+        {{#error}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa fa-exclamation-triangle"></i> {{{error}}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {{/error}}
+
+        {{#rate_limit_message}}
+        <div class="alert alert-warning" role="alert">
+            <i class="fa fa-clock-o"></i> {{{rate_limit_message}}}
+        </div>
+        {{/rate_limit_message}}
+
+        <form id="auth-secureotp-login-form" method="post" action="{{action_url}}" class="auth-secureotp-form">
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+            <div class="form-group">
+                <label for="identifier">
+                    {{#str}}employee_id, auth_secureotp{{/str}} /
+                    {{#str}}mobile_number, auth_secureotp{{/str}} /
+                    {{#str}}email_address, auth_secureotp{{/str}}
+                </label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                    <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        id="identifier"
+                        name="identifier"
+                        placeholder="{{#str}}identifier_placeholder, auth_secureotp{{/str}}"
+                        required
+                        autofocus
+                        autocomplete="off"
+                    >
+                </div>
+                <small class="form-text text-muted">
+                    {{#str}}identifier_required, auth_secureotp{{/str}}
+                </small>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" id="send-otp-btn">
+                    <i class="fa fa-paper-plane"></i> {{#str}}send_otp, auth_secureotp{{/str}}
+                </button>
+            </div>
+        </form>
+
+        {{#languages}}
+        <div class="auth-secureotp-language-selector">
+            <label>{{#str}}language{{/str}}:</label>
+            <div class="btn-group btn-group-sm" role="group">
+                {{#.}}
+                <a href="?lang={{code}}" class="btn btn-outline-secondary {{#selected}}active{{/selected}}">
+                    {{name}}
+                </a>
+                {{/.}}
+            </div>
+        </div>
+        {{/languages}}
+
+        <div class="auth-secureotp-footer">
+            <small class="text-muted">
+                &copy; {{year}} {{sitename}}.
+                {{#str}}auth_secureotpdescription, auth_secureotp{{/str}}
+            </small>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-secureotp-login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.auth-secureotp-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.auth-secureotp-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-secureotp-logo img {
+    max-height: 80px;
+    max-width: 100%;
+}
+
+.auth-secureotp-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-secureotp-header h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-secureotp-form .form-control-lg {
+    padding: 12px 15px;
+    font-size: 16px;
+}
+
+.auth-secureotp-form .input-group-text {
+    background-color: #f8f9fa;
+    border-right: none;
+}
+
+.auth-secureotp-form .form-control {
+    border-left: none;
+}
+
+.auth-secureotp-form .form-control:focus {
+    box-shadow: none;
+    border-color: #667eea;
+}
+
+.auth-secureotp-language-selector {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.auth-secureotp-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+#send-otp-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+#send-otp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#send-otp-btn:active {
+    transform: translateY(0);
+}
+
+#send-otp-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
+
+<script>
+require(['jquery'], function($) {
+    $('#auth-secureotp-login-form').on('submit', function() {
+        var btn = $('#send-otp-btn');
+        btn.prop('disabled', true);
+        btn.html('<i class="fa fa-spinner fa-spin"></i> {{#str}}sending, auth_secureotp{{/str}}...');
+    });
+});
+</script>

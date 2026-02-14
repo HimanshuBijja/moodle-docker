@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SecureOTP Configuration</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 250px; font-weight: bold; }
+        input[type="text"], input[type="password"], select { width: 250px; padding: 5px; }
+        input[type="checkbox"] { margin-right: 5px; }
+        .submit-btn { padding: 10px 20px; background-color: #007cba; color: white; border: none; cursor: pointer; }
+        .section-header { background-color: #f0f0f0; padding: 10px; margin-top: 20px; border-left: 4px solid #007cba; }
+    </style>
+</head>
+<body>
+    <h1>SecureOTP Authentication Configuration</h1>
+    
+    <form method="post" action="config.php">
+        <!-- Global Settings -->
+        <div class="section-header">Global Settings</div>
+        
+        <div class="form-group">
+            <label for="enabled">Enable SecureOTP:</label>
+            <input type="checkbox" id="enabled" name="enabled" value="1" <?php echo (isset($config->enabled) && $config->enabled) ? 'checked' : ''; ?>>
+        </div>
+        
+        <div class="form-group">
+            <label for="otp_expiry_minutes">OTP Expiry (minutes):</label>
+            <input type="text" id="otp_expiry_minutes" name="otp_expiry_minutes" value="<?php echo isset($config->otp_expiry_minutes) ? htmlspecialchars($config->otp_expiry_minutes) : '5'; ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="max_attempts">Max Attempts:</label>
+            <input type="text" id="max_attempts" name="max_attempts" value="<?php echo isset($config->max_attempts) ? htmlspecialchars($config->max_attempts) : '3'; ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="lockout_duration_minutes">Lockout Duration (minutes):</label>
+            <input type="text" id="lockout_duration_minutes" name="lockout_duration_minutes" value="<?php echo isset($config->lockout_duration_minutes) ? htmlspecialchars($config->lockout_duration_minutes) : '15'; ?>">
+        </div>
+        
+        <!-- Delivery Method Settings -->
+        <div class="section-header">Delivery Method Settings</div>
+        
+        <div class="form-group">
+            <label for="enable_sms">Enable SMS:</label>
+            <input type="checkbox" id="enable_sms" name="enable_sms" value="1" <?php echo (isset($config->enable_sms) && $config->enable_sms) ? 'checked' : ''; ?>>
+        </div>
+        
+        <div class="form-group">
+            <label for="enable_email">Enable Email:</label>
+            <input type="checkbox" id="enable_email" name="enable_email" value="1" <?php echo (isset($config->enable_email) && $config->enable_email) ? 'checked' : ''; ?>>
+        </div>
+        
+        <div class="form-group">
+            <label for="enable_totp">Enable TOTP:</label>
+            <input type="checkbox" id="enable_totp" name="enable_totp" value="1" <?php echo (isset($config->enable_totp) && $config->enable_totp) ? 'checked' : ''; ?>>
+        </div>
+        
+        <div class="form-group">
+            <label for="default_delivery_method">Default Delivery Method:</label>
+            <select id="default_delivery_method" name="default_delivery_method">
+                <option value="email" <?php echo (isset($config->default_delivery_method) && $config->default_delivery_method === 'email') ? 'selected' : ''; ?>>Email</option>
+                <option value="sms" <?php echo (isset($config->default_delivery_method) && $config->default_delivery_method === 'sms') ? 'selected' : ''; ?>>SMS</option>
+                <option value="totp" <?php echo (isset($config->default_delivery_method) && $config->default_delivery_method === 'totp') ? 'selected' : ''; ?>>TOTP</option>
+            </select>
+        </div>
+        
+        <!-- SMS Settings -->
+        <div class="section-header">SMS Gateway Settings</div>
+        
+        <div class="form-group">
+            <label for="sms_provider">SMS Provider:</label>
+            <input type="text" id="sms_provider" name="sms_provider" value="<?php echo isset($config->sms_provider) ? htmlspecialchars($config->sms_provider) : ''; ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="sms_api_key">SMS API Key:</label>
+            <input type="text" id="sms_api_key" name="sms_api_key" value="<?php echo isset($config->sms_api_key) ? htmlspecialchars($config->sms_api_key) : ''; ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="sms_api_secret">SMS API Secret:</label>
+            <input type="password" id="sms_api_secret" name="sms_api_secret" value="<?php echo isset($config->sms_api_secret) ? htmlspecialchars($config->sms_api_secret) : ''; ?>">
+        </div>
+        
+        <!-- Rate Limiting Settings -->
+        <div class="section-header">Rate Limiting Settings</div>
+        
+        <div class="form-group">
+            <label for="rate_limit_requests_per_minute">Requests Per Minute:</label>
+            <input type="text" id="rate_limit_requests_per_minute" name="rate_limit_requests_per_minute" value="<?php echo isset($config->rate_limit_requests_per_minute) ? htmlspecialchars($config->rate_limit_requests_per_minute) : '5'; ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="rate_limit_max_burst">Max Burst:</label>
+            <input type="text" id="rate_limit_max_burst" name="rate_limit_max_burst" value="<?php echo isset($config->rate_limit_max_burst) ? htmlspecialchars($config->rate_limit_max_burst) : '10'; ?>">
+        </div>
+        
+        <!-- Security Settings -->
+        <div class="section-header">Security Settings</div>
+        
+        <div class="form-group">
+            <label for="otp_length">OTP Length:</label>
+            <input type="text" id="otp_length" name="otp_length" value="<?php echo isset($config->otp_length) ? htmlspecialchars($config->otp_length) : '6'; ?>">
+        </div>
+        
+        <div class="form-group">
+            <label for="otp_algorithm">OTP Algorithm:</label>
+            <select id="otp_algorithm" name="otp_algorithm">
+                <option value="sha1" <?php echo (isset($config->otp_algorithm) && $config->otp_algorithm === 'sha1') ? 'selected' : ''; ?>>SHA-1</option>
+                <option value="sha256" <?php echo (isset($config->otp_algorithm) && $config->otp_algorithm === 'sha256') ? 'selected' : ''; ?>>SHA-256</option>
+                <option value="sha512" <?php echo (isset($config->otp_algorithm) && $config->otp_algorithm === 'sha512') ? 'selected' : ''; ?>>SHA-512</option>
+            </select>
+        </div>
+        
+        <!-- Trusted Devices Settings -->
+        <div class="section-header">Trusted Devices Settings</div>
+        
+        <div class="form-group">
+            <label for="enable_trusted_devices">Enable Trusted Devices:</label>
+            <input type="checkbox" id="enable_trusted_devices" name="enable_trusted_devices" value="1" <?php echo (isset($config->enable_trusted_devices) && $config->enable_trusted_devices) ? 'checked' : ''; ?>>
+        </div>
+        
+        <div class="form-group">
+            <label for="trusted_device_duration_days">Trusted Device Duration (days):</label>
+            <input type="text" id="trusted_device_duration_days" name="trusted_device_duration_days" value="<?php echo isset($config->trusted_device_duration_days) ? htmlspecialchars($config->trusted_device_duration_days) : '30'; ?>">
+        </div>
+        
+        <div class="form-group">
+            <input type="submit" class="submit-btn" value="Save Configuration">
+        </div>
+    </form>
+</body>
+</html>
