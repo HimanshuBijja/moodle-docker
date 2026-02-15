@@ -1,0 +1,533 @@
+{
+  "dashboard": {
+    "admin": [
+      {
+        "type": "pie",
+        "title": "Site Activity Overview",
+        "data": [
+          "Enrolments",
+          "Activities",
+          "Activity Completion",
+          "Guest Visits"
+        ]
+      },
+      {
+        "type": "pie",
+        "title": "Users Registration Stats",
+        "data": ["Success", "Suspended", "Pending", "Deleted"]
+      },
+      {
+        "type": "pie",
+        "title": "Course Information",
+        "data": ["Name", "Registration Count"]
+      },
+      {
+        "type": "bar",
+        "title": "Registered Users Enrolment Status",
+        "data": [
+          "Not enrolled",
+          "Enrolled in more than one course",
+          "Enrolled in only one course"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Enrolled Methods",
+        "data": ["Manual", "Guest", "Secure OTP"]
+      },
+      {
+        "type": "line",
+        "title": "Site Visits Over Time",
+        "data": ["Daily visits", "Weekly visits", "Monthly visits"]
+      },
+      {
+        "type": "counter",
+        "title": "Total Users",
+        "data": ["Active users", "Suspended users", "Deleted users"]
+      },
+      {
+        "type": "counter",
+        "title": "Total Courses",
+        "data": ["Visible courses", "Hidden courses", "Total categories"]
+      },
+      {
+        "type": "bar",
+        "title": "Active Users",
+        "data": [
+          "Logged in last 7 days",
+          "Logged in last 30 days",
+          "Never logged in"
+        ]
+      },
+      {
+        "type": "pie",
+        "title": "Disk Usage",
+        "data": ["Moodledata size", "Database size", "Backup files size"]
+      },
+      {
+        "type": "bar",
+        "title": "Authentication Report",
+        "data": ["Manual logins", "OAuth logins", "Failed login attempts"]
+      },
+      {
+        "type": "gauge",
+        "title": "Server Performance",
+        "data": ["CPU usage", "RAM usage", "Disk I/O"]
+      },
+      {
+        "type": "table",
+        "title": "Course Categories Overview",
+        "data": ["Category name", "Course count", "Enrolment count"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by Working Location",
+        "source": "auth_secureotp_userdata.working_location",
+        "data": ["Location name", "User count"]
+      },
+      {
+        "type": "pie",
+        "title": "Employee Type Distribution",
+        "source": "auth_secureotp_userdata.employee_type",
+        "data": ["CIVIL", "POLICE", "Other"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by Current Rank",
+        "source": "auth_secureotp_userdata.current_rank",
+        "data": ["Rank", "User count"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by Unit / Department",
+        "source": "auth_secureotp_userdata.unit_name",
+        "data": ["Unit name", "User count"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by CP/SP Office",
+        "source": "auth_secureotp_userdata.cp_sp_office",
+        "data": ["CP/SP Office", "User count"]
+      },
+      {
+        "type": "pie",
+        "title": "Users by Gender",
+        "source": "auth_secureotp_userdata.gender",
+        "data": ["Male", "Female", "Other"]
+      },
+      {
+        "type": "pie",
+        "title": "Users by Education Category",
+        "source": "auth_secureotp_userdata.education_category",
+        "data": ["Category", "User count"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by City",
+        "source": "auth_secureotp_userdata.city",
+        "data": ["City", "User count"]
+      },
+      {
+        "type": "pie",
+        "title": "SecureOTP Account Security Status",
+        "source": "auth_secureotp_security.status",
+        "data": ["PROVISIONED", "ACTIVE", "SUSPENDED", "ARCHIVED"]
+      },
+      {
+        "type": "counter",
+        "title": "SecureOTP Security Summary",
+        "source": "auth_secureotp_security",
+        "data": [
+          "Locked accounts",
+          "OTP-enabled users",
+          "Password-enabled users",
+          "Total failed attempts today"
+        ]
+      },
+      {
+        "type": "line",
+        "title": "OTP Authentication Events Over Time",
+        "source": "auth_secureotp_audit",
+        "data": ["OTP_SENT", "OTP_VERIFIED", "LOGIN_SUCCESS", "LOGIN_FAILED"]
+      },
+      {
+        "type": "bar",
+        "title": "Audit Events by Severity",
+        "source": "auth_secureotp_audit.severity",
+        "data": ["INFO", "WARNING", "CRITICAL"]
+      },
+      {
+        "type": "table",
+        "title": "Recent Failed Login Attempts",
+        "source": "auth_secureotp_audit",
+        "data": [
+          "Employee ID",
+          "IP address",
+          "User agent",
+          "Timestamp",
+          "Event status"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Failed Attempts by Working Location",
+        "source": "auth_secureotp_audit + auth_secureotp_userdata",
+        "data": ["Working location", "Failed attempt count"]
+      },
+      {
+        "type": "table",
+        "title": "Bulk Import History",
+        "source": "auth_secureotp_import_log",
+        "data": [
+          "Batch ID",
+          "Source system",
+          "Total records",
+          "Success count",
+          "Failed count",
+          "Status",
+          "Duration"
+        ]
+      },
+      {
+        "type": "pie",
+        "title": "Users by Source System",
+        "source": "auth_secureotp_userdata.source_system",
+        "data": ["HR_MASTER", "STUDENT_DB", "Other"]
+      },
+      {
+        "type": "bar",
+        "title": "Rate Limit Hits",
+        "source": "auth_secureotp_rate_limit",
+        "data": ["OTP_REQUEST", "OTP_VERIFY", "LOGIN_ATTEMPT"]
+      }
+    ],
+
+    "manager": [
+      {
+        "type": "pie",
+        "title": "Site Activity Overview",
+        "data": [
+          "Enrolments",
+          "Activities",
+          "Activity Completion",
+          "Guest Visits"
+        ]
+      },
+      {
+        "type": "counter",
+        "title": "Total Users",
+        "data": ["Active users", "Suspended users"]
+      },
+      {
+        "type": "counter",
+        "title": "Total Courses",
+        "data": ["Visible courses", "Hidden courses"]
+      },
+      {
+        "type": "line",
+        "title": "Site Visits Over Time",
+        "data": ["Daily visits", "Weekly visits", "Monthly visits"]
+      },
+      {
+        "type": "bar",
+        "title": "Active Users",
+        "data": [
+          "Logged in last 7 days",
+          "Logged in last 30 days",
+          "Never logged in"
+        ]
+      },
+      {
+        "type": "pie",
+        "title": "Users Registration Stats",
+        "data": ["Success", "Suspended", "Pending"]
+      },
+      {
+        "type": "bar",
+        "title": "Registered Users Enrolment Status",
+        "data": [
+          "Not enrolled",
+          "Enrolled in more than one course",
+          "Enrolled in only one course"
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Course Categories Overview",
+        "data": ["Category name", "Course count", "Enrolment count"]
+      },
+      {
+        "type": "bar",
+        "title": "Enrolled Methods",
+        "data": ["Manual", "Guest", "Secure OTP"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by Working Location",
+        "source": "auth_secureotp_userdata.working_location",
+        "data": ["Location name", "User count"]
+      },
+      {
+        "type": "pie",
+        "title": "Employee Type Distribution",
+        "source": "auth_secureotp_userdata.employee_type",
+        "data": ["CIVIL", "POLICE", "Other"]
+      },
+      {
+        "type": "bar",
+        "title": "Users by Unit / Department",
+        "source": "auth_secureotp_userdata.unit_name",
+        "data": ["Unit name", "User count"]
+      },
+      {
+        "type": "pie",
+        "title": "SecureOTP Account Security Status",
+        "source": "auth_secureotp_security.status",
+        "data": ["PROVISIONED", "ACTIVE", "SUSPENDED", "ARCHIVED"]
+      },
+      {
+        "type": "line",
+        "title": "OTP Login Trends",
+        "source": "auth_secureotp_audit",
+        "data": ["LOGIN_SUCCESS", "LOGIN_FAILED"]
+      }
+    ],
+
+    "editingteacher": [
+      {
+        "type": "counter",
+        "title": "My Courses Summary",
+        "data": [
+          "Total courses teaching",
+          "Total enrolled students",
+          "Average completion rate"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Course Enrolment Stats",
+        "data": ["Active learners", "Inactive learners", "Completed learners"]
+      },
+      {
+        "type": "doughnut",
+        "title": "Course Completion Progress",
+        "data": ["Completed", "In progress", "Not started"]
+      },
+      {
+        "type": "bar",
+        "title": "Grade Distribution",
+        "data": [
+          "A (90-100%)",
+          "B (80-89%)",
+          "C (70-79%)",
+          "D (60-69%)",
+          "F (below 60%)"
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Activity Completion Matrix",
+        "data": [
+          "Activity name",
+          "Completed count",
+          "Pending count",
+          "Completion percentage"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Quiz Analytics — Attempt Stats",
+        "data": [
+          "Total attempts",
+          "Average score",
+          "Highest score",
+          "Lowest score"
+        ]
+      },
+      {
+        "type": "line",
+        "title": "Quiz Analytics — Improvement Curve",
+        "data": ["Attempt 1 avg", "Attempt 2 avg", "Attempt 3 avg"]
+      },
+      {
+        "type": "bar",
+        "title": "Quiz Analytics — Question Difficulty",
+        "data": ["Easy questions", "Medium questions", "Hard questions"]
+      },
+      {
+        "type": "heatmap",
+        "title": "Learner Activity Heatmap",
+        "data": ["Weekday", "Hour", "Activity count"]
+      },
+      {
+        "type": "line",
+        "title": "Course Visits Over Time",
+        "data": ["Daily views", "Weekly views"]
+      },
+      {
+        "type": "table",
+        "title": "Recent Course Activity",
+        "data": ["Student name", "Activity", "Timestamp", "Action"]
+      },
+      {
+        "type": "table",
+        "title": "At-Risk Students",
+        "data": [
+          "Student name",
+          "Last access",
+          "Completion percentage",
+          "Days inactive"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Students by Working Location",
+        "source": "auth_secureotp_userdata.working_location",
+        "data": ["Working location", "Student count"]
+      },
+      {
+        "type": "pie",
+        "title": "Students by Employee Type",
+        "source": "auth_secureotp_userdata.employee_type",
+        "data": ["CIVIL", "POLICE", "Other"]
+      },
+      {
+        "type": "bar",
+        "title": "Students by Current Rank",
+        "source": "auth_secureotp_userdata.current_rank",
+        "data": ["Rank", "Student count"]
+      }
+    ],
+
+    "teacher": [
+      {
+        "type": "counter",
+        "title": "My Courses Summary",
+        "data": [
+          "Total courses teaching",
+          "Total enrolled students",
+          "Average completion rate"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Course Enrolment Stats",
+        "data": ["Active learners", "Inactive learners", "Completed learners"]
+      },
+      {
+        "type": "doughnut",
+        "title": "Course Completion Progress",
+        "data": ["Completed", "In progress", "Not started"]
+      },
+      {
+        "type": "bar",
+        "title": "Grade Distribution",
+        "data": [
+          "A (90-100%)",
+          "B (80-89%)",
+          "C (70-79%)",
+          "D (60-69%)",
+          "F (below 60%)"
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Activity Completion Matrix",
+        "data": [
+          "Activity name",
+          "Completed count",
+          "Pending count",
+          "Completion percentage"
+        ]
+      },
+      {
+        "type": "line",
+        "title": "Course Visits Over Time",
+        "data": ["Daily views", "Weekly views"]
+      },
+      {
+        "type": "table",
+        "title": "Recent Course Activity",
+        "data": ["Student name", "Activity", "Timestamp", "Action"]
+      },
+      {
+        "type": "table",
+        "title": "At-Risk Students",
+        "data": [
+          "Student name",
+          "Last access",
+          "Completion percentage",
+          "Days inactive"
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Students by Working Location",
+        "source": "auth_secureotp_userdata.working_location",
+        "data": ["Working location", "Student count"]
+      }
+    ],
+
+    "student": [
+      {
+        "type": "counter",
+        "title": "My Learning Overview",
+        "data": ["Enrolled courses", "Completed courses", "In-progress courses"]
+      },
+      {
+        "type": "bar",
+        "title": "My Course Progress",
+        "data": ["Course name", "Completion percentage"]
+      },
+      {
+        "type": "bar",
+        "title": "My Grade Overview",
+        "data": ["Course name", "Grade percentage"]
+      },
+      {
+        "type": "doughnut",
+        "title": "Overall Completion Status",
+        "data": ["Completed activities", "Pending activities", "Not attempted"]
+      },
+      {
+        "type": "line",
+        "title": "My Login History",
+        "data": ["Daily logins", "Weekly logins"]
+      },
+      {
+        "type": "table",
+        "title": "My Recent Activity",
+        "data": ["Course name", "Activity name", "Timestamp", "Status"]
+      },
+      {
+        "type": "table",
+        "title": "Upcoming Deadlines",
+        "data": ["Course name", "Activity name", "Due date", "Status"]
+      },
+      {
+        "type": "bar",
+        "title": "My Quiz Performance",
+        "data": ["Quiz name", "Best score", "Attempts used"]
+      },
+      {
+        "type": "table",
+        "title": "My Profile Info",
+        "source": "auth_secureotp_userdata",
+        "data": [
+          "Employee ID",
+          "Employee type",
+          "Current rank",
+          "Working location",
+          "Unit name",
+          "CP/SP Office"
+        ]
+      },
+      {
+        "type": "line",
+        "title": "My Login History (OTP)",
+        "source": "auth_secureotp_audit",
+        "data": ["Login date", "Login count"]
+      }
+    ]
+  }
+}

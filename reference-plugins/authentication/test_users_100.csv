@@ -1,0 +1,102 @@
+employee_id,firstname,lastname,email,pao_code,employee_type,date_of_birth,gender,education_category,date_of_joining,initial_appointment_rank,current_rank,working_location,cp_sp_office,unit_name,department_no,personal_number,personal_mobile,city
+MH001234,Rajesh,Kumar,rajesh.kumar@gov.in,MH001,POLICE,1985-03-15,M,Graduate,2010-06-01,Constable,Sub-Inspector,Mumbai,Mumbai CP,Traffic Police,D001,10001,9876543210,Mumbai
+MH001235,Priya,Sharma,priya.sharma@gov.in,MH002,CIVIL,1990-07-22,F,Post-Graduate,2015-03-12,Clerk,Senior Clerk,Pune,Pune DP,Administration,D002,10002,9876543211,Pune
+DL002234,Amit,Singh,amit.singh@gov.in,DL001,POLICE,1988-11-30,M,Graduate,2012-08-15,Constable,Assistant Sub-Inspector,Delhi,Delhi CP,Crime Branch,D003,10003,9876543212,Delhi
+KA003234,Lakshmi,Reddy,lakshmi.reddy@gov.in,KA001,CIVIL,1992-05-18,F,Graduate,2018-01-20,Junior Assistant,Assistant,Bangalore,Bangalore DP,Revenue,D004,10004,9876543213,Bangalore
+UP004234,Suresh,Yadav,suresh.yadav@gov.in,UP001,POLICE,1987-09-25,M,12th Pass,2009-04-10,Constable,Head Constable,Lucknow,Lucknow CP,Law and Order,D005,10005,9876543214,Lucknow
+TN005234,Deepa,Menon,deepa.menon@gov.in,TN001,CIVIL,1991-12-08,F,Post-Graduate,2016-07-01,Typist,Senior Typist,Chennai,Chennai DP,Health,D006,10006,9876543215,Chennai
+MH001236,Vikram,Patil,vikram.patil@gov.in,MH003,POLICE,1986-02-14,M,Graduate,2011-05-20,Constable,Inspector,Nagpur,Nagpur CP,Special Branch,D007,10007,9876543216,Nagpur
+WB006234,Ananya,Banerjee,ananya.banerjee@gov.in,WB001,CIVIL,1993-08-30,F,Graduate,2019-02-15,Clerk,Clerk,Kolkata,Kolkata DP,Finance,D008,10008,9876543217,Kolkata
+GJ007234,Karan,Patel,karan.patel@gov.in,GJ001,POLICE,1989-04-12,M,Graduate,2013-09-01,Constable,Sub-Inspector,Ahmedabad,Ahmedabad CP,Traffic Police,D009,10009,9876543218,Ahmedabad
+RJ008234,Neha,Agarwal,neha.agarwal@gov.in,RJ001,CIVIL,1994-01-25,F,Post-Graduate,2020-08-10,Junior Assistant,Junior Assistant,Jaipur,Jaipur DP,Education,D010,10010,9876543219,Jaipur
+MH001237,Sanjay,Deshmukh,sanjay.deshmukh@gov.in,MH004,POLICE,1984-10-05,M,Graduate,2008-03-15,Constable,Inspector,Mumbai,Mumbai CP,Crime Branch,D011,10011,9876543220,Mumbai
+AP009234,Madhavi,Naidu,madhavi.naidu@gov.in,AP001,CIVIL,1990-06-18,F,Graduate,2014-11-25,Typist,Senior Typist,Hyderabad,Hyderabad DP,Revenue,D012,10012,9876543221,Hyderabad
+PB010234,Harpreet,Singh,harpreet.singh@gov.in,PB001,POLICE,1991-03-22,M,12th Pass,2015-04-01,Constable,Head Constable,Chandigarh,Chandigarh CP,Law and Order,D013,10013,9876543222,Chandigarh
+HR011234,Ritu,Verma,ritu.verma@gov.in,HR001,CIVIL,1995-09-14,F,Graduate,2021-01-10,Clerk,Clerk,Gurgaon,Gurgaon DP,Administration,D014,10014,9876543223,Gurgaon
+DL002235,Manoj,Gupta,manoj.gupta@gov.in,DL002,POLICE,1987-07-28,M,Graduate,2010-12-20,Constable,Sub-Inspector,Delhi,Delhi CP,Special Branch,D015,10015,9876543224,Delhi
+KA003235,Sowmya,Shetty,sowmya.shetty@gov.in,KA002,CIVIL,1992-11-03,F,Post-Graduate,2017-06-15,Junior Assistant,Assistant,Mysore,Mysore DP,Health,D016,10016,9876543225,Mysore
+MH001238,Rahul,Joshi,rahul.joshi@gov.in,MH005,POLICE,1988-05-16,M,Graduate,2012-02-10,Constable,Assistant Sub-Inspector,Pune,Pune CP,Traffic Police,D017,10017,9876543226,Pune
+TN005235,Kavitha,Murugan,kavitha.murugan@gov.in,TN002,CIVIL,1993-12-20,F,Graduate,2018-09-05,Clerk,Senior Clerk,Coimbatore,Coimbatore DP,Finance,D018,10018,9876543227,Coimbatore
+UP004235,Anil,Mishra,anil.mishra@gov.in,UP002,POLICE,1986-08-09,M,Graduate,2009-07-25,Constable,Inspector,Kanpur,Kanpur CP,Crime Branch,D019,10019,9876543228,Kanpur
+MH001239,Sneha,Kulkarni,sneha.kulkarni@gov.in,MH006,CIVIL,1994-04-11,F,Graduate,2019-05-20,Typist,Typist,Mumbai,Mumbai DP,Education,D020,10020,9876543229,Mumbai
+GJ007235,Jayesh,Shah,jayesh.shah@gov.in,GJ002,POLICE,1989-01-07,M,12th Pass,2013-10-15,Constable,Head Constable,Surat,Surat CP,Law and Order,D021,10021,9876543230,Surat
+WB006235,Pallavi,Das,pallavi.das@gov.in,WB002,CIVIL,1991-10-30,F,Post-Graduate,2016-12-01,Junior Assistant,Assistant,Kolkata,Kolkata DP,Revenue,D022,10022,9876543231,Kolkata
+RJ008235,Rohit,Sharma,rohit.sharma@gov.in,RJ002,POLICE,1990-06-24,M,Graduate,2014-08-10,Constable,Sub-Inspector,Jaipur,Jaipur CP,Special Branch,D023,10023,9876543232,Jaipur
+AP009235,Divya,Rao,divya.rao@gov.in,AP002,CIVIL,1995-02-17,F,Graduate,2020-03-15,Clerk,Clerk,Vijayawada,Vijayawada DP,Health,D024,10024,9876543233,Vijayawada
+DL002236,Vishal,Kapoor,vishal.kapoor@gov.in,DL003,POLICE,1987-11-12,M,Graduate,2011-01-20,Constable,Inspector,Delhi,Delhi CP,Crime Branch,D025,10025,9876543234,Delhi
+KA003236,Meera,Iyer,meera.iyer@gov.in,KA003,CIVIL,1993-07-05,F,Post-Graduate,2018-04-25,Typist,Senior Typist,Bangalore,Bangalore DP,Administration,D026,10026,9876543235,Bangalore
+MH001240,Sachin,Pawar,sachin.pawar@gov.in,MH007,POLICE,1985-09-19,M,Graduate,2009-11-10,Constable,Sub-Inspector,Nashik,Nashik CP,Traffic Police,D027,10027,9876543236,Nashik
+TN005236,Radhika,Krishnan,radhika.krishnan@gov.in,TN003,CIVIL,1992-03-28,F,Graduate,2017-02-14,Junior Assistant,Assistant,Chennai,Chennai DP,Finance,D028,10028,9876543237,Chennai
+UP004236,Deepak,Pandey,deepak.pandey@gov.in,UP003,POLICE,1988-12-01,M,12th Pass,2012-06-05,Constable,Head Constable,Varanasi,Varanasi CP,Law and Order,D029,10029,9876543238,Varanasi
+PB010235,Simran,Kaur,simran.kaur@gov.in,PB002,CIVIL,1994-08-15,F,Graduate,2019-10-20,Clerk,Senior Clerk,Ludhiana,Ludhiana DP,Education,D030,10030,9876543239,Ludhiana
+MH001241,Tushar,Bhosale,tushar.bhosale@gov.in,MH008,POLICE,1986-04-23,M,Graduate,2010-09-15,Constable,Assistant Sub-Inspector,Mumbai,Mumbai CP,Special Branch,D031,10031,9876543240,Mumbai
+HR011235,Anjali,Yadav,anjali.yadav@gov.in,HR002,CIVIL,1991-11-06,F,Post-Graduate,2016-08-01,Junior Assistant,Assistant,Faridabad,Faridabad DP,Revenue,D032,10032,9876543241,Faridabad
+GJ007236,Nitin,Mehta,nitin.mehta@gov.in,GJ003,POLICE,1989-07-18,M,Graduate,2013-12-20,Constable,Sub-Inspector,Vadodara,Vadodara CP,Crime Branch,D033,10033,9876543242,Vadodara
+WB006236,Shweta,Ghosh,shweta.ghosh@gov.in,WB003,CIVIL,1995-05-02,F,Graduate,2020-11-10,Typist,Typist,Durgapur,Durgapur DP,Health,D034,10034,9876543243,Durgapur
+DL002237,Ajay,Saxena,ajay.saxena@gov.in,DL004,POLICE,1987-01-14,M,Graduate,2011-03-25,Constable,Inspector,Delhi,Delhi CP,Traffic Police,D035,10035,9876543244,Delhi
+KA003237,Pooja,Nair,pooja.nair@gov.in,KA004,CIVIL,1993-09-27,F,Graduate,2018-07-15,Clerk,Senior Clerk,Hubli,Hubli DP,Administration,D036,10036,9876543245,Hubli
+RJ008236,Manish,Jain,manish.jain@gov.in,RJ003,POLICE,1990-03-11,M,12th Pass,2014-05-30,Constable,Head Constable,Jodhpur,Jodhpur CP,Law and Order,D037,10037,9876543246,Jodhpur
+MH001242,Vaishali,Wagh,vaishali.wagh@gov.in,MH009,CIVIL,1994-12-08,F,Post-Graduate,2019-09-20,Junior Assistant,Junior Assistant,Pune,Pune DP,Finance,D038,10038,9876543247,Pune
+AP009236,Prasad,Reddy,prasad.reddy@gov.in,AP003,POLICE,1988-08-20,M,Graduate,2012-10-15,Constable,Sub-Inspector,Hyderabad,Hyderabad CP,Special Branch,D039,10039,9876543248,Hyderabad
+TN005237,Nithya,Subramanian,nithya.subramanian@gov.in,TN004,CIVIL,1992-06-13,F,Graduate,2017-12-05,Typist,Senior Typist,Madurai,Madurai DP,Education,D040,10040,9876543249,Madurai
+UP004237,Santosh,Tiwari,santosh.tiwari@gov.in,UP004,POLICE,1986-10-26,M,Graduate,2010-02-20,Constable,Inspector,Agra,Agra CP,Crime Branch,D041,10041,9876543250,Agra
+MH001243,Tanvi,Desai,tanvi.desai@gov.in,MH010,CIVIL,1995-04-17,F,Graduate,2020-06-10,Clerk,Clerk,Mumbai,Mumbai DP,Revenue,D042,10042,9876543251,Mumbai
+GJ007237,Chintan,Trivedi,chintan.trivedi@gov.in,GJ004,POLICE,1991-02-09,M,Graduate,2015-11-25,Constable,Assistant Sub-Inspector,Rajkot,Rajkot CP,Traffic Police,D043,10043,9876543252,Rajkot
+PB010236,Navneet,Sandhu,navneet.sandhu@gov.in,PB003,CIVIL,1993-10-21,F,Post-Graduate,2018-05-15,Junior Assistant,Assistant,Amritsar,Amritsar DP,Health,D044,10044,9876543253,Amritsar
+DL002238,Pankaj,Malhotra,pankaj.malhotra@gov.in,DL005,POLICE,1987-06-03,M,12th Pass,2011-08-10,Constable,Head Constable,Delhi,Delhi CP,Law and Order,D045,10045,9876543254,Delhi
+KA003238,Rekha,Hegde,rekha.hegde@gov.in,KA005,CIVIL,1994-11-29,F,Graduate,2019-03-20,Clerk,Senior Clerk,Mangalore,Mangalore DP,Administration,D046,10046,9876543255,Mangalore
+WB006237,Sourav,Mukherjee,sourav.mukherjee@gov.in,WB004,POLICE,1989-05-12,M,Graduate,2013-07-05,Constable,Sub-Inspector,Kolkata,Kolkata CP,Special Branch,D047,10047,9876543256,Kolkata
+RJ008237,Kavita,Chouhan,kavita.chouhan@gov.in,RJ004,CIVIL,1992-01-24,F,Graduate,2017-10-30,Typist,Typist,Udaipur,Udaipur DP,Finance,D048,10048,9876543257,Udaipur
+MH001244,Nikhil,Salve,nikhil.salve@gov.in,MH011,POLICE,1988-09-07,M,Graduate,2012-04-15,Constable,Inspector,Aurangabad,Aurangabad CP,Crime Branch,D049,10049,9876543258,Aurangabad
+AP009237,Swathi,Venkat,swathi.venkat@gov.in,AP004,CIVIL,1995-07-19,F,Post-Graduate,2020-12-01,Junior Assistant,Junior Assistant,Visakhapatnam,Visakhapatnam DP,Education,D050,10050,9876543259,Visakhapatnam
+TN005238,Karthik,Raman,karthik.raman@gov.in,TN005,POLICE,1986-03-31,M,Graduate,2010-06-20,Constable,Sub-Inspector,Chennai,Chennai CP,Traffic Police,D051,10051,9876543260,Chennai
+UP004238,Ravi,Chaudhary,ravi.chaudhary@gov.in,UP005,CIVIL,1991-12-14,M,12th Pass,2016-02-25,Clerk,Clerk,Meerut,Meerut DP,Revenue,D052,10052,9876543261,Meerut
+HR011236,Preeti,Rana,preeti.rana@gov.in,HR003,POLICE,1993-08-06,F,Graduate,2018-09-10,Constable,Assistant Sub-Inspector,Rohtak,Rohtak CP,Law and Order,D053,10053,9876543262,Rohtak
+GJ007238,Bharat,Raval,bharat.raval@gov.in,GJ005,CIVIL,1990-04-28,M,Graduate,2015-01-15,Junior Assistant,Assistant,Ahmedabad,Ahmedabad DP,Health,D054,10054,9876543263,Ahmedabad
+DL002239,Shilpa,Arora,shilpa.arora@gov.in,DL006,POLICE,1987-11-18,F,Graduate,2011-07-05,Constable,Sub-Inspector,Delhi,Delhi CP,Special Branch,D055,10055,9876543264,Delhi
+KA003239,Venkatesh,Bhat,venkatesh.bhat@gov.in,KA006,CIVIL,1994-06-09,M,Post-Graduate,2019-11-20,Typist,Senior Typist,Bangalore,Bangalore DP,Administration,D056,10056,9876543265,Bangalore
+MH001245,Aarti,Kelkar,aarti.kelkar@gov.in,MH012,POLICE,1992-02-21,F,Graduate,2017-03-30,Constable,Head Constable,Kolhapur,Kolhapur CP,Crime Branch,D057,10057,9876543266,Kolhapur
+TN005239,Sunil,Pillai,sunil.pillai@gov.in,TN006,CIVIL,1989-10-03,M,Graduate,2014-06-15,Clerk,Senior Clerk,Trichy,Trichy DP,Finance,D058,10058,9876543267,Trichy
+PB010237,Gurpreet,Brar,gurpreet.brar@gov.in,PB004,POLICE,1991-07-15,M,12th Pass,2015-12-10,Constable,Sub-Inspector,Jalandhar,Jalandhar CP,Traffic Police,D059,10059,9876543268,Jalandhar
+WB006238,Moumita,Sen,moumita.sen@gov.in,WB005,CIVIL,1995-03-27,F,Graduate,2020-08-25,Junior Assistant,Junior Assistant,Siliguri,Siliguri DP,Education,D060,10060,9876543269,Siliguri
+RJ008238,Abhishek,Gehlot,abhishek.gehlot@gov.in,RJ005,POLICE,1988-12-09,M,Graduate,2012-11-20,Constable,Inspector,Kota,Kota CP,Law and Order,D061,10061,9876543270,Kota
+AP009238,Sravani,Katta,sravani.katta@gov.in,AP005,CIVIL,1993-05-21,F,Post-Graduate,2018-02-10,Typist,Typist,Guntur,Guntur DP,Revenue,D062,10062,9876543271,Guntur
+MH001246,Omkar,Shirke,omkar.shirke@gov.in,MH013,POLICE,1986-09-13,M,Graduate,2010-10-05,Constable,Sub-Inspector,Solapur,Solapur CP,Special Branch,D063,10063,9876543272,Solapur
+UP004239,Sunita,Maurya,sunita.maurya@gov.in,UP006,CIVIL,1994-01-05,F,Graduate,2019-07-15,Clerk,Clerk,Allahabad,Allahabad DP,Health,D064,10064,9876543273,Allahabad
+GJ007239,Hitesh,Joshi,hitesh.joshi@gov.in,GJ006,POLICE,1990-08-17,M,Graduate,2014-04-20,Constable,Assistant Sub-Inspector,Bhavnagar,Bhavnagar CP,Crime Branch,D065,10065,9876543274,Bhavnagar
+DL002240,Renu,Chawla,renu.chawla@gov.in,DL007,CIVIL,1992-04-29,F,Graduate,2017-09-05,Junior Assistant,Assistant,Delhi,Delhi DP,Administration,D066,10066,9876543275,Delhi
+KA003240,Aravind,Murthy,aravind.murthy@gov.in,KA007,POLICE,1987-11-11,M,12th Pass,2011-12-15,Constable,Head Constable,Belgaum,Belgaum CP,Traffic Police,D067,10067,9876543276,Belgaum
+TN005240,Sangeetha,Babu,sangeetha.babu@gov.in,TN007,CIVIL,1995-06-23,F,Post-Graduate,2020-05-10,Typist,Senior Typist,Salem,Salem DP,Finance,D068,10068,9876543277,Salem
+MH001247,Tejas,Naik,tejas.naik@gov.in,MH014,POLICE,1989-02-04,M,Graduate,2013-08-25,Constable,Sub-Inspector,Mumbai,Mumbai CP,Law and Order,D069,10069,9876543278,Mumbai
+PB010238,Jasmeet,Dhillon,jasmeet.dhillon@gov.in,PB005,CIVIL,1991-10-16,F,Graduate,2016-11-30,Clerk,Senior Clerk,Patiala,Patiala DP,Education,D070,10070,9876543279,Patiala
+WB006239,Partha,Chatterjee,partha.chatterjee@gov.in,WB006,POLICE,1993-07-28,M,Graduate,2018-01-15,Constable,Inspector,Howrah,Howrah CP,Special Branch,D071,10071,9876543280,Howrah
+RJ008239,Mansi,Rathore,mansi.rathore@gov.in,RJ006,CIVIL,1996-03-10,F,Graduate,2021-06-20,Junior Assistant,Junior Assistant,Bikaner,Bikaner DP,Revenue,D072,10072,9876543281,Bikaner
+AP009239,Mohan,Chowdary,mohan.chowdary@gov.in,AP006,POLICE,1988-11-22,M,Graduate,2012-09-05,Constable,Sub-Inspector,Tirupati,Tirupati CP,Crime Branch,D073,10073,9876543282,Tirupati
+HR011237,Komal,Hooda,komal.hooda@gov.in,HR004,CIVIL,1994-08-04,F,Post-Graduate,2019-04-10,Typist,Typist,Panipat,Panipat DP,Health,D074,10074,9876543283,Panipat
+UP004240,Dinesh,Dubey,dinesh.dubey@gov.in,UP007,POLICE,1986-04-16,M,12th Pass,2010-05-25,Constable,Head Constable,Bareilly,Bareilly CP,Traffic Police,D075,10075,9876543284,Bareilly
+GJ007240,Sejal,Parekh,sejal.parekh@gov.in,GJ007,CIVIL,1992-12-28,F,Graduate,2017-08-15,Clerk,Clerk,Surat,Surat DP,Administration,D076,10076,9876543285,Surat
+DL002241,Gaurav,Bhatia,gaurav.bhatia@gov.in,DL008,POLICE,1990-06-10,M,Graduate,2014-10-20,Constable,Sub-Inspector,Delhi,Delhi CP,Law and Order,D077,10077,9876543286,Delhi
+KA003241,Suma,Devaiah,suma.devaiah@gov.in,KA008,CIVIL,1995-02-22,F,Graduate,2020-03-30,Junior Assistant,Assistant,Shimoga,Shimoga DP,Finance,D078,10078,9876543287,Shimoga
+TN005241,Arjun,Natarajan,arjun.natarajan@gov.in,TN008,POLICE,1987-09-03,M,Graduate,2011-06-15,Constable,Inspector,Vellore,Vellore CP,Special Branch,D079,10079,9876543288,Vellore
+MH001248,Yogita,Mane,yogita.mane@gov.in,MH015,CIVIL,1993-05-15,F,Post-Graduate,2018-11-20,Typist,Senior Typist,Satara,Satara DP,Education,D080,10080,9876543289,Satara
+PB010239,Balwinder,Gill,balwinder.gill@gov.in,PB006,POLICE,1991-01-27,M,Graduate,2015-07-10,Constable,Assistant Sub-Inspector,Bathinda,Bathinda CP,Crime Branch,D081,10081,9876543290,Bathinda
+WB006240,Suchitra,Roy,suchitra.roy@gov.in,WB007,CIVIL,1996-09-09,F,Graduate,2021-02-25,Clerk,Clerk,Asansol,Asansol DP,Revenue,D082,10082,9876543291,Asansol
+RJ008240,Yash,Chauhan,yash.chauhan@gov.in,RJ007,POLICE,1989-04-21,M,12th Pass,2013-03-15,Constable,Head Constable,Ajmer,Ajmer CP,Traffic Police,D083,10083,9876543292,Ajmer
+AP009240,Lavanya,Gowda,lavanya.gowda@gov.in,AP007,CIVIL,1994-11-03,F,Graduate,2019-08-05,Junior Assistant,Junior Assistant,Warangal,Warangal DP,Health,D084,10084,9876543293,Warangal
+UP004241,Ankit,Srivastava,ankit.srivastava@gov.in,UP008,POLICE,1988-07-14,M,Graduate,2012-12-20,Constable,Sub-Inspector,Gorakhpur,Gorakhpur CP,Law and Order,D085,10085,9876543294,Gorakhpur
+GJ007241,Disha,Vora,disha.vora@gov.in,GJ008,CIVIL,1995-03-26,F,Post-Graduate,2020-09-15,Typist,Typist,Gandhinagar,Gandhinagar DP,Administration,D086,10086,9876543295,Gandhinagar
+DL002242,Naveen,Jain,naveen.jain@gov.in,DL009,POLICE,1986-10-08,M,Graduate,2010-11-30,Constable,Inspector,Delhi,Delhi CP,Special Branch,D087,10087,9876543296,Delhi
+KA003242,Nandini,Kulkarni,nandini.kulkarni@gov.in,KA009,CIVIL,1992-06-20,F,Graduate,2017-05-10,Clerk,Senior Clerk,Davangere,Davangere DP,Finance,D088,10088,9876543297,Davangere
+TN005242,Bala,Selvan,bala.selvan@gov.in,TN009,POLICE,1991-02-12,M,Graduate,2015-09-25,Constable,Sub-Inspector,Tirunelveli,Tirunelveli CP,Crime Branch,D089,10089,9876543298,Tirunelveli
+MH001249,Pallavi,Jha,pallavi.jha@gov.in,MH016,CIVIL,1997-08-24,F,Graduate,2021-10-15,Junior Assistant,Junior Assistant,Thane,Thane DP,Education,D090,10090,9876543299,Thane
+HR011238,Rahul,Malik,rahul.malik@gov.in,HR005,POLICE,1989-12-06,M,12th Pass,2013-04-20,Constable,Head Constable,Hisar,Hisar CP,Traffic Police,D091,10091,9876543300,Hisar
+PB010240,Kamalpreet,Sekhon,kamalpreet.sekhon@gov.in,PB007,CIVIL,1994-05-18,F,Graduate,2019-12-05,Clerk,Clerk,Mohali,Mohali DP,Revenue,D092,10092,9876543301,Mohali
+WB006241,Rajat,Bose,rajat.bose@gov.in,WB008,POLICE,1990-11-30,M,Graduate,2014-08-15,Constable,Sub-Inspector,Burdwan,Burdwan CP,Law and Order,D093,10093,9876543302,Burdwan
+RJ008241,Khushbu,Bishnoi,khushbu.bishnoi@gov.in,RJ008,CIVIL,1995-07-12,F,Post-Graduate,2020-01-20,Typist,Senior Typist,Alwar,Alwar DP,Health,D094,10094,9876543303,Alwar
+AP009241,Krishna,Mohan,krishna.mohan@gov.in,AP008,POLICE,1987-03-24,M,Graduate,2011-10-10,Constable,Inspector,Nellore,Nellore CP,Special Branch,D095,10095,9876543304,Nellore
+UP004242,Jyoti,Pandey,jyoti.pandey@gov.in,UP009,CIVIL,1993-10-06,F,Graduate,2018-06-25,Junior Assistant,Assistant,Moradabad,Moradabad DP,Administration,D096,10096,9876543305,Moradabad
+GJ007242,Viral,Amin,viral.amin@gov.in,GJ009,POLICE,1991-06-18,M,Graduate,2015-02-15,Constable,Assistant Sub-Inspector,Anand,Anand CP,Crime Branch,D097,10097,9876543306,Anand
+DL002243,Shalini,Sethi,shalini.sethi@gov.in,DL010,CIVIL,1996-01-30,F,Graduate,2021-07-10,Clerk,Clerk,Delhi,Delhi DP,Finance,D098,10098,9876543307,Delhi
+KA003243,Suhas,Rao,suhas.rao@gov.in,KA010,POLICE,1988-08-12,M,12th Pass,2012-03-05,Constable,Head Constable,Tumkur,Tumkur CP,Traffic Police,D099,10099,9876543308,Tumkur
+TN005243,Yamini,Kumar,yamini.kumar@gov.in,TN010,CIVIL,1994-04-24,F,Post-Graduate,2019-11-15,Typist,Typist,Erode,Erode DP,Education,D100,10100,9876543309,Erode
+TG005240,Vaman,Akhil,vamanakhil@gmail.com,TG054,COMPUTER,2006-08-30,M,Diploma,2025-12-05,DevOpsENgg,Devops,Hyd,Hydtg,it&c,A054,00054,8008151542,Hyderabad

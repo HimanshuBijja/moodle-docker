@@ -1,0 +1,21 @@
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end align-items-center">
+            <label for="year-filter" class="mr-2 mb-0">{{#str}}filter_by_year, local_analysis_dashboard{{/str}}:</label>
+            <select id="year-filter" class="form-control w-auto">
+                <option value="0">{{#str}}all_years, local_analysis_dashboard{{/str}}</option>
+                <!-- Pre-populated via JS for simplicity -->
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{#str}}users_per_district, local_analysis_dashboard{{/str}}</h5>
+                    <div id="district-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
