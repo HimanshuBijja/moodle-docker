@@ -1,0 +1,57 @@
+{{!
+@template local_analysis_dashboard/mobile_dashboard
+
+Mobile dashboard template using Ionic components.
+Shows counter-type widgets only.
+
+Context variables required:
+* pagetitle - Page title
+* has_counters - Whether counter widgets exist
+* counters - Array of counter groups with name and items
+
+Example context (json):
+{
+"pagetitle": "Analysis Dashboard",
+"has_counters": true,
+"counters": [
+{"name": "Total Users", "items": [{"label": "Active", "value": 150}, {"label": "Suspended", "value": 5}]}
+]
+}
+}}
+<div class="mobile-dashboard">
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>{{pagetitle}}</ion-card-title>
+        </ion-card-header>
+    </ion-card>
+
+    {{#has_counters}}
+    {{#counters}}
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>{{name}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    {{#items}}
+                    <ion-col size="6" class="ion-text-center">
+                        <div class="mobile-counter-value">{{value}}</div>
+                        <div class="mobile-counter-label">{{label}}</div>
+                    </ion-col>
+                    {{/items}}
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    {{/counters}}
+    {{/has_counters}}
+
+    {{^has_counters}}
+    <ion-card>
+        <ion-card-content>
+            <p class="ion-text-center">{{#str}}no_widgets_available, local_analysis_dashboard{{/str}}</p>
+        </ion-card-content>
+    </ion-card>
+    {{/has_counters}}
+</div>

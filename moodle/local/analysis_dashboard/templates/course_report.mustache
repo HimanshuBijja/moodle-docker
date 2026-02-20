@@ -1,0 +1,54 @@
+{{!
+@template local_analysis_dashboard/course_report
+
+Course-level analytics report template.
+
+Context variables required for this template:
+* pagetitle - Page title string
+* pagesubtitle - Page subtitle string
+* courseid - Course ID
+* coursename - Course full name
+* has_widgets - Whether there are any widgets
+* widgets - Array of widget objects (id, name, type)
+* widgets_json - JSON-encoded widgets array
+* no_widgets_message - Message when no widgets available
+
+Example context (json):
+{
+"pagetitle": "Course Analytics",
+"pagesubtitle": "Analytics for Introduction to Computing",
+"courseid": 2,
+"coursename": "Introduction to Computing",
+"has_widgets": true,
+"widgets": [
+{"id": "enrollment_stats", "name": "Enrollment Stats", "type": "counter"}
+],
+"widgets_json": "[{\"id\":\"enrollment_stats\"}]",
+"no_widgets_message": "No widgets are available for your role."
+}
+}}
+<div data-region="analysis-dashboard-course" class="analysis-dashboard" role="main" aria-label="{{pagetitle}}">
+    <div class="analysis-dashboard-header mb-4">
+        <p class="text-muted">{{pagesubtitle}}</p>
+    </div>
+
+    {{#has_widgets}}
+    <div class="analysis-dashboard-grid">
+        {{#widgets}}
+        {{> local_analysis_dashboard/widget_card}}
+        {{/widgets}}
+    </div>
+    {{/has_widgets}}
+
+    {{^has_widgets}}
+    <div class="alert alert-info">
+        {{no_widgets_message}}
+    </div>
+    {{/has_widgets}}
+</div>
+
+{{#js}}
+require(['local_analysis_dashboard/course_dashboard'], function(CourseDashboard) {
+CourseDashboard.init({{{widgets_json}}}, {{courseid}});
+});
+{{/js}}

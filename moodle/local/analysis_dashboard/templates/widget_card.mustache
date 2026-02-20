@@ -1,0 +1,49 @@
+{{!
+@template local_analysis_dashboard/widget_card
+
+Widget card template for the Analysis Dashboard.
+
+Context variables required for this template:
+* id - Widget identifier
+* name - Widget display name
+* type - Widget type (counter, line, bar, pie, etc.)
+
+Example context (json):
+{
+"id": "total_users",
+"name": "Total Users",
+"type": "counter"
+}
+}}
+<div class="analysis-dashboard-widget card" data-widget-id="{{id}}" data-widget-type="{{type}}" role="region"
+    aria-label="{{name}}">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fa fa-chart-bar mr-2" aria-hidden="true"></i>
+            {{name}}
+        </h5>
+    </div>
+    <div class="card-body widget-body" aria-live="polite" aria-busy="true">
+        <div class="widget-loading" data-region="widget-loading" role="status">
+            <div class="d-flex justify-content-center align-items-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">{{#str}}loading, local_analysis_dashboard{{/str}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content" data-region="widget-content" style="display: none;">
+        </div>
+        <div class="widget-error" data-region="widget-error" style="display: none;" role="alert">
+            <div class="alert alert-danger mb-0">
+                <i class="fa fa-exclamation-triangle mr-1" aria-hidden="true"></i>
+                {{#str}}widget_error, local_analysis_dashboard{{/str}}
+            </div>
+        </div>
+        <div class="widget-nodata" data-region="widget-nodata" style="display: none;">
+            <div class="text-center text-muted py-4">
+                <i class="fa fa-info-circle fa-2x mb-2 d-block" aria-hidden="true"></i>
+                {{#str}}widget_no_data, local_analysis_dashboard{{/str}}
+            </div>
+        </div>
+    </div>
+</div>

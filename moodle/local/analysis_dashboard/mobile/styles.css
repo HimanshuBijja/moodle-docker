@@ -1,0 +1,29 @@
+/* Mobile-specific styles for the Analysis Dashboard */
+
+.mobile-dashboard ion-card {
+    margin-bottom: 12px;
+}
+
+.mobile-counter-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ion-color-primary, #3880ff);
+    line-height: 1.2;
+}
+
+.mobile-counter-label {
+    font-size: 0.75rem;
+    color: var(--ion-color-medium, #92949c);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.mobile-dashboard ion-card-subtitle {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.mobile-dashboard ion-col {
+    padding: 8px 4px;
+}

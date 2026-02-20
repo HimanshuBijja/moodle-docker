@@ -1,0 +1,65 @@
+{{!
+@template local_analysis_dashboard/student_dashboard
+
+Student self-service analytics dashboard template.
+
+Context variables required:
+* pagetitle - Page title string
+* pagesubtitle - Subtitle with user name
+* username - Full name of the user
+* userid - User ID for AJAX calls
+* has_widgets - Whether any widgets are configured
+* widgets_json - JSON array of widget configs
+* widgets - Array of widget objects with id, name, type
+* no_widgets_message - Message when no widgets available
+
+Example context (json):
+{
+"pagetitle": "My Analytics",
+"pagesubtitle": "Analytics dashboard for John Doe",
+"username": "John Doe",
+"userid": 42,
+"has_widgets": true,
+"widgets_json": "[{\"id\":\"my_learning_overview\",\"name\":\"My Learning Overview\",\"type\":\"counter\"}]",
+"widgets": [{"id": "my_learning_overview", "name": "My Learning Overview", "type": "counter"}],
+"no_widgets_message": "No widgets available"
+}
+}}
+<div class="analysis-dashboard-student" data-userid="{{userid}}" role="main" aria-label="{{pagetitle}}">
+    <div class="analysis-dashboard-header mb-4">
+        <h2>{{pagetitle}}</h2>
+        <p class="text-muted">{{pagesubtitle}}</p>
+    </div>
+
+    {{#has_widgets}}
+    <div class="widget-grid row">
+        {{#widgets}}
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card widget-card analysis-dashboard-widget" data-widget-id="{{id}}" data-widget-type="{{type}}"
+                role="region" aria-label="{{name}}">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{name}}</h5>
+                </div>
+                <div class="card-body widget-content" aria-live="polite" aria-busy="true">
+                    <div class="widget-loading text-center p-3" role="status">
+                        <div class="spinner-border spinner-border-sm text-primary" role="status">
+                            <span class="sr-only">{{#str}} loading, core {{/str}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/widgets}}
+    </div>
+    {{/has_widgets}}
+
+    {{^has_widgets}}
+    <div class="alert alert-info">{{no_widgets_message}}</div>
+    {{/has_widgets}}
+</div>
+
+{{#js}}
+require(['local_analysis_dashboard/student_dashboard'], function(StudentDashboard) {
+StudentDashboard.init({{userid}}, {{{widgets_json}}});
+});
+{{/js}}

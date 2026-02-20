@@ -1,0 +1,59 @@
+{{!
+@template local_analysis_dashboard/manager_dashboard
+
+Manager analytics dashboard template.
+
+Context variables required for this template:
+* pagetitle - Page title string
+* pagesubtitle - Page subtitle string
+* has_widgets - Whether there are any widgets
+* widgets - Array of widget objects (id, name, type)
+* widgets_json - JSON-encoded widgets array
+* no_widgets_message - Message when no widgets available
+
+Example context (json):
+{
+"pagetitle": "Manager Analytics Dashboard",
+"pagesubtitle": "Organizational analytics overview for managers.",
+"has_widgets": true,
+"widgets": [
+{"id": "total_users", "name": "Total Users", "type": "counter"},
+{"id": "total_courses", "name": "Total Courses", "type": "counter"}
+],
+"widgets_json": "[{\"id\":\"total_users\",\"name\":\"Total Users\",\"type\":\"counter\"}]",
+"no_widgets_message": "No widgets are available for your role."
+}
+}}
+<div data-region="analysis-dashboard-manager" class="analysis-dashboard" role="main" aria-label="{{pagetitle}}">
+    <div class="analysis-dashboard-header mb-4">
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="manager-icon">
+                <i class="fa fa-briefcase" aria-hidden="true"></i>
+            </div>
+            <div>
+                <h2 class="mb-0">{{pagetitle}}</h2>
+                <p class="text-muted mb-0">{{pagesubtitle}}</p>
+            </div>
+        </div>
+    </div>
+
+    {{#has_widgets}}
+    <div class="analysis-dashboard-grid">
+        {{#widgets}}
+        {{> local_analysis_dashboard/widget_card}}
+        {{/widgets}}
+    </div>
+    {{/has_widgets}}
+
+    {{^has_widgets}}
+    <div class="alert alert-info">
+        {{no_widgets_message}}
+    </div>
+    {{/has_widgets}}
+</div>
+
+{{#js}}
+require(['local_analysis_dashboard/dashboard'], function(Dashboard) {
+Dashboard.init({{{widgets_json}}});
+});
+{{/js}}

@@ -1,0 +1,464 @@
+/* Analysis Dashboard - Plugin Styles */
+
+/* Dashboard layout */
+.analysis-dashboard {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.analysis-dashboard-header {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+}
+
+/* Widget grid — responsive CSS Grid */
+.analysis-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 992px) {
+    .analysis-dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .analysis-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Widget card */
+.analysis-dashboard-widget {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+}
+
+.analysis-dashboard-widget:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.analysis-dashboard-widget .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+}
+
+.analysis-dashboard-widget .card-header .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.analysis-dashboard-widget .card-body {
+    padding: 1rem;
+    min-height: 150px;
+}
+
+/* Counter widget */
+.widget-counter-grid {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.widget-counter-item {
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+}
+
+.widget-counter-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+.widget-counter-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+/* Loading spinner */
+.widget-loading .spinner-border {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Chart container sizing */
+.widget-content canvas {
+    width: 100% !important;
+    max-height: 300px;
+}
+
+/* Line chart specific — full width */
+.analysis-dashboard-widget[data-widget-type="line"] {
+    grid-column: span 2;
+}
+
+@media (max-width: 576px) {
+    .analysis-dashboard-widget[data-widget-type="line"] {
+        grid-column: span 1;
+    }
+}
+
+/* Dark mode support (Moodle Boost theme) */
+body.dark .analysis-dashboard-widget {
+    border-color: #495057;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .analysis-dashboard-widget .card-header {
+    background-color: #343a40;
+    border-color: #495057;
+}
+
+body.dark .analysis-dashboard-widget .card-header .card-title {
+    color: #dee2e6;
+}
+
+body.dark .widget-counter-value {
+    color: #f8f9fa;
+}
+
+body.dark .widget-counter-label {
+    color: #adb5bd;
+}
+
+body.dark .analysis-dashboard-header {
+    border-color: #495057;
+}
+
+/* === Phase 2: Course Report Styles === */
+
+/* Course report header */
+.course-report-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.course-report-header .course-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Table/heatmap widgets — full width */
+.analysis-dashboard-widget[data-widget-type="table"],
+.analysis-dashboard-widget[data-widget-type="heatmap"] {
+    grid-column: 1 / -1;
+}
+
+/* DataTable controls */
+.datatable-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+}
+
+.datatable-search {
+    border-radius: 0.25rem;
+}
+
+.datatable-sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.datatable-sortable:hover {
+    background-color: #e9ecef;
+}
+
+.datatable-info {
+    padding: 0.5rem 0;
+}
+
+/* Heatmap widget */
+.widget-heatmap {
+    overflow-x: auto;
+}
+
+.widget-heatmap table {
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin: 0 auto;
+}
+
+.widget-heatmap td {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #495057;
+    border-radius: 4px;
+    cursor: default;
+    transition: transform 0.15s ease;
+}
+
+.widget-heatmap td:hover {
+    transform: scale(1.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.widget-heatmap th {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #6c757d;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+/* Activity completion matrix — status colors */
+.completion-status-0 {
+    background-color: #f8d7da;
+}
+
+.completion-status-1 {
+    background-color: #d4edda;
+}
+
+.completion-status-2 {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* At-risk students — risk score colors */
+.risk-high {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+}
+
+.risk-medium {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+}
+
+.risk-low {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+/* Dark mode — Phase 2 additions */
+body.dark .datatable-sortable:hover {
+    background-color: #495057;
+}
+
+body.dark .widget-heatmap th {
+    color: #adb5bd;
+}
+
+body.dark .widget-heatmap td {
+    color: #dee2e6;
+}
+
+body.dark .course-report-header {
+    border-color: #495057;
+}
+
+/* === Phase 3: Student Dashboard Styles === */
+
+/* Student dashboard header */
+.student-dashboard-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.student-dashboard-header .student-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Deadline urgency badges */
+.badge-urgency-urgent {
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.badge-urgency-soon {
+    background-color: #ffc107;
+    color: #212529;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.badge-urgency-normal {
+    background-color: #28a745;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+/* SecureOTP profile table */
+.widget-profile-table td:first-child {
+    font-weight: 600;
+    color: #6c757d;
+    width: 40%;
+}
+
+/* Dark mode — Phase 3 additions */
+body.dark .student-dashboard-header {
+    border-color: #495057;
+}
+
+body.dark .widget-profile-table td:first-child {
+    color: #adb5bd;
+}
+
+/* === Phase 4: Export + Admin Styles === */
+
+/* Export buttons */
+.widget-export-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.widget-export-btn {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    background: #f8f9fa;
+    color: #495057;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.widget-export-btn:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.widget-export-btn .fa { margin-right: 0.25rem; }
+
+/* Disk usage chart — center pie chart */
+.analysis-dashboard-widget[data-widget-id="disk_usage"] .widget-content {
+    display: flex;
+    justify-content: center;
+}
+
+/* Server performance — tabular numbers */
+.server-metric-value {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Dark mode — Phase 4 additions */
+body.dark .widget-export-btn {
+    background: #343a40;
+    border-color: #495057;
+    color: #dee2e6;
+}
+
+body.dark .widget-export-btn:hover {
+    background: #495057;
+}
+
+/* === Phase 5: Accessibility === */
+
+/* Focus-visible outlines for interactive elements */
+.analysis-dashboard-widget:focus-visible,
+.widget-export-btn:focus-visible,
+.datatable-sortable:focus-visible,
+.datatable-search:focus-visible {
+    outline: 2px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Sortable table headers — ARIA sort indicators */
+.datatable-sortable[aria-sort="ascending"]::after {
+    content: " \2191";
+}
+
+.datatable-sortable[aria-sort="descending"]::after {
+    content: " \2193";
+}
+
+/* Screen-reader only class (complement to Bootstrap sr-only) */
+.analysis-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Reduced-motion — respect user preference */
+@media (prefers-reduced-motion: reduce) {
+    .analysis-dashboard-widget,
+    .widget-export-btn,
+    .widget-heatmap td,
+    .spinner-border {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .analysis-dashboard-widget:hover {
+        transform: none;
+    }
+}
+
+/* Manager dashboard icon */
+.manager-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
