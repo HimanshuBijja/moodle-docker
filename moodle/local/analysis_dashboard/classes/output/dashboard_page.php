@@ -42,8 +42,8 @@ class dashboard_page implements renderable, templatable {
     public function export_for_template(renderer_base $output): stdClass {
         $data = new stdClass();
 
-        // Get widget config for the current user.
-        $widgetconfig = widget_registry::get_config_for_current_user();
+        // Get widget config for the current user — site-level only.
+        $widgetconfig = widget_registry::get_config_for_current_user(CONTEXT_SYSTEM);
 
         $data->widgets = [];
         foreach ($widgetconfig as $widget) {

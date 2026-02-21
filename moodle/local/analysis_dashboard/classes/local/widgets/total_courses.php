@@ -80,24 +80,27 @@ class total_courses extends base_widget {
         // Hidden courses.
         $hidden = $DB->count_records_select('course', 'visible = 0');
 
-        // Total categories.
-        $categories = $DB->count_records('course_categories');
-
-        return [
-            'items' => [
-                [
-                    'label' => get_string('visible_courses', 'local_analysis_dashboard'),
-                    'value' => (int) $visible,
-                ],
-                [
-                    'label' => get_string('hidden_courses', 'local_analysis_dashboard'),
-                    'value' => (int) $hidden,
-                ],
-                [
-                    'label' => get_string('total_categories', 'local_analysis_dashboard'),
-                    'value' => (int) $categories,
-                ],
+        $items = [
+            [
+                'label' => get_string('visible_courses', 'local_analysis_dashboard'),
+                'value' => (int) $visible,
+            ],
+            [
+                'label' => get_string('hidden_courses', 'local_analysis_dashboard'),
+                'value' => (int) $hidden,
             ],
         ];
+
+        // Conditionally include Total Categories based on admin setting.
+        $showcategories = get_config('local_analysis_dashboard', 'show_total_categories');
+        if ($showcategories === false || $showcategories) {
+            $categories = $DB->count_records('course_categories');
+            $items[] = [
+                'label' => get_string('total_categories', 'local_analysis_dashboard'),
+                'value' => (int) $categories,
+            ];
+        }
+
+        return ['items' => $items];
     }
 }

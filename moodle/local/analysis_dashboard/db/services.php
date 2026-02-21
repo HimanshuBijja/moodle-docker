@@ -32,7 +32,7 @@ $functions = [
         'description' => 'Get data for a specific dashboard widget.',
         'type'        => 'read',
         'ajax'        => true,
-        'capabilities' => 'local/analysis_dashboard:viewsite',
+        'capabilities' => 'local/analysis_dashboard:viewown',
     ],
     // Get dashboard configuration (visible widgets for current user).
     'local_analysis_dashboard_get_dashboard_config' => [
@@ -41,6 +41,6 @@ $functions = [
         'description' => 'Get the dashboard widget configuration for the current user.',
         'type'        => 'read',
         'ajax'        => true,
-        'capabilities' => 'local/analysis_dashboard:viewsite',
+        'capabilities' => 'local/analysis_dashboard:viewown',
     ],
 ];

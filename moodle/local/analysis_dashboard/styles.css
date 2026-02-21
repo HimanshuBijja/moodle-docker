@@ -177,7 +177,10 @@ body.dark .analysis-dashboard-header {
 /* DataTable controls */
 .datatable-controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     padding: 0.5rem 0;
 }
 
@@ -197,6 +200,43 @@ body.dark .analysis-dashboard-header {
 
 .datatable-info {
     padding: 0.5rem 0;
+}
+
+.datatable-footer {
+    padding: 0.25rem 0;
+}
+
+.datatable-pagination .pagination {
+    margin: 0;
+}
+
+.datatable-pagination .page-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.datatable-pagesize {
+    display: inline-block;
+    width: auto;
+    min-width: 60px;
+}
+
+.widget-empty-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.widget-empty-overlay i {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+    opacity: 0.4;
 }
 
 /* Heatmap widget */

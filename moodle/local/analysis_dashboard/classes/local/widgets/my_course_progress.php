@@ -22,9 +22,8 @@ class my_course_progress extends base_widget {
                   JOIN {enrol} e ON e.id = ue.enrolid
                   JOIN {course} c ON c.id = e.courseid
                  WHERE ue.userid = :userid AND ue.status = 0 AND c.id != 1
-              ORDER BY c.shortname
-                 LIMIT 15";
-        $courses = $DB->get_records_sql($sql, ['userid' => $userid]);
+              ORDER BY c.shortname";
+        $courses = $DB->get_records_sql($sql, ['userid' => $userid], 0, 15);
 
         $labels = [];
         $data = [];

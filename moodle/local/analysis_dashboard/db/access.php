@@ -50,12 +50,22 @@ $capabilities = [
             'editingteacher' => CAP_ALLOW,
         ],
     ],
-    // View own analytics (for students).
+    // View own analytics (all authenticated users).
     'local/analysis_dashboard:viewown' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
+            'manager' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
             'user' => CAP_ALLOW,
         ],
+    ],
+    // Admin-only server widgets (only site admins, no role archetypes).
+    'local/analysis_dashboard:viewadmin' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [],
     ],
 ];

@@ -64,6 +64,24 @@ $string['settings_cache_ttl_coursestats'] = 'Course stats cache TTL (seconds)';
 $string['settings_cache_ttl_coursestats_desc'] = 'How long course-level statistics are cached before being refreshed. Default: 1800 (30 minutes).';
 $string['settings_site_visits_days'] = 'Site visits chart days';
 $string['settings_site_visits_days_desc'] = 'Number of days to display in the Site Visits Over Time chart. Default: 30.';
+$string['settings_disabled_widgets'] = 'Disable widgets';
+$string['settings_disabled_widgets_desc'] = 'Check widgets to disable them site-wide. Disabled widgets will not appear on any dashboard.';
+$string['settings_show_total_categories'] = 'Show Total Categories in Total Courses widget';
+$string['settings_show_total_categories_desc'] = 'When enabled, the Total Courses widget will display a Total Categories count. Uncheck to hide it.';
+$string['settings_heading_site_widgets'] = 'Site-Level Widgets (Manager)';
+$string['settings_heading_site_widgets_desc'] = 'Widgets shown on the main admin/manager dashboard.';
+$string['settings_heading_course_widgets'] = 'Course-Level Widgets (Teacher)';
+$string['settings_heading_course_widgets_desc'] = 'Widgets shown on course analytics pages for teachers.';
+$string['settings_heading_student_widgets'] = 'Student Personal Widgets';
+$string['settings_heading_student_widgets_desc'] = 'Widgets shown on the student self-service dashboard.';
+$string['settings_heading_secureotp_admin'] = 'SecureOTP Admin Security Widgets';
+$string['settings_heading_secureotp_admin_desc'] = 'Security and audit widgets for SecureOTP administrators.';
+$string['settings_heading_secureotp_demographics'] = 'SecureOTP Demographics Widgets';
+$string['settings_heading_secureotp_demographics_desc'] = 'Demographic breakdown widgets for SecureOTP user data.';
+$string['settings_heading_secureotp_user'] = 'SecureOTP Student & Teacher Widgets';
+$string['settings_heading_secureotp_user_desc'] = 'Personal profile and course-level SecureOTP widgets.';
+$string['settings_heading_admin_analytics'] = 'Admin Analytics Widgets';
+$string['settings_heading_admin_analytics_desc'] = 'System-level analytics: authentication, disk usage, performance.';
 
 // Scheduled tasks.
 $string['task_aggregate_site_stats'] = 'Aggregate site statistics';

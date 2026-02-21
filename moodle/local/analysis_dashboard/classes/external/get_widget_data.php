@@ -79,11 +79,22 @@ class get_widget_data extends external_api {
         }
         self::validate_context($context);
 
+        // Minimum check — all authenticated users.
+        require_capability('local/analysis_dashboard:viewown', \context_system::instance());
+
         // Get the widget from registry.
         $widget = \local_analysis_dashboard\local\widget_registry::get($widgetid);
 
-        // Check capability.
-        require_capability($widget->get_required_capability(), $context);
+        // Check widget-specific capability in the appropriate context.
+        // For viewown widgets, always check at system context since that is where
+        // the capability is defined and role archetypes (student, teacher) are granted.
+        $caprequired = $widget->get_required_capability();
+        if ($caprequired === 'local/analysis_dashboard:viewown') {
+            $capcontext = \context_system::instance();
+        } else {
+            $capcontext = $context;
+        }
+        require_capability($caprequired, $capcontext);
 
         // Get data.
         $data = $widget->get_cached_data($decodedparams);

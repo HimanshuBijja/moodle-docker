@@ -25,8 +25,10 @@
 
 define(['jquery', 'local_analysis_dashboard/export'], function($, Export) {
 
+    var ROWS_PER_PAGE = 10;
+
     /**
-     * Create a sortable HTML table.
+     * Create a sortable, paginated HTML table.
      *
      * @param {HTMLElement} container The container element.
      * @param {Object} data Data with headers and rows.
@@ -39,13 +41,30 @@ define(['jquery', 'local_analysis_dashboard/export'], function($, Export) {
         }
 
         var tableId = 'datatable-' + Math.random().toString(36).substr(2, 9);
+        var currentPage = 1;
+        var rowsPerPage = ROWS_PER_PAGE;
+        var allRows = data.rows.slice(); // Clone.
+        var filteredRows = allRows.slice();
+
         var html = '';
 
-        // Controls: search filter + export buttons.
-        html += '<div class="datatable-controls mb-2 d-flex justify-content-between align-items-center">';
+        // Controls: page size + search + export.
+        html += '<div class="datatable-controls mb-2">';
+        html += '<div class="d-flex align-items-center gap-2">';
+        html += '<label class="mb-0 small text-muted mr-1">Show</label>';
+        html += '<select class="form-control form-control-sm datatable-pagesize" style="width:auto;">';
+        html += '<option value="10"' + (rowsPerPage === 10 ? ' selected' : '') + '>10</option>';
+        html += '<option value="25">25</option>';
+        html += '<option value="50">50</option>';
+        html += '<option value="-1">All</option>';
+        html += '</select>';
+        html += '<label class="mb-0 small text-muted ml-1">entries</label>';
+        html += '</div>';
+        html += '<div class="d-flex align-items-center gap-2">';
         html += '<input type="text" class="form-control form-control-sm datatable-search" ';
-        html += 'data-table="' + tableId + '" placeholder="Search..." style="max-width: 300px;">';
+        html += 'data-table="' + tableId + '" placeholder="Search..." style="max-width: 250px;">';
         html += Export.createButtons();
+        html += '</div>';
         html += '</div>';
 
         // Table.
@@ -62,84 +81,219 @@ define(['jquery', 'local_analysis_dashboard/export'], function($, Export) {
         });
         html += '</tr></thead>';
 
-        // Body.
-        html += '<tbody>';
-        data.rows.forEach(function(row) {
-            html += '<tr>';
-            data.headers.forEach(function(header) {
-                var value = row[header.key];
-                if (value === undefined || value === null) {
-                    value = '';
-                }
-                html += '<td>' + value + '</td>';
-            });
-            html += '</tr>';
-        });
-        html += '</tbody>';
-
+        // Body placeholder.
+        html += '<tbody></tbody>';
         html += '</table>';
         html += '</div>';
 
-        // Pagination info.
-        html += '<div class="datatable-info text-muted small">';
-        html += 'Showing ' + data.rows.length + ' records';
+        // Pagination footer.
+        html += '<div class="datatable-footer d-flex justify-content-between align-items-center mt-2">';
+        html += '<div class="datatable-info text-muted small"></div>';
+        html += '<nav class="datatable-pagination" aria-label="Table pagination">';
+        html += '<ul class="pagination pagination-sm mb-0"></ul>';
+        html += '</nav>';
         html += '</div>';
 
         container.innerHTML = html;
 
+        var $container = $(container);
+        var $tbody = $container.find('#' + tableId + ' tbody');
+        var $info = $container.find('.datatable-info');
+        var $pagination = $container.find('.datatable-pagination .pagination');
+
+        /**
+         * Render the current page of rows.
+         */
+        var renderPage = function() {
+            $tbody.empty();
+            var total = filteredRows.length;
+            var start, end, pageRows;
+
+            if (rowsPerPage === -1) {
+                // Show all.
+                start = 0;
+                end = total;
+                pageRows = filteredRows;
+            } else {
+                var totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+                if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+                start = (currentPage - 1) * rowsPerPage;
+                end = Math.min(start + rowsPerPage, total);
+                pageRows = filteredRows.slice(start, end);
+            }
+
+            if (pageRows.length === 0) {
+                $tbody.append('<tr><td colspan="' + data.headers.length +
+                    '" class="text-center text-muted py-3">No matching records</td></tr>');
+            } else {
+                pageRows.forEach(function(row) {
+                    var tr = '<tr>';
+                    data.headers.forEach(function(header) {
+                        var value = row[header.key];
+                        if (value === undefined || value === null) {
+                            value = '';
+                        }
+                        tr += '<td>' + value + '</td>';
+                    });
+                    tr += '</tr>';
+                    $tbody.append(tr);
+                });
+            }
+
+            // Update info.
+            if (total === 0) {
+                $info.text('No records');
+            } else {
+                $info.text('Showing ' + (start + 1) + ' to ' + end + ' of ' + total + ' entries' +
+                    (filteredRows.length < allRows.length ?
+                        ' (filtered from ' + allRows.length + ' total)' : ''));
+            }
+
+            // Update pagination buttons.
+            renderPagination(total);
+        };
+
+        /**
+         * Render pagination buttons.
+         */
+        var renderPagination = function(total) {
+            $pagination.empty();
+
+            if (rowsPerPage === -1 || total <= rowsPerPage) {
+                return; // No pagination needed.
+            }
+
+            var totalPages = Math.ceil(total / rowsPerPage);
+
+            // Previous button.
+            $pagination.append(
+                '<li class="page-item' + (currentPage === 1 ? ' disabled' : '') + '">' +
+                '<a class="page-link datatable-page-prev" href="#" aria-label="Previous">' +
+                '<span aria-hidden="true">&laquo;</span></a></li>'
+            );
+
+            // Page numbers (show max 5 around current).
+            var startPage = Math.max(1, currentPage - 2);
+            var endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (var p = startPage; p <= endPage; p++) {
+                $pagination.append(
+                    '<li class="page-item' + (p === currentPage ? ' active' : '') + '">' +
+                    '<a class="page-link datatable-page-num" href="#" data-page="' + p + '">' + p + '</a></li>'
+                );
+            }
+
+            // Next button.
+            $pagination.append(
+                '<li class="page-item' + (currentPage === totalPages ? ' disabled' : '') + '">' +
+                '<a class="page-link datatable-page-next" href="#" aria-label="Next">' +
+                '<span aria-hidden="true">&raquo;</span></a></li>'
+            );
+        };
+
+        // Initial render.
+        renderPage();
+
+        // Bind page size change.
+        $container.find('.datatable-pagesize').on('change', function() {
+            rowsPerPage = parseInt($(this).val(), 10);
+            currentPage = 1;
+            renderPage();
+        });
+
+        // Bind pagination clicks.
+        $container.on('click', '.datatable-page-prev', function(e) {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage();
+            }
+        });
+
+        $container.on('click', '.datatable-page-next', function(e) {
+            e.preventDefault();
+            var totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage();
+            }
+        });
+
+        $container.on('click', '.datatable-page-num', function(e) {
+            e.preventDefault();
+            currentPage = parseInt($(this).data('page'), 10);
+            renderPage();
+        });
+
         // Bind export buttons.
         var tableEl = container.querySelector('#' + tableId);
         var exportTitle = title || 'table_export';
-        $(container).find('.export-csv').on('click', function() {
+        $container.find('.export-csv').on('click', function() {
             Export.exportCSV(tableEl, exportTitle);
         });
-        $(container).find('.export-excel').on('click', function() {
+        $container.find('.export-excel').on('click', function() {
             Export.exportExcel(tableEl, exportTitle);
         });
 
-        // Bind search.
-        $(container).find('.datatable-search').on('keyup', function() {
+        // Bind search — filter and reset to page 1.
+        $container.find('.datatable-search').on('keyup', function() {
             var searchText = $(this).val().toLowerCase();
-            var table = $('#' + $(this).data('table'));
-            table.find('tbody tr').each(function() {
-                var rowText = $(this).text().toLowerCase();
-                $(this).toggle(rowText.indexOf(searchText) > -1);
-            });
+            if (searchText === '') {
+                filteredRows = allRows.slice();
+            } else {
+                filteredRows = allRows.filter(function(row) {
+                    var rowText = '';
+                    data.headers.forEach(function(header) {
+                        var val = row[header.key];
+                        if (val !== undefined && val !== null) {
+                            rowText += String(val).toLowerCase() + ' ';
+                        }
+                    });
+                    return rowText.indexOf(searchText) > -1;
+                });
+            }
+            currentPage = 1;
+            renderPage();
         });
 
         // Bind sort.
-        $(container).find('.datatable-sortable').on('click', function() {
-            var table = $(this).closest('table');
-            var colIndex = $(this).index();
-            var tbody = table.find('tbody');
-            var rows = tbody.find('tr').toArray();
-            var isAsc = $(this).hasClass('sort-asc');
+        $container.find('.datatable-sortable').on('click', function() {
+            var $th = $(this);
+            var colKey = $th.data('sort-key');
+            var isAsc = $th.hasClass('sort-asc');
 
             // Reset all headers.
-            table.find('.datatable-sortable').removeClass('sort-asc sort-desc')
+            $container.find('.datatable-sortable').removeClass('sort-asc sort-desc')
                 .find('i').attr('class', 'fa fa-sort text-muted ml-1');
 
-            // Sort rows.
-            rows.sort(function(a, b) {
-                var aVal = $(a).find('td').eq(colIndex).text();
-                var bVal = $(b).find('td').eq(colIndex).text();
-                // Try numeric sort.
+            // Sort filtered rows.
+            filteredRows.sort(function(a, b) {
+                var aVal = a[colKey];
+                var bVal = b[colKey];
+                if (aVal === undefined || aVal === null) { aVal = ''; }
+                if (bVal === undefined || bVal === null) { bVal = ''; }
                 var aNum = parseFloat(aVal);
                 var bNum = parseFloat(bVal);
                 if (!isNaN(aNum) && !isNaN(bNum)) {
                     return isAsc ? bNum - aNum : aNum - bNum;
                 }
-                return isAsc ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
+                return isAsc ? String(bVal).localeCompare(String(aVal))
+                    : String(aVal).localeCompare(String(bVal));
             });
 
-            // Apply sort.
             if (isAsc) {
-                $(this).addClass('sort-desc').find('i').attr('class', 'fa fa-sort-down ml-1');
+                $th.addClass('sort-desc').find('i').attr('class', 'fa fa-sort-down ml-1');
             } else {
-                $(this).addClass('sort-asc').find('i').attr('class', 'fa fa-sort-up ml-1');
+                $th.addClass('sort-asc').find('i').attr('class', 'fa fa-sort-up ml-1');
             }
 
-            tbody.empty().append(rows);
+            currentPage = 1;
+            renderPage();
         });
     };
 

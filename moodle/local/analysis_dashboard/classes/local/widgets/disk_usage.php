@@ -55,7 +55,7 @@ class disk_usage extends base_widget {
      * @return string Capability string.
      */
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewsite';
+        return 'local/analysis_dashboard:viewadmin';
     }
 
     /**

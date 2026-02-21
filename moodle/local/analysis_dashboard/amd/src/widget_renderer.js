@@ -65,6 +65,11 @@ define(['core/chartjs'], function(ChartJS) {
                 html += '<div class="widget-counter-label">' + item.label + '</div>';
                 html += '</div>';
             });
+        } else {
+            html += '<div class="widget-counter-item">';
+            html += '<div class="widget-counter-value text-muted">0</div>';
+            html += '<div class="widget-counter-label text-muted">No data available</div>';
+            html += '</div>';
         }
 
         html += '</div>';
@@ -86,14 +91,49 @@ define(['core/chartjs'], function(ChartJS) {
             return;
         }
 
+        // Check if data is empty.
+        var hasData = data.labels && data.labels.length > 0 &&
+            data.datasets && data.datasets.length > 0 &&
+            data.datasets.some(function(ds) {
+                return ds.data && ds.data.length > 0 && ds.data.some(function(v) { return v !== 0 && v !== null; });
+            });
+
+        // Create wrapper for positioning the overlay.
+        var wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        container.appendChild(wrapper);
+
         var canvas = document.createElement('canvas');
         canvas.style.maxHeight = '300px';
         canvas.setAttribute('role', 'img');
         canvas.setAttribute('aria-label', type + ' chart: ' + (title || 'data visualization'));
-        container.appendChild(canvas);
+        wrapper.appendChild(canvas);
 
+        var chartLabels = data.labels || [];
         var datasets = [];
-        if (data.datasets && data.datasets.length) {
+
+        if (!hasData) {
+            // Render an empty placeholder chart.
+            if (type === 'pie' || type === 'doughnut') {
+                chartLabels = ['No data'];
+                datasets.push({
+                    label: '',
+                    data: [1],
+                    backgroundColor: ['#e9ecef'],
+                    borderColor: ['#dee2e6'],
+                    borderWidth: 1,
+                });
+            } else {
+                chartLabels = ['', '', '', '', ''];
+                datasets.push({
+                    label: 'No data',
+                    data: [0, 0, 0, 0, 0],
+                    backgroundColor: 'rgba(200, 200, 200, 0.3)',
+                    borderColor: 'rgba(200, 200, 200, 0.5)',
+                    borderWidth: 1,
+                });
+            }
+        } else {
             data.datasets.forEach(function(dataset, index) {
                 var ds = {
                     label: dataset.label || '',
@@ -121,7 +161,7 @@ define(['core/chartjs'], function(ChartJS) {
         new ChartJS(canvas, {
             type: type,
             data: {
-                labels: data.labels || [],
+                labels: chartLabels,
                 datasets: datasets
             },
             options: {
@@ -129,10 +169,14 @@ define(['core/chartjs'], function(ChartJS) {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
+                        display: hasData,
                         position: (type === 'pie' || type === 'doughnut') ? 'right' : 'top',
                     },
                     title: {
                         display: false
+                    },
+                    tooltip: {
+                        enabled: hasData
                     }
                 },
                 scales: (type === 'pie' || type === 'doughnut') ? {} : {
@@ -145,6 +189,14 @@ define(['core/chartjs'], function(ChartJS) {
                 }
             }
         });
+
+        // Add overlay text for empty charts.
+        if (!hasData) {
+            var overlay = document.createElement('div');
+            overlay.className = 'widget-empty-overlay';
+            overlay.innerHTML = '<i class="fa fa-chart-bar"></i><span>No data available</span>';
+            wrapper.appendChild(overlay);
+        }
     };
 
     /**
@@ -172,17 +224,21 @@ define(['core/chartjs'], function(ChartJS) {
      * @param {Object} data Heatmap data with rows, cols, data, labels_rows, labels_cols.
      */
     var renderHeatmap = function(container, data) {
-        if (!data.data || !data.labels_rows || !data.labels_cols) {
+        if (!data.labels_rows || !data.labels_cols) {
             container.innerHTML = '<div class="alert alert-warning">Invalid heatmap data</div>';
             return;
         }
 
         // Find max value for color scaling.
         var maxVal = 0;
+        var hasAnyData = false;
         for (var r = 0; r < data.rows; r++) {
             for (var c = 0; c < data.cols; c++) {
-                if (data.data[r] && data.data[r][c] > maxVal) {
-                    maxVal = data.data[r][c];
+                if (data.data && data.data[r] && data.data[r][c] > 0) {
+                    hasAnyData = true;
+                    if (data.data[r][c] > maxVal) {
+                        maxVal = data.data[r][c];
+                    }
                 }
             }
         }
@@ -197,11 +253,11 @@ define(['core/chartjs'], function(ChartJS) {
         });
         html += '</tr>';
 
-        // Data rows.
+        // Data rows — show grid even if empty.
         for (var row = 0; row < data.rows; row++) {
             html += '<tr><th>' + data.labels_rows[row] + '</th>';
             for (var col = 0; col < data.cols; col++) {
-                var val = (data.data[row] && data.data[row][col]) || 0;
+                var val = (data.data && data.data[row] && data.data[row][col]) || 0;
                 var color = heatmapColor(val, maxVal);
                 html += '<td style="background-color:' + color + '" title="' +
                     data.labels_rows[row] + ' ' + data.labels_cols[col] + ': ' + val + ' events">';
@@ -211,7 +267,13 @@ define(['core/chartjs'], function(ChartJS) {
             html += '</tr>';
         }
 
-        html += '</table></div>';
+        html += '</table>';
+
+        if (!hasAnyData) {
+            html += '<div class="text-center text-muted small mt-2">No activity data available</div>';
+        }
+
+        html += '</div>';
         container.innerHTML = html;
     };
 

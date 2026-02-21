@@ -121,6 +121,16 @@ class widget_registry {
     }
 
     /**
+     * Get all registered widget IDs.
+     *
+     * @return array List of widget identifier strings.
+     */
+    public static function get_all_ids(): array {
+        self::init();
+        return array_keys(self::$widgets);
+    }
+
+    /**
      * Get a widget instance by ID.
      *
      * @param string $id Widget identifier.
@@ -146,8 +156,32 @@ class widget_registry {
     public static function get_all(): array {
         self::init();
 
+        // Get disabled widgets from admin settings (grouped by category).
+        $disabled = [];
+        $groupkeys = ['site', 'course', 'student', 'secureotp_admin',
+            'secureotp_demographics', 'secureotp_user', 'admin_analytics'];
+        foreach ($groupkeys as $groupkey) {
+            $setting = get_config('local_analysis_dashboard', 'disabled_widgets_' . $groupkey);
+            if (!empty($setting)) {
+                foreach (explode(',', $setting) as $id) {
+                    $disabled[$id] = true;
+                }
+            }
+        }
+        // Also check legacy single setting for backward compatibility.
+        $legacysetting = get_config('local_analysis_dashboard', 'disabled_widgets');
+        if (!empty($legacysetting)) {
+            foreach (explode(',', $legacysetting) as $id) {
+                $disabled[$id] = true;
+            }
+        }
+
         $instances = [];
         foreach (self::$widgets as $id => $classname) {
+            // Skip disabled widgets.
+            if (isset($disabled[$id])) {
+                continue;
+            }
             $widget = new $classname();
             if ($widget->is_available()) {
                 $instances[$id] = $widget;
