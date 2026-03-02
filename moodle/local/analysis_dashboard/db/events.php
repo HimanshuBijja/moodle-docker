@@ -15,7 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and metadata.
+ * Event observer definitions for the Analysis Dashboard plugin.
+ *
+ * Invalidates feedback-related caches when feedback responses are
+ * submitted or deleted, ensuring the dashboard shows fresh data.
  *
  * @package    local_analysis_dashboard
  * @copyright  2026 Analysis Dashboard
@@ -24,8 +27,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2026030201;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2024100100;        // Requires Moodle 4.5.
-$plugin->component = 'local_analysis_dashboard'; // Full name of the plugin.
-$plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '0.6.1-alpha';
+$observers = [
+    [
+        'eventname' => '\mod_feedback\event\response_submitted',
+        'callback'  => 'local_analysis_dashboard\observer\feedback_observer::response_submitted',
+    ],
+    [
+        'eventname' => '\mod_feedback\event\response_deleted',
+        'callback'  => 'local_analysis_dashboard\observer\feedback_observer::response_deleted',
+    ],
+];
