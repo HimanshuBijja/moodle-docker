@@ -104,6 +104,13 @@ $string['widget_recent_activity'] = 'Recent Activity';
 $string['widget_at_risk_students'] = 'At-Risk Course Participant';
 $string['widget_activity_heatmap'] = 'Learner Activity Heatmap';
 $string['widget_quiz_analytics'] = 'Quiz Analytics';
+$string['widget_feedback_summary'] = 'Feedback Summary';
+$string['widget_feedback_form_analysis'] = 'Feedback Form Analysis';
+$string['feedback_analysis_section'] = 'Feedback Analysis';
+$string['feedback_analysis_desc'] = 'Response distribution across all feedback forms in this course.';
+$string['chart_view'] = 'Chart';
+$string['comments_view'] = 'Comments';
+$string['no_comments'] = 'No comments available.';
 
 // Phase 2: Course widget data labels.
 $string['total_enrolled'] = 'Total Enrolled';
@@ -244,6 +251,9 @@ $string['enrolment_count'] = 'Enrolments';
 $string['enrolment_method'] = 'Enrolment Method';
 $string['users_enrolled'] = 'Users Enrolled';
 $string['last_30_days'] = 'Last 30 Days';
+$string['no_feedback_activities'] = 'No feedback activities in this course.';
+$string['no_feedback_responses'] = 'No feedback responses have been submitted yet.';
+$string['responses'] = 'Responses';
 $string['export_csv'] = 'Export CSV';
 $string['export_excel'] = 'Export Excel';
 

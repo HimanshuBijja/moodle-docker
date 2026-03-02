@@ -478,7 +478,7 @@ function useredit_get_enabled_name_fields() {
  * Gets user name fields not enabled from the setting fullnamedisplay.
  *
  * @param array $enabledadditionalusernames Current enabled additional user name fields.
- * @return array Disabled user name fields.
+ * @return array Disabled user name fields. 
  */
 function useredit_get_disabled_name_fields($enabledadditionalusernames = null) {
     // If we don't have enabled additional user name information then go and fetch it (try to avoid).

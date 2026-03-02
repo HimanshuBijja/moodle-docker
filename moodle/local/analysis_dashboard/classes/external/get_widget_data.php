@@ -114,7 +114,7 @@ class get_widget_data extends external_api {
     public static function execute_returns(): external_single_structure {
         return new external_single_structure([
             'data' => new external_value(PARAM_RAW, 'JSON-encoded widget data'),
-            'type' => new external_value(PARAM_ALPHA, 'Widget type (counter, line, bar, pie, etc.)'),
+            'type' => new external_value(PARAM_ALPHANUMEXT, 'Widget type (counter, line, bar, pie, diverging_bar, etc.)'),
             'name' => new external_value(PARAM_TEXT, 'Widget display name'),
         ]);
     }

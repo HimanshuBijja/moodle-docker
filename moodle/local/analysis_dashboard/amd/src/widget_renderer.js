@@ -158,6 +158,42 @@ define(['core/chartjs'], function(ChartJS) {
             });
         }
 
+        // Determine if stacked mode is requested.
+        var isStacked = !!(data.stacked);
+
+        // Build scale options.
+        var scaleOptions = {};
+        if (type !== 'pie' && type !== 'doughnut') {
+            if (isStacked) {
+                scaleOptions = {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            maxRotation: 45,
+                            autoSkip: true,
+                            font: { size: 10 }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                };
+            } else {
+                scaleOptions = {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                };
+            }
+        }
+
         new ChartJS(canvas, {
             type: type,
             data: {
@@ -179,14 +215,7 @@ define(['core/chartjs'], function(ChartJS) {
                         enabled: hasData
                     }
                 },
-                scales: (type === 'pie' || type === 'doughnut') ? {} : {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
+                scales: scaleOptions
             }
         });
 
@@ -290,6 +319,136 @@ define(['core/chartjs'], function(ChartJS) {
         });
     };
 
+    /**
+     * Render a diverging stacked bar chart.
+     *
+     * Negative values appear on the left (e.g., poor/fair ratings),
+     * positive values on the right (e.g., good/excellent ratings).
+     * Questions are on the Y-axis.
+     *
+     * @param {HTMLElement} container The container element.
+     * @param {Object} data Chart data with labels, datasets, and diverging flag.
+     * @param {string} title Chart title.
+     */
+    var renderDivergingBar = function(container, data, title) {
+        if (data.message) {
+            container.innerHTML = '<div class="alert alert-info">' + data.message + '</div>';
+            return;
+        }
+
+        var hasData = data.labels && data.labels.length > 0 &&
+            data.datasets && data.datasets.length > 0;
+
+        var wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        container.appendChild(wrapper);
+
+        // Calculate height based on number of questions.
+        var questionCount = data.labels ? data.labels.length : 1;
+        var chartHeight = Math.max(250, questionCount * 45 + 80);
+
+        var canvas = document.createElement('canvas');
+        canvas.style.height = chartHeight + 'px';
+        canvas.style.maxHeight = chartHeight + 'px';
+        canvas.setAttribute('role', 'img');
+        canvas.setAttribute('aria-label', 'Diverging bar chart: ' + (title || 'feedback analysis'));
+        wrapper.appendChild(canvas);
+
+        if (!hasData) {
+            var overlay = document.createElement('div');
+            overlay.className = 'widget-empty-overlay';
+            overlay.innerHTML = '<i class="fa fa-chart-bar"></i><span>No data available</span>';
+            wrapper.appendChild(overlay);
+            return;
+        }
+
+        var chartDatasets = [];
+        data.datasets.forEach(function(dataset) {
+            chartDatasets.push({
+                label: dataset.label || '',
+                data: dataset.data || [],
+                backgroundColor: dataset.backgroundColor || '#999',
+                borderColor: dataset.borderColor || dataset.backgroundColor || '#999',
+                borderWidth: dataset.borderWidth !== undefined ? dataset.borderWidth : 0,
+                borderSkipped: false,
+                barPercentage: 0.85,
+                categoryPercentage: 0.9,
+            });
+        });
+
+        new ChartJS(canvas, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: chartDatasets
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'rect',
+                            padding: 15,
+                            font: { size: 11 }
+                        }
+                    },
+                    title: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var val = context.parsed.x;
+                                var absVal = Math.abs(val);
+                                return context.dataset.label + ': ' + absVal + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            callback: function(value) {
+                                return Math.abs(value) + '%';
+                            },
+                            font: { size: 10 }
+                        },
+                        grid: {
+                            color: function(context) {
+                                if (context.tick && context.tick.value === 0) {
+                                    return '#495057';
+                                }
+                                return 'rgba(0, 0, 0, 0.05)';
+                            },
+                            lineWidth: function(context) {
+                                if (context.tick && context.tick.value === 0) {
+                                    return 2;
+                                }
+                                return 1;
+                            }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            font: { size: 11 },
+                            crossAlign: 'far'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    };
+
     return {
         /**
          * Render a widget based on its type.
@@ -315,6 +474,9 @@ define(['core/chartjs'], function(ChartJS) {
                     break;
                 case 'table':
                     renderTable(container, data, title);
+                    break;
+                case 'diverging_bar':
+                    renderDivergingBar(container, data, title);
                     break;
                 default:
                     container.innerHTML = '<div class="alert alert-warning">Unknown widget type: ' + type + '</div>';

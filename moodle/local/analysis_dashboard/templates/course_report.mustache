@@ -1,7 +1,7 @@
 {{!
 @template local_analysis_dashboard/course_report
 
-Course-level analytics report template.
+Course-level analytics report template with Feedback Analysis section.
 
 Context variables required for this template:
 * pagetitle - Page title string
@@ -12,6 +12,13 @@ Context variables required for this template:
 * widgets - Array of widget objects (id, name, type)
 * widgets_json - JSON-encoded widgets array
 * no_widgets_message - Message when no widgets available
+* has_feedback_forms - Whether there are feedback activities
+* feedback_forms - Array of feedback form objects (id, name, has_comments)
+* feedback_forms_json - JSON-encoded feedback forms
+* feedback_summary_widget - The master feedback summary widget config
+* has_feedback_summary - Whether master summary widget is available
+* feedback_section_title - Section title string
+* feedback_section_desc - Section description string
 
 Example context (json):
 {
@@ -24,7 +31,13 @@ Example context (json):
 {"id": "enrollment_stats", "name": "Enrollment Stats", "type": "counter"}
 ],
 "widgets_json": "[{\"id\":\"enrollment_stats\"}]",
-"no_widgets_message": "No widgets are available for your role."
+"no_widgets_message": "No widgets are available for your role.",
+"has_feedback_forms": true,
+"feedback_forms": [{"id": 1, "name": "End of Course Survey", "has_comments": true}],
+"feedback_forms_json": "[{\"id\":1,\"name\":\"End of Course Survey\",\"has_comments\":true}]",
+"has_feedback_summary": true,
+"feedback_section_title": "Feedback Analysis",
+"feedback_section_desc": "Response distribution across all feedback forms"
 }
 }}
 <div data-region="analysis-dashboard-course" class="analysis-dashboard" role="main" aria-label="{{pagetitle}}">
@@ -41,14 +54,97 @@ Example context (json):
     {{/has_widgets}}
 
     {{^has_widgets}}
+    {{^has_feedback_forms}}
     <div class="alert alert-info">
         {{no_widgets_message}}
     </div>
+    {{/has_feedback_forms}}
     {{/has_widgets}}
+
+    {{! === Feedback Analysis Section === }}
+    {{#has_feedback_forms}}
+    <div class="feedback-analysis-section mt-5" data-region="feedback-analysis">
+        <div class="feedback-analysis-header mb-4">
+            <h3 class="d-flex align-items-center">
+                <span class="feedback-section-icon mr-2">
+                    <i class="fa fa-comments" aria-hidden="true"></i>
+                </span>
+                {{feedback_section_title}}
+            </h3>
+            <p class="text-muted mb-0">{{feedback_section_desc}}</p>
+        </div>
+
+        {{! Master Feedback Summary Widget }}
+        {{#has_feedback_summary}}
+        <div class="analysis-dashboard-grid mb-4">
+            {{#feedback_summary_widget}}
+            {{> local_analysis_dashboard/widget_card}}
+            {{/feedback_summary_widget}}
+        </div>
+        {{/has_feedback_summary}}
+
+        {{! Per-Form Feedback Widgets }}
+        <div class="feedback-forms-container">
+            {{#feedback_forms}}
+            <div class="feedback-form-widget card analysis-dashboard-widget mb-3"
+                data-widget-id="feedback_form_analysis" data-feedback-id="{{id}}" data-widget-type="diverging_bar"
+                role="region" aria-label="{{name}}">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fa fa-poll-h mr-2" aria-hidden="true"></i>
+                        {{name}}
+                    </h5>
+                    {{#has_comments}}
+                    <ul class="nav nav-pills feedback-nav mb-0" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-toggle-view="chart" role="tab"
+                                aria-selected="true">
+                                <i class="fa fa-chart-bar mr-1"></i>{{#str}}chart_view, local_analysis_dashboard{{/str}}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-toggle-view="comments" role="tab" aria-selected="false">
+                                <i class="fa fa-comment mr-1"></i>{{#str}}comments_view,
+                                local_analysis_dashboard{{/str}}
+                            </a>
+                        </li>
+                    </ul>
+                    {{/has_comments}}
+                </div>
+                <div class="card-body widget-body" aria-live="polite" aria-busy="true">
+                    <div class="widget-loading" data-region="widget-loading" role="status">
+                        <div class="d-flex justify-content-center align-items-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">{{#str}}loading, local_analysis_dashboard{{/str}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content" data-region="widget-content" style="display: none;">
+                    </div>
+                    <div class="widget-comments" data-region="widget-comments" style="display: none;">
+                    </div>
+                    <div class="widget-error" data-region="widget-error" style="display: none;" role="alert">
+                        <div class="alert alert-danger mb-0">
+                            <i class="fa fa-exclamation-triangle mr-1" aria-hidden="true"></i>
+                            {{#str}}widget_error, local_analysis_dashboard{{/str}}
+                        </div>
+                    </div>
+                    <div class="widget-nodata" data-region="widget-nodata" style="display: none;">
+                        <div class="text-center text-muted py-4">
+                            <i class="fa fa-info-circle fa-2x mb-2 d-block" aria-hidden="true"></i>
+                            {{#str}}widget_no_data, local_analysis_dashboard{{/str}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/feedback_forms}}
+        </div>
+    </div>
+    {{/has_feedback_forms}}
 </div>
 
 {{#js}}
 require(['local_analysis_dashboard/course_dashboard'], function(CourseDashboard) {
-CourseDashboard.init({{{widgets_json}}}, {{courseid}});
+CourseDashboard.init({{{widgets_json}}}, {{courseid}}, {{{feedback_forms_json}}});
 });
 {{/js}}
