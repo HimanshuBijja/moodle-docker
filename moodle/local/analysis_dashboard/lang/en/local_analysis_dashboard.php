@@ -51,11 +51,66 @@ $string['daily_visits'] = 'Daily Unique Visitors';
 $string['weekly_visits'] = 'Weekly Visits';
 $string['monthly_visits'] = 'Monthly Visits';
 
-// Capabilities.
+// Capabilities — page-level.
 $string['analysis_dashboard:viewsite'] = 'View site-level analysis dashboard';
 $string['analysis_dashboard:viewcourse'] = 'View course-level analysis dashboard';
 $string['analysis_dashboard:viewuser'] = 'View user-level analysis reports';
 $string['analysis_dashboard:viewown'] = 'View own analytics dashboard';
+$string['analysis_dashboard:viewadmin'] = 'View admin-only analytics widgets';
+
+// Capabilities — per-widget (site-level).
+$string['analysis_dashboard:widget_total_users'] = 'View widget: Total Users';
+$string['analysis_dashboard:widget_total_courses'] = 'View widget: Total Courses';
+$string['analysis_dashboard:widget_site_visits'] = 'View widget: Site Visits';
+$string['analysis_dashboard:widget_authentication_report'] = 'View widget: Authentication Report';
+$string['analysis_dashboard:widget_enrolled_methods'] = 'View widget: Enrolled Methods';
+$string['analysis_dashboard:widget_disk_usage'] = 'View widget: Disk Usage';
+$string['analysis_dashboard:widget_server_performance'] = 'View widget: Server Performance';
+
+// Capabilities — per-widget (course-level).
+$string['analysis_dashboard:widget_enrollment_stats'] = 'View widget: Enrollment Stats';
+$string['analysis_dashboard:widget_completion_progress'] = 'View widget: Completion Progress';
+$string['analysis_dashboard:widget_grade_distribution'] = 'View widget: Grade Distribution';
+$string['analysis_dashboard:widget_course_visits'] = 'View widget: Course Visits';
+$string['analysis_dashboard:widget_activity_completion'] = 'View widget: Activity Completion';
+$string['analysis_dashboard:widget_recent_activity'] = 'View widget: Recent Activity';
+$string['analysis_dashboard:widget_at_risk_students'] = 'View widget: At-Risk Students';
+$string['analysis_dashboard:widget_activity_heatmap'] = 'View widget: Activity Heatmap';
+$string['analysis_dashboard:widget_quiz_analytics'] = 'View widget: Quiz Analytics';
+$string['analysis_dashboard:widget_feedback_summary'] = 'View widget: Feedback Summary';
+$string['analysis_dashboard:widget_feedback_form_analysis'] = 'View widget: Feedback Form Analysis';
+$string['analysis_dashboard:widget_course_students_by_location'] = 'View widget: Course Participants by Location';
+$string['analysis_dashboard:widget_course_students_by_employee_type'] = 'View widget: Course Participants by Employee Type';
+$string['analysis_dashboard:widget_course_students_by_rank'] = 'View widget: Course Participants by Rank';
+
+// Capabilities — per-widget (student personal).
+$string['analysis_dashboard:widget_my_learning_overview'] = 'View widget: My Learning Overview';
+$string['analysis_dashboard:widget_my_course_progress'] = 'View widget: My Course Progress';
+$string['analysis_dashboard:widget_my_grade_overview'] = 'View widget: My Grade Overview';
+$string['analysis_dashboard:widget_overall_completion_status'] = 'View widget: Overall Completion Status';
+$string['analysis_dashboard:widget_my_login_history'] = 'View widget: My Login History';
+$string['analysis_dashboard:widget_my_recent_activity'] = 'View widget: My Recent Activity';
+
+// Capabilities — per-widget (SecureOTP admin/demographics).
+$string['analysis_dashboard:widget_secureotp_account_status'] = 'View widget: SecureOTP Account Status';
+$string['analysis_dashboard:widget_secureotp_security_summary'] = 'View widget: SecureOTP Security Summary';
+$string['analysis_dashboard:widget_secureotp_otp_events'] = 'View widget: SecureOTP Events Timeline';
+$string['analysis_dashboard:widget_secureotp_audit_severity'] = 'View widget: SecureOTP Audit Severity';
+$string['analysis_dashboard:widget_secureotp_rate_limits'] = 'View widget: SecureOTP Rate Limits';
+$string['analysis_dashboard:widget_secureotp_failed_logins'] = 'View widget: SecureOTP Failed Logins';
+$string['analysis_dashboard:widget_secureotp_failed_by_location'] = 'View widget: Failed Logins by Location';
+$string['analysis_dashboard:widget_secureotp_import_history'] = 'View widget: SecureOTP Import History';
+$string['analysis_dashboard:widget_secureotp_users_by_source'] = 'View widget: Users by Source System';
+$string['analysis_dashboard:widget_secureotp_by_location'] = 'View widget: Users by Location';
+$string['analysis_dashboard:widget_secureotp_by_rank'] = 'View widget: Users by Rank';
+$string['analysis_dashboard:widget_secureotp_by_unit'] = 'View widget: Users by Unit';
+$string['analysis_dashboard:widget_secureotp_by_city'] = 'View widget: Users by City';
+$string['analysis_dashboard:widget_secureotp_by_employee_type'] = 'View widget: Users by Employee Type';
+$string['analysis_dashboard:widget_secureotp_by_cpsp'] = 'View widget: Users by CP/SP Office';
+$string['analysis_dashboard:widget_secureotp_by_gender'] = 'View widget: Users by Gender';
+$string['analysis_dashboard:widget_secureotp_by_education'] = 'View widget: Users by Education';
+$string['analysis_dashboard:widget_secureotp_my_profile'] = 'View widget: My SecureOTP Profile';
+$string['analysis_dashboard:widget_secureotp_my_login_history'] = 'View widget: My OTP Login History';
 
 // Settings.
 $string['settings_cache_ttl_sitestats'] = 'Site stats cache TTL (seconds)';

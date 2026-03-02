@@ -55,7 +55,7 @@ class server_performance extends base_widget {
      * @return string Capability string.
      */
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewadmin';
+        return 'local/analysis_dashboard:widget_server_performance';
     }
 
     /**

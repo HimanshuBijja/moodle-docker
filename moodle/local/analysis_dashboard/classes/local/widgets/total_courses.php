@@ -53,7 +53,7 @@ class total_courses extends base_widget {
      * @return string Capability string.
      */
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewsite';
+        return 'local/analysis_dashboard:widget_total_courses';
     }
 
     /**

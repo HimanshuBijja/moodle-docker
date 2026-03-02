@@ -77,7 +77,7 @@ class feedback_summary extends base_widget {
     }
 
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewcourse';
+        return 'local/analysis_dashboard:widget_feedback_summary';
     }
 
     public function get_supported_context_levels(): array {

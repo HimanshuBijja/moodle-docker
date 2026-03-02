@@ -6,7 +6,7 @@ use local_analysis_dashboard\local\secureotp_base;
 class secureotp_my_login_history extends secureotp_base {
     public function get_name(): string { return 'widget_secureotp_my_login_history'; }
     public function get_type(): string { return 'line'; }
-    public function get_required_capability(): string { return 'local/analysis_dashboard:viewown'; }
+    public function get_required_capability(): string { return 'local/analysis_dashboard:widget_secureotp_my_login_history'; }
     public function get_supported_context_levels(): array { return [CONTEXT_USER]; }
 
     protected function get_secureotp_data(array $params = []): array {

@@ -367,6 +367,8 @@ define(['core/chartjs'], function(ChartJS) {
             chartDatasets.push({
                 label: dataset.label || '',
                 data: dataset.data || [],
+                counts: dataset.counts || [],
+                totals: dataset.totals || [],
                 backgroundColor: dataset.backgroundColor || '#999',
                 borderColor: dataset.borderColor || dataset.backgroundColor || '#999',
                 borderWidth: dataset.borderWidth !== undefined ? dataset.borderWidth : 0,
@@ -405,7 +407,13 @@ define(['core/chartjs'], function(ChartJS) {
                             label: function(context) {
                                 var val = context.parsed.x;
                                 var absVal = Math.abs(val);
-                                return context.dataset.label + ': ' + absVal + '%';
+                                var count = context.dataset.counts ? context.dataset.counts[context.dataIndex] : null;
+                                var total = context.dataset.totals ? context.dataset.totals[context.dataIndex] : null;
+                                var line = context.dataset.label + ': ' + absVal + '%';
+                                if (count !== null && total !== null) {
+                                    line += ' (' + count + ' of ' + total + ' people)';
+                                }
+                                return line;
                             }
                         }
                     }

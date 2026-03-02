@@ -49,12 +49,16 @@ abstract class secureotp_base extends base_widget {
     }
 
     /**
-     * Default capability: viewall (admin/manager).
+     * Default capability: derived from widget name for per-widget control.
+     *
+     * Subclasses can override this if they need a different capability.
      *
      * @return string Capability string.
      */
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewsite';
+        // Derive capability from widget name: widget_secureotp_xxx -> local/analysis_dashboard:widget_secureotp_xxx.
+        $widgetname = $this->get_name();
+        return 'local/analysis_dashboard:' . $widgetname;
     }
 
     /**

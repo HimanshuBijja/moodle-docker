@@ -6,7 +6,7 @@ use local_analysis_dashboard\local\base_widget;
 class my_login_history extends base_widget {
     public function get_name(): string { return 'widget_my_login_history'; }
     public function get_type(): string { return 'line'; }
-    public function get_required_capability(): string { return 'local/analysis_dashboard:viewown'; }
+    public function get_required_capability(): string { return 'local/analysis_dashboard:widget_my_login_history'; }
     public function get_supported_context_levels(): array { return [CONTEXT_USER]; }
 
     public function get_data(array $params = []): array {

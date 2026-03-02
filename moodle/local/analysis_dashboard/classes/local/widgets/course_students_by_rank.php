@@ -6,7 +6,7 @@ use local_analysis_dashboard\local\secureotp_base;
 class course_students_by_rank extends secureotp_base {
     public function get_name(): string { return 'widget_course_students_by_rank'; }
     public function get_type(): string { return 'bar'; }
-    public function get_required_capability(): string { return 'local/analysis_dashboard:viewcourse'; }
+    public function get_required_capability(): string { return 'local/analysis_dashboard:widget_course_students_by_rank'; }
     public function get_supported_context_levels(): array { return [CONTEXT_COURSE]; }
 
     protected function get_secureotp_data(array $params = []): array {

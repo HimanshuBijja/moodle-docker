@@ -86,13 +86,17 @@ class get_widget_data extends external_api {
         $widget = \local_analysis_dashboard\local\widget_registry::get($widgetid);
 
         // Check widget-specific capability in the appropriate context.
-        // For viewown widgets, always check at system context since that is where
-        // the capability is defined and role archetypes (student, teacher) are granted.
+        // Per-widget capabilities defined at CONTEXT_SYSTEM must be checked at system context.
+        // Per-widget capabilities defined at CONTEXT_COURSE must be checked at course context.
         $caprequired = $widget->get_required_capability();
-        if ($caprequired === 'local/analysis_dashboard:viewown') {
-            $capcontext = \context_system::instance();
+
+        // Determine the right context for the capability check.
+        // If the capability is defined at CONTEXT_COURSE and we have a course context, use it.
+        // Otherwise, fall back to system context (for system-level and student widgets).
+        if (!empty($decodedparams['courseid'])) {
+            $capcontext = $context; // Already a course context from above.
         } else {
-            $capcontext = $context;
+            $capcontext = \context_system::instance();
         }
         require_capability($caprequired, $capcontext);
 

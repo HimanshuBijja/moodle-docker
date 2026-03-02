@@ -38,7 +38,7 @@ class quiz_analytics extends base_widget {
     }
 
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewcourse';
+        return 'local/analysis_dashboard:widget_quiz_analytics';
     }
 
     public function get_supported_context_levels(): array {

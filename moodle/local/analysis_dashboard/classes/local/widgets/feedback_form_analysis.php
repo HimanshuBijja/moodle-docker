@@ -48,7 +48,7 @@ class feedback_form_analysis extends base_widget {
     }
 
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewcourse';
+        return 'local/analysis_dashboard:widget_feedback_form_analysis';
     }
 
     public function get_supported_context_levels(): array {
@@ -184,6 +184,8 @@ class feedback_form_analysis extends base_widget {
                 'label' => 'Q' . $item->position . ': ' . mb_substr(format_string($item->name), 0, 50),
                 'options' => $parsed['options'],
                 'percentages' => $percentages,
+                'counts' => $counts,
+                'total' => $totalresponses,
             ];
 
             // Track all unique option labels.
@@ -234,8 +236,12 @@ class feedback_form_analysis extends base_widget {
             $isPositive = $optidx > $midpoint || (!$hasmiddle && $optidx >= $midpoint);
 
             $data = [];
+            $counts = [];
+            $totals = [];
             foreach ($itemdata as $qdata) {
                 $pct = $qdata['percentages'][$optidx] ?? 0;
+                $counts[] = $qdata['counts'][$optidx] ?? 0;
+                $totals[] = $qdata['total'] ?? 0;
                 if ($isNegative) {
                     $data[] = -$pct; // Negative = left side.
                 } else if ($isMiddle) {
@@ -263,6 +269,8 @@ class feedback_form_analysis extends base_widget {
             $datasets[] = [
                 'label' => $optlabel,
                 'data' => $data,
+                'counts' => $counts,
+                'totals' => $totals,
                 'backgroundColor' => $color,
                 'borderColor' => $color,
                 'borderWidth' => 0,

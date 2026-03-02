@@ -38,7 +38,7 @@ class activity_completion extends base_widget {
     }
 
     public function get_required_capability(): string {
-        return 'local/analysis_dashboard:viewcourse';
+        return 'local/analysis_dashboard:widget_activity_completion';
     }
 
     public function get_supported_context_levels(): array {
