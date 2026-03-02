@@ -59,4 +59,15 @@ class renderer extends plugin_renderer_base {
         $data = $page->export_for_template($this);
         return $this->render_from_template('local_analysis_dashboard/student_dashboard', $data);
     }
+
+    /**
+     * Render the feedback courses listing page.
+     *
+     * @param feedback_courses_page $page The feedback courses page renderable.
+     * @return string HTML output.
+     */
+    protected function render_feedback_courses_page(feedback_courses_page $page): string {
+        $data = $page->export_for_template($this);
+        return $this->render_from_template('local_analysis_dashboard/feedback_courses', $data);
+    }
 }

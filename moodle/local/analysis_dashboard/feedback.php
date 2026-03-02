@@ -15,7 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Course-level analytics report page.
+ * Feedback courses listing page.
+ *
+ * Shows all courses with feedback activities, allowing users to browse
+ * and navigate to feedback analysis for each course.
  *
  * @package    local_analysis_dashboard
  * @copyright  2026 Analysis Dashboard
@@ -24,23 +27,18 @@
 
 require_once(__DIR__ . '/../../config.php');
 
-$courseid = required_param('id', PARAM_INT);
-$tab = optional_param('tab', 'analytics', PARAM_ALPHA);
-$course = get_course($courseid);
+require_login();
 
-require_login($course);
+$context = context_system::instance();
 
-$context = context_course::instance($courseid);
-require_capability('local/analysis_dashboard:viewcourse', $context);
-
-$PAGE->set_url(new moodle_url('/local/analysis_dashboard/coursereport.php', ['id' => $courseid, 'tab' => $tab]));
+$PAGE->set_url(new moodle_url('/local/analysis_dashboard/feedback.php'));
 $PAGE->set_context($context);
-$PAGE->set_title(get_string('course_report', 'local_analysis_dashboard') . ': ' . $course->fullname);
-$PAGE->set_heading($course->fullname);
-$PAGE->set_pagelayout('report');
+$PAGE->set_title(get_string('feedback_courses_title', 'local_analysis_dashboard'));
+$PAGE->set_heading(get_string('feedback_courses_title', 'local_analysis_dashboard'));
+$PAGE->set_pagelayout('standard');
 
 $output = $PAGE->get_renderer('local_analysis_dashboard');
-$page = new \local_analysis_dashboard\output\course_report_page($courseid, $tab);
+$page = new \local_analysis_dashboard\output\feedback_courses_page();
 
 echo $output->header();
 echo $output->render($page);

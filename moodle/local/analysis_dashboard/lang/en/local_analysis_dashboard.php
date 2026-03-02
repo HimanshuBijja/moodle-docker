@@ -269,3 +269,19 @@ $string['sr_chart_description'] = '{$a->type} chart showing {$a->title}';
 // Phase 5: Manager dashboard.
 $string['manager_dashboard'] = 'Manager Analytics Dashboard';
 $string['manager_dashboard_desc'] = 'Organizational analytics overview for managers.';
+
+// Phase 6: Dashboard tabs and Feedback navigation.
+$string['tab_analytics'] = 'Analytics';
+$string['tab_feedback'] = 'Feedback';
+$string['feedback_nav'] = 'Feedback';
+$string['feedback_courses_title'] = 'Feedback';
+$string['feedback_courses_subtitle'] = 'Browse courses and view feedback analysis';
+$string['filter_all'] = 'All';
+$string['filter_inprogress'] = 'In Progress';
+$string['filter_future'] = 'Future';
+$string['filter_past'] = 'Past';
+$string['search_courses'] = 'Search courses...';
+$string['feedback_forms_count'] = '{$a} feedback form(s)';
+$string['view_feedback'] = 'View Feedback';
+$string['no_courses_with_feedback'] = 'No courses with feedback activities found.';
+

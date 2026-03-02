@@ -1,0 +1,120 @@
+{{!
+@template local_analysis_dashboard/feedback_courses
+
+Feedback courses listing page — My Courses-style card grid.
+
+Context variables required for this template:
+* pagetitle - Page title
+* pagesubtitle - Subtitle text
+* has_courses - Whether there are courses with feedback
+* courses - Array of course objects
+* no_courses_message - Message when no courses found
+
+Example context (json):
+{
+"pagetitle": "Feedback",
+"pagesubtitle": "Browse courses and view feedback analysis",
+"has_courses": true,
+"courses": [
+{"id": 2, "fullname": "Introduction to Computing", "shortname": "CS101",
+"category_name": "Computer Science", "feedback_count": 3,
+"feedback_count_label": "3 feedback form(s)", "timeline": "inprogress",
+"is_inprogress": true, "is_future": false, "is_past": false,
+"courseurl": "/local/analysis_dashboard/coursereport.php?id=2&tab=feedback",
+"has_image": false, "imageurl": ""}
+],
+"no_courses_message": "No courses with feedback activities found."
+}
+}}
+<div data-region="feedback-courses" class="feedback-courses-page" role="main" aria-label="{{pagetitle}}">
+    <div class="feedback-courses-header mb-4">
+        <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="feedback-page-icon">
+                <i class="fa fa-comments" aria-hidden="true"></i>
+            </div>
+            <div>
+                <h2 class="mb-0">{{pagetitle}}</h2>
+                <p class="text-muted mb-0">{{pagesubtitle}}</p>
+            </div>
+        </div>
+    </div>
+
+    {{#has_courses}}
+    {{! Filters }}
+    <div class="feedback-courses-filters d-flex align-items-center flex-wrap gap-3 mb-4">
+        <div class="flex-grow-1" style="max-width: 400px;">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                </div>
+                <input type="text" class="form-control" id="feedback-course-search"
+                    placeholder="{{#str}}search_courses, local_analysis_dashboard{{/str}}"
+                    aria-label="{{#str}}search_courses, local_analysis_dashboard{{/str}}">
+            </div>
+        </div>
+        <div>
+            <select class="form-control" id="feedback-course-filter" aria-label="Filter courses">
+                <option value="all">{{#str}}filter_all, local_analysis_dashboard{{/str}}</option>
+                <option value="inprogress">{{#str}}filter_inprogress, local_analysis_dashboard{{/str}}</option>
+                <option value="future">{{#str}}filter_future, local_analysis_dashboard{{/str}}</option>
+                <option value="past">{{#str}}filter_past, local_analysis_dashboard{{/str}}</option>
+            </select>
+        </div>
+    </div>
+
+    {{! Course Grid }}
+    <div class="feedback-courses-grid" id="feedback-courses-grid">
+        {{#courses}}
+        <div class="feedback-course-card card" data-timeline="{{timeline}}" data-coursename="{{fullname}}">
+            <a href="{{courseurl}}" class="feedback-course-link"
+                title="{{#str}}view_feedback, local_analysis_dashboard{{/str}}">
+                <div class="feedback-course-image">
+                    {{#has_image}}
+                    <img src="{{imageurl}}" alt="" class="card-img-top">
+                    {{/has_image}}
+                    {{^has_image}}
+                    <div class="feedback-course-placeholder">
+                        <i class="fa fa-graduation-cap"></i>
+                    </div>
+                    {{/has_image}}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{fullname}}</h5>
+                    {{#category_name}}
+                    <p class="text-muted small mb-2">{{category_name}}</p>
+                    {{/category_name}}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge badge-feedback">
+                            <i class="fa fa-poll-h mr-1"></i>{{feedback_count_label}}
+                        </span>
+                        <span class="badge badge-timeline badge-timeline-{{timeline}}">
+                            {{#is_inprogress}}{{#str}}filter_inprogress,
+                            local_analysis_dashboard{{/str}}{{/is_inprogress}}
+                            {{#is_future}}{{#str}}filter_future, local_analysis_dashboard{{/str}}{{/is_future}}
+                            {{#is_past}}{{#str}}filter_past, local_analysis_dashboard{{/str}}{{/is_past}}
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {{/courses}}
+    </div>
+
+    {{! No results message (hidden by default, shown by JS) }}
+    <div class="alert alert-info mt-3" id="feedback-no-results" style="display: none;">
+        {{no_courses_message}}
+    </div>
+    {{/has_courses}}
+
+    {{^has_courses}}
+    <div class="alert alert-info">
+        {{no_courses_message}}
+    </div>
+    {{/has_courses}}
+</div>
+
+{{#js}}
+require(['local_analysis_dashboard/feedback_courses'], function(FeedbackCourses) {
+FeedbackCourses.init();
+});
+{{/js}}

@@ -69,6 +69,18 @@ function local_analysis_dashboard_extend_navigation(global_navigation $navigatio
             new pix_icon('i/report', '')
         );
     }
+
+    // Feedback nav item — visible to all authenticated users.
+    if (isloggedin() && !isguestuser()) {
+        $navigation->add(
+            get_string('feedback_nav', 'local_analysis_dashboard'),
+            new moodle_url('/local/analysis_dashboard/feedback.php'),
+            navigation_node::TYPE_CUSTOM,
+            null,
+            'analysis_dashboard_feedback',
+            new pix_icon('i/feedback', '')
+        );
+    }
 }
 
 /**

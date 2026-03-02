@@ -1,7 +1,7 @@
 {{!
 @template local_analysis_dashboard/course_report
 
-Course-level analytics report template with Feedback Analysis section.
+Course-level analytics report template with Analytics/Feedback tab navigation.
 
 Context variables required for this template:
 * pagetitle - Page title string
@@ -12,6 +12,10 @@ Context variables required for this template:
 * widgets - Array of widget objects (id, name, type)
 * widgets_json - JSON-encoded widgets array
 * no_widgets_message - Message when no widgets available
+* tab_analytics_active - Boolean for analytics tab active
+* tab_feedback_active - Boolean for feedback tab active
+* tab_analytics_url - URL to analytics tab
+* tab_feedback_url - URL to feedback tab
 * has_feedback_forms - Whether there are feedback activities
 * feedback_forms - Array of feedback form objects (id, name, has_comments)
 * feedback_forms_json - JSON-encoded feedback forms
@@ -32,6 +36,10 @@ Example context (json):
 ],
 "widgets_json": "[{\"id\":\"enrollment_stats\"}]",
 "no_widgets_message": "No widgets are available for your role.",
+"tab_analytics_active": true,
+"tab_feedback_active": false,
+"tab_analytics_url": "/local/analysis_dashboard/coursereport.php?id=2&tab=analytics",
+"tab_feedback_url": "/local/analysis_dashboard/coursereport.php?id=2&tab=feedback",
 "has_feedback_forms": true,
 "feedback_forms": [{"id": 1, "name": "End of Course Survey", "has_comments": true}],
 "feedback_forms_json": "[{\"id\":1,\"name\":\"End of Course Survey\",\"has_comments\":true}]",
@@ -41,10 +49,32 @@ Example context (json):
 }
 }}
 <div data-region="analysis-dashboard-course" class="analysis-dashboard" role="main" aria-label="{{pagetitle}}">
-    <div class="analysis-dashboard-header mb-4">
+    <div class="analysis-dashboard-header mb-3">
         <p class="text-muted">{{pagesubtitle}}</p>
     </div>
 
+    {{! === Horizontal Tab Navigation === }}
+    <ul class="nav nav-tabs course-report-tabs mb-4" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link {{#tab_analytics_active}}active{{/tab_analytics_active}}" href="{{tab_analytics_url}}"
+                role="tab"
+                aria-selected="{{#tab_analytics_active}}true{{/tab_analytics_active}}{{^tab_analytics_active}}false{{/tab_analytics_active}}">
+                <i class="fa fa-chart-line mr-1" aria-hidden="true"></i>
+                {{#str}}tab_analytics, local_analysis_dashboard{{/str}}
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{#tab_feedback_active}}active{{/tab_feedback_active}}" href="{{tab_feedback_url}}"
+                role="tab"
+                aria-selected="{{#tab_feedback_active}}true{{/tab_feedback_active}}{{^tab_feedback_active}}false{{/tab_feedback_active}}">
+                <i class="fa fa-comments mr-1" aria-hidden="true"></i>
+                {{#str}}tab_feedback, local_analysis_dashboard{{/str}}
+            </a>
+        </li>
+    </ul>
+
+    {{! === Analytics Tab Content === }}
+    {{#tab_analytics_active}}
     {{#has_widgets}}
     <div class="analysis-dashboard-grid">
         {{#widgets}}
@@ -54,16 +84,16 @@ Example context (json):
     {{/has_widgets}}
 
     {{^has_widgets}}
-    {{^has_feedback_forms}}
     <div class="alert alert-info">
         {{no_widgets_message}}
     </div>
-    {{/has_feedback_forms}}
     {{/has_widgets}}
+    {{/tab_analytics_active}}
 
-    {{! === Feedback Analysis Section === }}
+    {{! === Feedback Tab Content === }}
+    {{#tab_feedback_active}}
     {{#has_feedback_forms}}
-    <div class="feedback-analysis-section mt-5" data-region="feedback-analysis">
+    <div class="feedback-analysis-section" data-region="feedback-analysis">
         <div class="feedback-analysis-header mb-4">
             <h3 class="d-flex align-items-center">
                 <span class="feedback-section-icon mr-2">
@@ -141,6 +171,13 @@ Example context (json):
         </div>
     </div>
     {{/has_feedback_forms}}
+
+    {{^has_feedback_forms}}
+    <div class="alert alert-info">
+        {{#str}}no_feedback_activities, local_analysis_dashboard{{/str}}
+    </div>
+    {{/has_feedback_forms}}
+    {{/tab_feedback_active}}
 </div>
 
 {{#js}}

@@ -29,7 +29,7 @@
  * @copyright  2010 Remote-Learner.net
  * @author     Hubert Chathi <hubert@remote-learner.net>
  * @author     Olav Jordan <olav.jordan@remote-learner.net>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later 
  */
 
 require_once(__DIR__ . '/../config.php');

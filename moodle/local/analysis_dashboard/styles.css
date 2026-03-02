@@ -625,3 +625,242 @@ body.dark .feedback-comments-list .list-group-item {
     color: #dee2e6;
     border-color: #495057;
 }
+
+/* === Phase 6: Course Report Tabs & Feedback Courses === */
+
+/* Course report tab navigation */
+.course-report-tabs {
+    border-bottom: 2px solid #e9ecef;
+}
+
+.course-report-tabs .nav-link {
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.25rem;
+    color: #6c757d;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.course-report-tabs .nav-link:hover {
+    color: #495057;
+    border-bottom-color: #dee2e6;
+}
+
+.course-report-tabs .nav-link.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+    background: transparent;
+}
+
+.course-report-tabs .nav-link i {
+    opacity: 0.7;
+}
+
+.course-report-tabs .nav-link.active i {
+    opacity: 1;
+}
+
+/* Feedback courses page */
+.feedback-courses-page {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.feedback-page-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.feedback-courses-filters .input-group-text {
+    background: #f8f9fa;
+    border-right: none;
+}
+
+.feedback-courses-filters .form-control {
+    border-left: none;
+}
+
+.feedback-courses-filters select.form-control {
+    min-width: 140px;
+    border-left: 1px solid #ced4da;
+}
+
+/* Course card grid */
+.feedback-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .feedback-courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .feedback-courses-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Course card */
+.feedback-course-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.feedback-course-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.feedback-course-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.feedback-course-link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.feedback-course-image {
+    height: 140px;
+    overflow: hidden;
+    background: #f8f9fa;
+}
+
+.feedback-course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.feedback-course-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 3rem;
+}
+
+.feedback-course-card .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.3;
+}
+
+.badge-feedback {
+    background: #e8eaf6;
+    color: #5c6bc0;
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.badge-timeline {
+    font-weight: 500;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.badge-timeline-inprogress {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.badge-timeline-future {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-timeline-past {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+/* Dark mode — Phase 6 */
+body.dark .course-report-tabs {
+    border-color: #495057;
+}
+
+body.dark .course-report-tabs .nav-link {
+    color: #adb5bd;
+}
+
+body.dark .course-report-tabs .nav-link:hover {
+    color: #dee2e6;
+    border-bottom-color: #6c757d;
+}
+
+body.dark .course-report-tabs .nav-link.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+}
+
+body.dark .feedback-course-card {
+    border-color: #495057;
+    background: #2d3238;
+}
+
+body.dark .feedback-course-card .card-title {
+    color: #dee2e6;
+}
+
+body.dark .feedback-course-image {
+    background: #343a40;
+}
+
+body.dark .badge-feedback {
+    background: #3949ab;
+    color: #c5cae9;
+}
+
+body.dark .badge-timeline-inprogress {
+    background: #1b5e20;
+    color: #a5d6a7;
+}
+
+body.dark .badge-timeline-future {
+    background: #0d47a1;
+    color: #90caf9;
+}
+
+body.dark .badge-timeline-past {
+    background: #4a148c;
+    color: #ce93d8;
+}
+
+body.dark .feedback-courses-filters .input-group-text {
+    background: #343a40;
+    border-color: #495057;
+    color: #adb5bd;
+}
+
+body.dark .feedback-courses-filters .form-control {
+    background: #343a40;
+    border-color: #495057;
+    color: #dee2e6;
+}
+

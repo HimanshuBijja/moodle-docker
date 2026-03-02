@@ -152,7 +152,7 @@ class profile_field_base {
      * @param bool $escape
      * @return string
      */
-    public function display_name(bool $escape = true): string {
+    public function display_name(bool $escape = true): string { 
         return format_string($this->field->name, true, [
             'context' => context_system::instance(),
             'escape' => $escape,

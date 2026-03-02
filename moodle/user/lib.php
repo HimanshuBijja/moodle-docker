@@ -107,7 +107,7 @@ function user_create_user($user, $updatepassword = true, $triggerevent = true) {
     }
 
     $user->timecreated = time();
-    $user->timemodified = $user->timecreated;
+    $user->timemodified = $user->timecreated; 
 
     // Validate user data object.
     $uservalidation = core_user::validate($user);

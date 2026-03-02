@@ -80,8 +80,7 @@ function my_copy_page(
     if ($customised = $DB->get_record(
         'my_pages',
         array('userid' => $userid, 'name' => $pagename, 'private' => $private),
-        '*',
-        IGNORE_MULTIPLE
+        '*', 
     )) {
         return $customised;  // We're done!
     }

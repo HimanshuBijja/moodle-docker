@@ -36,13 +36,18 @@ class course_report_page implements renderable, templatable {
     /** @var int The course ID. */
     private int $courseid;
 
+    /** @var string The active tab ('analytics' or 'feedback'). */
+    private string $tab;
+
     /**
      * Constructor.
      *
      * @param int $courseid The course ID.
+     * @param string $tab The active tab (analytics|feedback).
      */
-    public function __construct(int $courseid) {
+    public function __construct(int $courseid, string $tab = 'analytics') {
         $this->courseid = $courseid;
+        $this->tab = in_array($tab, ['analytics', 'feedback']) ? $tab : 'analytics';
     }
 
     /**
@@ -57,6 +62,14 @@ class course_report_page implements renderable, templatable {
         $data = new stdClass();
         $course = $DB->get_record('course', ['id' => $this->courseid], 'id, fullname, shortname', MUST_EXIST);
         $context = \context_course::instance($this->courseid);
+
+        // Tab state.
+        $data->tab_analytics_active = ($this->tab === 'analytics');
+        $data->tab_feedback_active = ($this->tab === 'feedback');
+        $data->tab_analytics_url = (new \moodle_url('/local/analysis_dashboard/coursereport.php',
+            ['id' => $this->courseid, 'tab' => 'analytics']))->out(false);
+        $data->tab_feedback_url = (new \moodle_url('/local/analysis_dashboard/coursereport.php',
+            ['id' => $this->courseid, 'tab' => 'feedback']))->out(false);
 
         // Get widgets that support course context.
         $allwidgets = widget_registry::get_all();
