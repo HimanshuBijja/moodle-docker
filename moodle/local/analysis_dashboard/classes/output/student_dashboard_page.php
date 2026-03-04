@@ -77,7 +77,7 @@ class student_dashboard_page implements renderable, templatable {
         $data->widgets_json = json_encode($data->widgets);
         $data->userid = $this->userid;
         $data->username = fullname($user);
-        $data->pagetitle = get_string('student_dashboard', 'local_analysis_dashboard');
+        // $data->pagetitle = get_string('student_dashboard', 'local_analysis_dashboard');
         $data->pagesubtitle = get_string('student_dashboard_subtitle', 'local_analysis_dashboard', fullname($user));
         $data->no_widgets_message = get_string('no_widgets_available', 'local_analysis_dashboard');
 

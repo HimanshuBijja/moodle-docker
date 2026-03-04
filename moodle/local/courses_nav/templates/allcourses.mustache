@@ -1,131 +1,233 @@
 {{!
-    This file is part of Moodle - http://moodle.org/
+This file is part of Moodle - http://moodle.org/
 
-    Moodle is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+Moodle is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    Moodle is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+Moodle is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with Moodle. If not, see
+<http: //www.gnu.org/licenses />.
 }}
 {{!
-    @template local_courses_nav/allcourses
+@template local_courses_nav/allcourses
 
-    All Courses page template.
+All Courses page template - matches My Courses (block_myoverview) layout.
 
-    Example context (json):
-    {
-        "uniqid": "abc123",
-        "searchplaceholder": "Search courses",
-        "nocoursesfound": "No courses found"
-    }
+Example context (json):
+{
+"uniqid": "abc123",
+"searchplaceholder": "Search courses",
+"nocoursesfound": "No courses found"
+}
 }}
-<div id="local-courses-nav-{{uniqid}}" class="local-courses-nav-allcourses" data-region="allcourses">
-    {{! Filter bar }}
-    <div class="allcourses-filter-bar d-flex align-items-center justify-content-between flex-wrap mb-3 gap-2">
-        <div class="d-flex align-items-center flex-grow-1 gap-2">
-            {{! Search input }}
-            <div class="allcourses-search-wrapper position-relative flex-grow-1" style="max-width: 400px;">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-right-0">
-                            <i class="fa fa-search text-muted"></i>
-                        </span>
-                    </div>
-                    <input type="text"
-                           class="form-control border-left-0"
-                           data-action="search"
-                           placeholder="{{searchplaceholder}}"
-                           aria-label="{{searchplaceholder}}">
-                    <div class="input-group-append d-none" data-region="clear-search">
-                        <button class="btn btn-outline-secondary border-left-0" type="button" data-action="clearsearch">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
+<div id="block-myoverview-{{uniqid}}" class="block-myoverview block-cards" data-region="myoverview"
+    data-region-allcourses="true">
+    <div role="search" data-region="filter" class="d-flex align-items-center my-2"
+        aria-label="{{#str}}courseoverview, local_courses_nav{{/str}}">
+        <div class="row g-0">
+            {{! Grouping selector - matching nav-grouping-selector }}
+            <div class="dropdown mb-1 me-1">
+                <button id="groupingdropdown" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    aria-label="{{#str}}all, local_courses_nav{{/str}}">
+                    <span data-active-item-text>
+                        {{#str}}all, local_courses_nav{{/str}}
+                    </span>
+                </button>
+                <ul class="dropdown-menu" role="menu" data-show-active-item data-skip-active-class="true"
+                    data-active-item-text aria-labelledby="groupingdropdown">
+                    <li>
+                        <a class="dropdown-item" href="#" data-filter="grouping" data-value="all" data-pref="all"
+                            role="menuitem" aria-current="true">
+                            {{#str}}all, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                    <li class="dropdown-divider" role="presentation">
+                        <span class="filler">&nbsp;</span>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" data-filter="grouping" data-value="inprogress"
+                            data-pref="inprogress" role="menuitem">
+                            {{#str}}inprogress, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                    <li class="dropdown-divider" role="presentation">
+                        <span class="filler">&nbsp;</span>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" data-filter="grouping" data-value="future" data-pref="future"
+                            role="menuitem">
+                            {{#str}}future, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" data-filter="grouping" data-value="past" data-pref="past"
+                            role="menuitem">
+                            {{#str}}past, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            {{! Search widget - matching nav-search-widget }}
+            <div class="mb-1 me-1 flex-grow-1">
+                <div class="input-group simplesearchform" role="search" data-region="search-widget">
+                    <input type="text" class="form-control" data-action="search" placeholder="{{searchplaceholder}}"
+                        aria-label="{{searchplaceholder}}">
+                   
                 </div>
             </div>
-        </div>
 
-        <div class="d-flex align-items-center gap-2">
-            {{! Sort selector }}
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+            {{! Sort selector - matching nav-sort-selector }}
+            <div class="mb-1 me-1 d-flex flex-wrap align-items-center">
+                <div class="dropdown">
+                    <button id="sortingdropdown" type="button" class="btn btn-outline-secondary dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        data-region="sort-button">
-                    <i class="fa fa-sort-alpha-asc mr-1"></i>
-                    {{#str}}sortbyfullname, local_courses_nav{{/str}}
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item active" href="#" data-action="sort" data-sort="fullname">
-                        <i class="fa fa-sort-alpha-asc mr-2"></i>{{#str}}sortbyfullname, local_courses_nav{{/str}}
-                    </a>
-                    <a class="dropdown-item" href="#" data-action="sort" data-sort="timecreated">
-                        <i class="fa fa-clock-o mr-2"></i>{{#str}}sortbylatest, local_courses_nav{{/str}}
-                    </a>
+                        aria-label="{{#str}}sortbyfullname, local_courses_nav{{/str}}">
+                        <span data-active-item-text>
+                            {{#str}}sortbyfullname, local_courses_nav{{/str}}
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" data-show-active-item data-skip-active-class="true"
+                        aria-labelledby="sortingdropdown">
+                        <li>
+                            <a class="dropdown-item" href="#" data-filter="sort" data-pref="title" data-value="fullname"
+                                role="menuitem" aria-current="true">
+                                {{#str}}sortbyfullname, local_courses_nav{{/str}}
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-filter="sort" data-pref="lastaccessed"
+                                data-value="lastaccess" role="menuitem">
+                                {{#str}}sortbylastaccess, local_courses_nav{{/str}}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            {{! View selector }}
-            <div class="btn-group" role="group" aria-label="View mode">
-                <button type="button" class="btn btn-outline-secondary active" data-action="viewmode" data-mode="card"
-                        title="Card view">
-                    <i class="fa fa-th-large"></i>
+            {{! Display/view selector - matching nav-display-selector }}
+            <div class="dropdown mb-1">
+                <button id="displaydropdown" type="button" class="btn btn-outline-secondary dropdown-toggle"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    aria-label="{{#str}}cardview, local_courses_nav{{/str}}">
+                    <span data-active-item-text>
+                        {{#str}}cardview, local_courses_nav{{/str}}
+                    </span>
                 </button>
-                <button type="button" class="btn btn-outline-secondary" data-action="viewmode" data-mode="list"
-                        title="List view">
-                    <i class="fa fa-list"></i>
-                </button>
+                <ul class="dropdown-menu" role="menu" data-show-active-item data-skip-active-class="true"
+                    aria-labelledby="displaydropdown">
+                    <li>
+                        <a class="dropdown-item" href="#" data-display-option="display" data-value="card"
+                            data-pref="card" role="menuitem" aria-current="true">
+                            {{#str}}cardview, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" data-display-option="display" data-value="list"
+                            data-pref="list" role="menuitem">
+                            {{#str}}listview, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" data-display-option="display" data-value="summary"
+                            data-pref="summary" role="menuitem">
+                            {{#str}}summaryview, local_courses_nav{{/str}}
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 
-    {{! Course count }}
-    <div class="allcourses-info mb-3 d-none" data-region="course-info">
-        <small class="text-muted" data-region="course-count"></small>
-    </div>
-
-    {{! Courses container }}
-    <div data-region="courses-container" class="allcourses-courses-container">
-        {{! Loading placeholder }}
-        <div data-region="loading" class="text-center py-5">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-
-        {{! Course cards will be rendered here }}
-        <div data-region="course-list" class="d-none">
-            <div data-region="course-items" class="allcourses-grid"></div>
-        </div>
-
-        {{! No courses message }}
-        <div data-region="no-courses" class="d-none text-center py-5">
-            <div class="allcourses-empty-state">
-                <i class="fa fa-graduation-cap fa-3x text-muted mb-3"></i>
-                <p class="text-muted">{{nocoursesfound}}</p>
+    {{! Courses view container - matching block_myoverview/courses-view }}
+    <div class="container-fluid p-0">
+        <div id="courses-view-{{uniqid}}" data-region="courses-view" data-display="card" data-grouping="all"
+            data-sort="fullname" data-paging="12">
+            <div data-region="course-view-content">
+                {{! Loading placeholder }}
+                <div data-region="loading-placeholder-content" aria-hidden="true">
+                    <div class="card-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 mx-0 flex-nowrap overflow-hidden"
+                        style="height: 13rem">
+                        <div class="col d-flex px-1">
+                            <div class="card course-card mx-1 w-100">
+                                <div class="card-img-top placeholder-pulse" style="height: 7rem; background: #e9ecef;">
+                                </div>
+                                <div class="card-body">
+                                    <div class="placeholder-pulse"
+                                        style="height: 1rem; width: 80%; background: #e9ecef; border-radius: 4px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex px-1">
+                            <div class="card course-card mx-1 w-100">
+                                <div class="card-img-top placeholder-pulse" style="height: 7rem; background: #e9ecef;">
+                                </div>
+                                <div class="card-body">
+                                    <div class="placeholder-pulse"
+                                        style="height: 1rem; width: 80%; background: #e9ecef; border-radius: 4px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex px-1">
+                            <div class="card course-card mx-1 w-100">
+                                <div class="card-img-top placeholder-pulse" style="height: 7rem; background: #e9ecef;">
+                                </div>
+                                <div class="card-body">
+                                    <div class="placeholder-pulse"
+                                        style="height: 1rem; width: 80%; background: #e9ecef; border-radius: 4px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     {{! Pagination }}
-    <div data-region="pagination" class="d-none mt-4">
-        <div class="d-flex justify-content-center align-items-center gap-3">
-            <button class="btn btn-outline-primary" data-action="loadmore">
-                <i class="fa fa-refresh mr-1"></i>
-                {{#str}}loadmore, local_courses_nav{{/str}}
-            </button>
+    <div data-region="paging-bar" class="d-none mt-3">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            {{! Per page selector }}
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted">{{#str}}show, local_courses_nav{{/str}}</span>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-region="perpage-button">
+                        12
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item active" href="#" data-action="perpage" data-value="12">12</a>
+                        <a class="dropdown-item" href="#" data-action="perpage" data-value="24">24</a>
+                        <a class="dropdown-item" href="#" data-action="perpage" data-value="48">48</a>
+                        <a class="dropdown-item" href="#" data-action="perpage" data-value="0">
+                            {{#str}}showall, local_courses_nav{{/str}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{! Page number navigation }}
+            <nav aria-label="Page navigation" data-region="page-nav" class="d-none">
+                <ul class="pagination pagination-sm mb-0" data-region="page-numbers">
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
 
 {{#js}}
 require(['local_courses_nav/allcourses'], function(AllCourses) {
-    AllCourses.init('local-courses-nav-{{uniqid}}');
+AllCourses.init('block-myoverview-{{uniqid}}');
 });
 {{/js}}

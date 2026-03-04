@@ -32,7 +32,27 @@ $string['allcoursespagetitle'] = 'All Courses';
 $string['searchcourses'] = 'Search courses';
 $string['sortbyfullname'] = 'Sort by course name';
 $string['sortbylatest'] = 'Sort by latest';
+$string['sortbylastaccess'] = 'Sort by last accessed';
 $string['nocoursesfound'] = 'No courses found';
 $string['loadmore'] = 'Load more';
 $string['showing'] = 'Showing {$a->count} of {$a->total} courses';
 $string['privacy:metadata'] = 'The Courses Navigation plugin does not store any personal data.';
+
+// Section tabs.
+$string['all'] = 'All';
+$string['inprogress'] = 'In progress';
+$string['future'] = 'Future';
+$string['past'] = 'Past';
+
+// Filter/view strings.
+$string['filterbycategory'] = 'Category';
+$string['allcategories'] = 'All categories';
+$string['cardview'] = 'Card';
+$string['listview'] = 'List';
+$string['summaryview'] = 'Summary';
+$string['show'] = 'Show';
+$string['showall'] = 'All';
+$string['courseoverview'] = 'Course overview';
+$string['complete'] = '{$a}% complete';
+$string['paginationnext'] = 'Next';
+$string['paginationprev'] = 'Previous';

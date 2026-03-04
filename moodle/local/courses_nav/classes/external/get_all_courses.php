@@ -28,7 +28,7 @@ use core_external\external_value;
 use core_course_category;
 
 /**
- * External function to get all courses with pagination and search.
+ * External function to get all courses with pagination, search, and filtering.
  *
  * @package    local_courses_nav
  * @copyright  2026 Your Name
@@ -45,8 +45,10 @@ class get_all_courses extends external_api {
         return new external_function_parameters([
             'search' => new external_value(PARAM_RAW, 'Search string', VALUE_DEFAULT, ''),
             'page' => new external_value(PARAM_INT, 'Page number (0-based)', VALUE_DEFAULT, 0),
-            'perpage' => new external_value(PARAM_INT, 'Items per page', VALUE_DEFAULT, 12),
-            'sort' => new external_value(PARAM_ALPHA, 'Sort field: fullname or timecreated', VALUE_DEFAULT, 'fullname'),
+            'perpage' => new external_value(PARAM_INT, 'Items per page (0 = all)', VALUE_DEFAULT, 12),
+            'sort' => new external_value(PARAM_ALPHANUMEXT, 'Sort field: fullname or lastaccess', VALUE_DEFAULT, 'fullname'),
+            'classification' => new external_value(PARAM_ALPHA, 'Classification: all, inprogress, future, past', VALUE_DEFAULT, 'all'),
+            'category' => new external_value(PARAM_INT, 'Category ID (0 = all)', VALUE_DEFAULT, 0),
         ]);
     }
 
@@ -57,16 +59,27 @@ class get_all_courses extends external_api {
      * @param int $page Page number.
      * @param int $perpage Items per page.
      * @param string $sort Sort field.
+     * @param string $classification Classification filter.
+     * @param int $category Category ID filter.
      * @return array
      */
-    public static function execute(string $search = '', int $page = 0, int $perpage = 12, string $sort = 'fullname'): array {
-        global $DB, $OUTPUT, $SITE;
+    public static function execute(
+        string $search = '',
+        int $page = 0,
+        int $perpage = 12,
+        string $sort = 'fullname',
+        string $classification = 'all',
+        int $category = 0
+    ): array {
+        global $DB, $OUTPUT, $SITE, $USER;
 
         $params = self::validate_parameters(self::execute_parameters(), [
             'search' => $search,
             'page' => $page,
             'perpage' => $perpage,
             'sort' => $sort,
+            'classification' => $classification,
+            'category' => $category,
         ]);
 
         $context = \context_system::instance();
@@ -76,8 +89,12 @@ class get_all_courses extends external_api {
         $page = $params['page'];
         $perpage = $params['perpage'];
         $sort = $params['sort'];
+        $classification = $params['classification'];
+        $category = $params['category'];
 
-        // Build SQL to get all visible courses (exclude site course).
+        $now = time();
+
+        // Build SQL conditions.
         $conditions = ['c.id != :siteid'];
         $sqlparams = ['siteid' => $SITE->id];
 
@@ -86,36 +103,77 @@ class get_all_courses extends external_api {
             $conditions[] = 'c.visible = 1';
         }
 
-        // Search filter.
+        // Classification filter based on start/end dates.
+        switch ($classification) {
+            case 'inprogress':
+                $conditions[] = '(c.startdate > 0 AND c.startdate <= :now1 AND (c.enddate = 0 OR c.enddate > :now2))';
+                $sqlparams['now1'] = $now;
+                $sqlparams['now2'] = $now;
+                break;
+            case 'future':
+                $conditions[] = '(c.startdate > :now3)';
+                $sqlparams['now3'] = $now;
+                break;
+            case 'past':
+                $conditions[] = '(c.enddate > 0 AND c.enddate < :now4)';
+                $sqlparams['now4'] = $now;
+                break;
+            // 'all' - no date filter.
+        }
+
+        // Category filter.
+        if (!empty($category)) {
+            $conditions[] = 'c.category = :categoryid';
+            $sqlparams['categoryid'] = $category;
+        }
+
+        // Search filter - search in fullname, shortname, and summary.
         if (!empty($search)) {
-            $conditions[] = '(' . $DB->sql_like('c.fullname', ':search1', false) .
-                ' OR ' . $DB->sql_like('c.shortname', ':search2', false) . ')';
+            $conditions[] = '(' .
+                $DB->sql_like('c.fullname', ':search1', false) .
+                ' OR ' . $DB->sql_like('c.shortname', ':search2', false) .
+                ' OR ' . $DB->sql_like('c.summary', ':search3', false) .
+            ')';
             $sqlparams['search1'] = '%' . $DB->sql_like_escape($search) . '%';
             $sqlparams['search2'] = '%' . $DB->sql_like_escape($search) . '%';
+            $sqlparams['search3'] = '%' . $DB->sql_like_escape($search) . '%';
         }
 
         $where = implode(' AND ', $conditions);
 
-        // Sort.
+        // Sort order.
         $orderby = 'c.fullname ASC';
-        if ($sort === 'timecreated') {
-            $orderby = 'c.timecreated DESC';
+        if ($sort === 'lastaccess') {
+            // Join with user_lastaccess for sorting.
+            $orderby = 'COALESCE(ul.timeaccess, 0) DESC, c.fullname ASC';
+        }
+
+        // Build the base SQL with optional lastaccess join.
+        $joinsql = '';
+        if ($sort === 'lastaccess') {
+            $joinsql = ' LEFT JOIN {user_lastaccess} ul ON ul.courseid = c.id AND ul.userid = :userid';
+            $sqlparams['userid'] = $USER->id;
         }
 
         // Count total.
-        $totalcount = $DB->count_records_sql(
-            "SELECT COUNT(*) FROM {course} c WHERE $where",
-            $sqlparams
-        );
+        $countsql = "SELECT COUNT(DISTINCT c.id) FROM {course} c $joinsql WHERE $where";
+        $totalcount = $DB->count_records_sql($countsql, $sqlparams);
 
         // Get courses.
-        $offset = $page * $perpage;
         $sql = "SELECT c.id, c.fullname, c.shortname, c.summary, c.summaryformat,
                        c.startdate, c.enddate, c.visible, c.timecreated, c.category
                   FROM {course} c
+                  $joinsql
                  WHERE $where
               ORDER BY $orderby";
-        $records = $DB->get_records_sql($sql, $sqlparams, $offset, $perpage);
+
+        if ($perpage > 0) {
+            $offset = $page * $perpage;
+            $records = $DB->get_records_sql($sql, $sqlparams, $offset, $perpage);
+        } else {
+            // perpage = 0 means show all.
+            $records = $DB->get_records_sql($sql, $sqlparams);
+        }
 
         $courses = [];
         foreach ($records as $record) {
@@ -130,17 +188,26 @@ class get_all_courses extends external_api {
 
             // Get category name.
             $categoryname = '';
+            $categoryid = 0;
             if ($record->category) {
-                $category = core_course_category::get($record->category, IGNORE_MISSING);
-                if ($category) {
-                    $categoryname = format_string($category->name);
+                $cat = core_course_category::get($record->category, IGNORE_MISSING);
+                if ($cat) {
+                    $categoryname = format_string($cat->name);
+                    $categoryid = (int)$record->category;
                 }
             }
 
-            // Determine course status based on dates.
-            $now = time();
+            // Get progress percentage.
             $hasprogress = false;
             $progress = 0;
+            $completion = new \completion_info(get_course($record->id));
+            if ($completion->is_enabled()) {
+                $progressval = \core_completion\progress::get_course_progress_percentage(get_course($record->id), $USER->id);
+                if ($progressval !== null) {
+                    $hasprogress = true;
+                    $progress = (int)round($progressval);
+                }
+            }
 
             // Format summary.
             list($summary, $summaryformat) = \core_external\util::format_text(
@@ -158,6 +225,7 @@ class get_all_courses extends external_api {
                 'courseimage' => $courseimage,
                 'viewurl' => $courseurl->out(false),
                 'categoryname' => $categoryname,
+                'categoryid' => $categoryid,
                 'visible' => (int)$record->visible,
                 'startdate' => (int)$record->startdate,
                 'enddate' => (int)$record->enddate,
@@ -193,6 +261,7 @@ class get_all_courses extends external_api {
                     'courseimage' => new external_value(PARAM_URL, 'Course image URL'),
                     'viewurl' => new external_value(PARAM_URL, 'Course view URL'),
                     'categoryname' => new external_value(PARAM_RAW, 'Category name'),
+                    'categoryid' => new external_value(PARAM_INT, 'Category ID'),
                     'visible' => new external_value(PARAM_INT, 'Course visibility'),
                     'startdate' => new external_value(PARAM_INT, 'Course start date'),
                     'enddate' => new external_value(PARAM_INT, 'Course end date'),

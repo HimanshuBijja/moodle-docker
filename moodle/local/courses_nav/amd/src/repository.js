@@ -21,22 +21,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-import Ajax from 'core/ajax';
+define(['core/ajax'], function(Ajax) {
 
-/**
- * Get all courses with pagination and search.
- *
- * @param {Object} args The request arguments.
- * @param {string} args.search Search string.
- * @param {number} args.page Page number.
- * @param {number} args.perpage Items per page.
- * @param {string} args.sort Sort field.
- * @return {Promise} Resolved with courses data.
- */
-export const getAllCourses = (args) => {
-    const request = {
-        methodname: 'local_courses_nav_get_all_courses',
-        args: args,
+    /**
+     * Get all courses with pagination, search, and filtering.
+     *
+     * @param {Object} args The request arguments.
+     * @return {Promise} Resolved with courses data.
+     */
+    var getAllCourses = function(args) {
+        var request = {
+            methodname: 'local_courses_nav_get_all_courses',
+            args: args
+        };
+        return Ajax.call([request])[0];
     };
-    return Ajax.call([request])[0];
-};
+
+    return {
+        getAllCourses: getAllCourses
+    };
+});

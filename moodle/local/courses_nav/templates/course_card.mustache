@@ -1,26 +1,58 @@
 {{!
 @template local_courses_nav/course_card
 
-Renders a single course card.
+Renders a single course card matching the core_course/coursecard structure used by block_myoverview.
+This template is rendered per-course by JS.
+
+Example context (json):
+{
+"id": 2,
+"fullname": "Course name",
+"viewurl": "https://moodlesite/course/view.php?id=2",
+"courseimage": "https://moodlesite/pluginfile/123/course/overviewfiles/123.jpg",
+"hasprogress": true,
+"progress": 10,
+"visible": true,
+"showcoursecategory": true,
+"coursecategory": "Category 1"
+}
 }}
-<div class="allcourses-card card mb-3" data-course-id="{{id}}">
-    <a href="{{viewurl}}" class="allcourses-card-link text-decoration-none">
-        <div class="allcourses-card-image-wrapper">
-            <img src="{{courseimage}}" class="card-img-top allcourses-card-image" alt="{{fullname}}">
-            {{^visible}}
-            <span class="badge badge-warning allcourses-card-badge">{{#str}}hidden, core{{/str}}</span>
-            {{/visible}}
-        </div>
-        <div class="card-body">
-            <h5 class="card-title allcourses-card-title mb-1">{{fullname}}</h5>
-            {{#showcoursecategory}}
-            {{#categoryname}}
-            <small class="text-muted d-block mb-2">
-                <i class="fa fa-folder-o mr-1"></i>{{categoryname}}
-            </small>
-            {{/categoryname}}
-            {{/showcoursecategory}}
-            <p class="card-text allcourses-card-shortname text-muted small">{{shortname}}</p>
+<div class="card course-card mx-1" role="listitem" data-region="course-content" data-course-id="{{{id}}}">
+    <a href="{{viewurl}}" tabindex="-1">
+        <div class="card-img-top" style='background-image: url("{{{courseimage}}}");'>
+            <span class="sr-only">{{fullname}}</span>
         </div>
     </a>
+    <div class="card-body pe-1 course-info-container" id="course-info-container-{{id}}">
+        <div class="d-flex align-items-start">
+            <div class="w-100 text-truncate">
+                <a href="{{viewurl}}" class="aalink coursename me-2 mb-1">
+                    <span class="multiline" title="{{fullname}}">
+                        {{fullname}}
+                    </span>
+                </a>
+                <div class="text-muted muted d-flex flex-wrap">
+                    {{#showcoursecategory}}
+                    <span class="categoryname text-truncate">
+                        {{{coursecategory}}}
+                    </span>
+                    {{/showcoursecategory}}
+                </div>
+                {{^visible}}
+                <div class="d-flex flex-wrap">
+                    <span class="badge bg-info text-white">{{#str}}hiddenfromstudents{{/str}}</span>
+                </div>
+                {{/visible}}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-start">
+        {{#hasprogress}}
+        <div class="card-footer border-0 bg-white w-100">
+            <div class="progress-text">
+                {{progress}}% complete
+            </div>
+        </div>
+        {{/hasprogress}}
+    </div>
 </div>
