@@ -1,0 +1,27 @@
+{{!
+@template local_courses_nav/course_list_item
+
+Renders a single course as a list item.
+}}
+<div class="allcourses-list-item d-flex align-items-center p-3 border-bottom" data-course-id="{{id}}">
+    <a href="{{viewurl}}" class="d-flex align-items-center text-decoration-none w-100">
+        <div class="allcourses-list-image-wrapper mr-3 flex-shrink-0">
+            <img src="{{courseimage}}" class="allcourses-list-image rounded" alt="{{fullname}}"
+                style="width: 64px; height: 64px; object-fit: cover;">
+        </div>
+        <div class="flex-grow-1 min-w-0">
+            <h6 class="mb-0 text-truncate text-dark">{{fullname}}</h6>
+            <small class="text-muted">{{shortname}}</small>
+            {{#showcoursecategory}}
+            {{#categoryname}}
+            <small class="text-muted d-block">
+                <i class="fa fa-folder-o mr-1"></i>{{categoryname}}
+            </small>
+            {{/categoryname}}
+            {{/showcoursecategory}}
+        </div>
+        {{^visible}}
+        <span class="badge badge-warning ml-2">{{#str}}hidden, core{{/str}}</span>
+        {{/visible}}
+    </a>
+</div>

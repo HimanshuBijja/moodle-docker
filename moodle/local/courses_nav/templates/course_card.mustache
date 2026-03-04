@@ -1,0 +1,26 @@
+{{!
+@template local_courses_nav/course_card
+
+Renders a single course card.
+}}
+<div class="allcourses-card card mb-3" data-course-id="{{id}}">
+    <a href="{{viewurl}}" class="allcourses-card-link text-decoration-none">
+        <div class="allcourses-card-image-wrapper">
+            <img src="{{courseimage}}" class="card-img-top allcourses-card-image" alt="{{fullname}}">
+            {{^visible}}
+            <span class="badge badge-warning allcourses-card-badge">{{#str}}hidden, core{{/str}}</span>
+            {{/visible}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title allcourses-card-title mb-1">{{fullname}}</h5>
+            {{#showcoursecategory}}
+            {{#categoryname}}
+            <small class="text-muted d-block mb-2">
+                <i class="fa fa-folder-o mr-1"></i>{{categoryname}}
+            </small>
+            {{/categoryname}}
+            {{/showcoursecategory}}
+            <p class="card-text allcourses-card-shortname text-muted small">{{shortname}}</p>
+        </div>
+    </a>
+</div>

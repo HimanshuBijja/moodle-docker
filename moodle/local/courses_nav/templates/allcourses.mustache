@@ -1,0 +1,131 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_courses_nav/allcourses
+
+    All Courses page template.
+
+    Example context (json):
+    {
+        "uniqid": "abc123",
+        "searchplaceholder": "Search courses",
+        "nocoursesfound": "No courses found"
+    }
+}}
+<div id="local-courses-nav-{{uniqid}}" class="local-courses-nav-allcourses" data-region="allcourses">
+    {{! Filter bar }}
+    <div class="allcourses-filter-bar d-flex align-items-center justify-content-between flex-wrap mb-3 gap-2">
+        <div class="d-flex align-items-center flex-grow-1 gap-2">
+            {{! Search input }}
+            <div class="allcourses-search-wrapper position-relative flex-grow-1" style="max-width: 400px;">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-white border-right-0">
+                            <i class="fa fa-search text-muted"></i>
+                        </span>
+                    </div>
+                    <input type="text"
+                           class="form-control border-left-0"
+                           data-action="search"
+                           placeholder="{{searchplaceholder}}"
+                           aria-label="{{searchplaceholder}}">
+                    <div class="input-group-append d-none" data-region="clear-search">
+                        <button class="btn btn-outline-secondary border-left-0" type="button" data-action="clearsearch">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+            {{! Sort selector }}
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        data-region="sort-button">
+                    <i class="fa fa-sort-alpha-asc mr-1"></i>
+                    {{#str}}sortbyfullname, local_courses_nav{{/str}}
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item active" href="#" data-action="sort" data-sort="fullname">
+                        <i class="fa fa-sort-alpha-asc mr-2"></i>{{#str}}sortbyfullname, local_courses_nav{{/str}}
+                    </a>
+                    <a class="dropdown-item" href="#" data-action="sort" data-sort="timecreated">
+                        <i class="fa fa-clock-o mr-2"></i>{{#str}}sortbylatest, local_courses_nav{{/str}}
+                    </a>
+                </div>
+            </div>
+
+            {{! View selector }}
+            <div class="btn-group" role="group" aria-label="View mode">
+                <button type="button" class="btn btn-outline-secondary active" data-action="viewmode" data-mode="card"
+                        title="Card view">
+                    <i class="fa fa-th-large"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-action="viewmode" data-mode="list"
+                        title="List view">
+                    <i class="fa fa-list"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    {{! Course count }}
+    <div class="allcourses-info mb-3 d-none" data-region="course-info">
+        <small class="text-muted" data-region="course-count"></small>
+    </div>
+
+    {{! Courses container }}
+    <div data-region="courses-container" class="allcourses-courses-container">
+        {{! Loading placeholder }}
+        <div data-region="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        {{! Course cards will be rendered here }}
+        <div data-region="course-list" class="d-none">
+            <div data-region="course-items" class="allcourses-grid"></div>
+        </div>
+
+        {{! No courses message }}
+        <div data-region="no-courses" class="d-none text-center py-5">
+            <div class="allcourses-empty-state">
+                <i class="fa fa-graduation-cap fa-3x text-muted mb-3"></i>
+                <p class="text-muted">{{nocoursesfound}}</p>
+            </div>
+        </div>
+    </div>
+
+    {{! Pagination }}
+    <div data-region="pagination" class="d-none mt-4">
+        <div class="d-flex justify-content-center align-items-center gap-3">
+            <button class="btn btn-outline-primary" data-action="loadmore">
+                <i class="fa fa-refresh mr-1"></i>
+                {{#str}}loadmore, local_courses_nav{{/str}}
+            </button>
+        </div>
+    </div>
+</div>
+
+{{#js}}
+require(['local_courses_nav/allcourses'], function(AllCourses) {
+    AllCourses.init('local-courses-nav-{{uniqid}}');
+});
+{{/js}}
