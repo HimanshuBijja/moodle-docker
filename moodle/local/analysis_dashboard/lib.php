@@ -84,26 +84,6 @@ function local_analysis_dashboard_extend_navigation(global_navigation $navigatio
 }
 
 /**
- * Extends the course settings navigation with the course analytics link.
- *
- * @param navigation_node $settingsnav The settings navigation node.
- * @param context $context The current context.
- */
-function local_analysis_dashboard_extend_navigation_course(navigation_node $settingsnav, stdClass $course,
-        context_course $context) {
-    if (has_capability('local/analysis_dashboard:viewcourse', $context)) {
-        $settingsnav->add(
-            get_string('course_report', 'local_analysis_dashboard'),
-            new moodle_url('/local/analysis_dashboard/coursereport.php', ['id' => $course->id]),
-            navigation_node::TYPE_CUSTOM,
-            null,
-            'analysis_dashboard_course',
-            new pix_icon('i/report', '')
-        );
-    }
-}
-
-/**
  * Adds 'My Analytics' to the user profile navigation.
  *
  * @param \core_user\output\myprofile\tree $tree The myprofile tree.

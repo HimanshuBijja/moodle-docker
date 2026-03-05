@@ -74,7 +74,6 @@ class course_report_page implements renderable, templatable {
         // Get widgets that support course context.
         $allwidgets = widget_registry::get_all();
         $data->widgets = [];
-        $feedbacksummarywidget = null;
 
         foreach ($allwidgets as $id => $widget) {
             // Only include widgets that support CONTEXT_COURSE.
@@ -90,14 +89,6 @@ class course_report_page implements renderable, templatable {
             $section = method_exists($widget, 'get_section') ? $widget->get_section() : '';
 
             if ($section === 'feedback_analysis') {
-                // Capture the feedback_summary widget for the feedback section.
-                if ($id === 'feedback_summary') {
-                    $feedbacksummarywidget = (object) [
-                        'id' => $id,
-                        'name' => get_string($widget->get_name(), 'local_analysis_dashboard'),
-                        'type' => $widget->get_type(),
-                    ];
-                }
                 // Don't add feedback_analysis widgets to the main grid.
                 continue;
             }
@@ -143,8 +134,6 @@ class course_report_page implements renderable, templatable {
         $data->has_feedback_forms = !empty($feedbackforms);
         $data->feedback_forms = $feedbackforms;
         $data->feedback_forms_json = json_encode($feedbackforms);
-        $data->feedback_summary_widget = $feedbacksummarywidget;
-        $data->has_feedback_summary = !empty($feedbacksummarywidget);
         $data->feedback_section_title = get_string('feedback_analysis_section', 'local_analysis_dashboard');
         $data->feedback_section_desc = get_string('feedback_analysis_desc', 'local_analysis_dashboard');
 

@@ -19,10 +19,9 @@ Context variables required for this template:
 * has_feedback_forms - Whether there are feedback activities
 * feedback_forms - Array of feedback form objects (id, name, has_comments)
 * feedback_forms_json - JSON-encoded feedback forms
-* feedback_summary_widget - The master feedback summary widget config
-* has_feedback_summary - Whether master summary widget is available
 * feedback_section_title - Section title string
 * feedback_section_desc - Section description string
+* courseshortname - Course short name for export filenames
 
 Example context (json):
 {
@@ -43,9 +42,9 @@ Example context (json):
 "has_feedback_forms": true,
 "feedback_forms": [{"id": 1, "name": "End of Course Survey", "has_comments": true}],
 "feedback_forms_json": "[{\"id\":1,\"name\":\"End of Course Survey\",\"has_comments\":true}]",
-"has_feedback_summary": true,
 "feedback_section_title": "Feedback Analysis",
-"feedback_section_desc": "Response distribution across all feedback forms"
+"feedback_section_desc": "Response distribution across all feedback forms",
+"courseshortname": "CS101"
 }
 }}
 <div data-region="analysis-dashboard-course" class="analysis-dashboard" role="main" aria-label="{{pagetitle}}">
@@ -95,23 +94,39 @@ Example context (json):
     {{#has_feedback_forms}}
     <div class="feedback-analysis-section" data-region="feedback-analysis">
         <div class="feedback-analysis-header mb-4">
-            <h3 class="d-flex align-items-center">
-                <span class="feedback-section-icon mr-2">
-                    <i class="fa fa-comments" aria-hidden="true"></i>
-                </span>
-                {{feedback_section_title}}
-            </h3>
-            <p class="text-muted mb-0">{{feedback_section_desc}}</p>
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+                <div>
+                    <h3 class="d-flex align-items-center">
+                        <span class="feedback-section-icon mr-2">
+                            <i class="fa fa-comments" aria-hidden="true"></i>
+                        </span>
+                        {{feedback_section_title}}
+                    </h3>
+                    <p class="text-muted mb-0">{{feedback_section_desc}}</p>
+                </div>
+                <div class="dropdown" data-region="feedback-export">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="feedbackExportDropdown"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-download mr-1" aria-hidden="true"></i>
+                        {{#str}}export_feedback, local_analysis_dashboard{{/str}}
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="feedbackExportDropdown">
+                        <a class="dropdown-item" href="#" data-export-format="csv">
+                            <i class="fa fa-file-text-o mr-2" aria-hidden="true"></i>
+                            {{#str}}export_csv, local_analysis_dashboard{{/str}}
+                        </a>
+                        <a class="dropdown-item" href="#" data-export-format="xlsx">
+                            <i class="fa fa-file-excel-o mr-2" aria-hidden="true"></i>
+                            {{#str}}export_excel, local_analysis_dashboard{{/str}}
+                        </a>
+                        <a class="dropdown-item" href="#" data-export-format="pdf">
+                            <i class="fa fa-file-pdf-o mr-2" aria-hidden="true"></i>
+                            {{#str}}export_pdf, local_analysis_dashboard{{/str}}
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {{! Master Feedback Summary Widget }}
-        {{#has_feedback_summary}}
-        <div class="analysis-dashboard-grid mb-4">
-            {{#feedback_summary_widget}}
-            {{> local_analysis_dashboard/widget_card}}
-            {{/feedback_summary_widget}}
-        </div>
-        {{/has_feedback_summary}}
 
         {{! Per-Form Feedback Widgets }}
         <div class="feedback-forms-container">
@@ -181,7 +196,11 @@ Example context (json):
 </div>
 
 {{#js}}
-require(['local_analysis_dashboard/course_dashboard'], function(CourseDashboard) {
+require(['local_analysis_dashboard/course_dashboard', 'local_analysis_dashboard/feedback_export'],
+function(CourseDashboard, FeedbackExport) {
 CourseDashboard.init({{{widgets_json}}}, {{courseid}}, {{{feedback_forms_json}}});
+{{#tab_feedback_active}}
+FeedbackExport.init({{{feedback_forms_json}}}, {{courseid}}, '{{courseshortname}}');
+{{/tab_feedback_active}}
 });
 {{/js}}

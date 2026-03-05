@@ -209,14 +209,6 @@ $capabilities = [
             'teacher' => CAP_ALLOW,
         ],
     ],
-    'local/analysis_dashboard:widget_feedback_summary' => [
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => [
-            'editingteacher' => CAP_ALLOW,
-            'teacher' => CAP_ALLOW,
-        ],
-    ],
     'local/analysis_dashboard:widget_feedback_form_analysis' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,

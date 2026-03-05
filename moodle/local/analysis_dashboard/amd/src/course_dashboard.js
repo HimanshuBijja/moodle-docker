@@ -260,19 +260,6 @@ define(['jquery', 'core/ajax', 'core/notification', 'local_analysis_dashboard/wi
                 });
             }
 
-            // Also load the feedback_summary widget if it exists in the feedback section.
-            var summaryCards = document.querySelectorAll(
-                '.feedback-analysis-section .analysis-dashboard-widget[data-widget-id="feedback_summary"]'
-            );
-            if (summaryCards.length > 0) {
-                LazyLoader.init(summaryCards, function(el) {
-                    loadWidget({
-                        id: 'feedback_summary',
-                        name: el.getAttribute('aria-label') || 'Feedback Summary',
-                        type: el.dataset.widgetType || 'bar'
-                    }, courseid);
-                });
-            }
         }
     };
 });

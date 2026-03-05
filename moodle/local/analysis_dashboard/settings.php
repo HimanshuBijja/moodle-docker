@@ -82,7 +82,6 @@ if ($hassiteconfig) {
                 'enrollment_stats', 'completion_progress', 'grade_distribution',
                 'course_visits', 'activity_completion', 'recent_activity',
                 'at_risk_students', 'activity_heatmap', 'quiz_analytics',
-                'feedback_summary',
                 'feedback_form_analysis',
             ],
         ],

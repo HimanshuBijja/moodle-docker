@@ -29,4 +29,8 @@ $callbacks = [
         'hook' => \core\hook\navigation\primary_extend::class,
         'callback' => \local_analysis_dashboard\hook_callbacks::class . '::add_primary_nav',
     ],
+    [
+        'hook' => \core\hook\navigation\secondary_extend::class,
+        'callback' => \local_analysis_dashboard\hook_callbacks::class . '::add_course_nav',
+    ],
 ];

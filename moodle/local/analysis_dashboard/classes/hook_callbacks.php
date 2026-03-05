@@ -59,4 +59,42 @@ class hook_callbacks {
             new \pix_icon('i/report', '')
         );
     }
+
+    /**
+     * Add the Analysis Dashboard link to the course secondary navigation bar.
+     *
+     * This places "Analysis Dashboard" in the main course navigation tabs
+     * (beside Course, Participants, Grades) instead of under "More".
+     *
+     * @param \core\hook\navigation\secondary_extend $hook
+     */
+    public static function add_course_nav(\core\hook\navigation\secondary_extend $hook): void {
+        global $PAGE;
+
+        $context = $PAGE->context;
+
+        // Only add in course context.
+        if ($context->contextlevel !== CONTEXT_COURSE) {
+            return;
+        }
+
+        // Check capability.
+        if (!has_capability('local/analysis_dashboard:viewcourse', $context)) {
+            return;
+        }
+
+        $course = $PAGE->course;
+        $secondaryview = $hook->get_secondaryview();
+
+        $url = new \moodle_url('/local/analysis_dashboard/coursereport.php', ['id' => $course->id]);
+
+        $secondaryview->add(
+            get_string('course_report', 'local_analysis_dashboard'),
+            $url,
+            \navigation_node::TYPE_CUSTOM,
+            null,
+            'analysis_dashboard_course',
+            new \pix_icon('i/report', '')
+        );
+    }
 }

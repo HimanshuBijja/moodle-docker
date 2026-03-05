@@ -59,7 +59,6 @@ class widget_registry {
         self::register('at_risk_students', widgets\at_risk_students::class);
         self::register('activity_heatmap', widgets\activity_heatmap::class);
         self::register('quiz_analytics', widgets\quiz_analytics::class);
-        self::register('feedback_summary', widgets\feedback_summary::class);
         self::register('feedback_form_analysis', widgets\feedback_form_analysis::class);
 
         // Phase 3 widgets — student personal (CONTEXT_USER).

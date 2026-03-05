@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2026030202;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2026030500;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2024100100;        // Requires Moodle 4.5.
 $plugin->component = 'local_analysis_dashboard'; // Full name of the plugin.
 $plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '0.7.0-alpha';
+$plugin->release   = '0.8.0-alpha';

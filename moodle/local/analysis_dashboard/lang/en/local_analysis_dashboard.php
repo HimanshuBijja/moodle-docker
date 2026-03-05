@@ -77,7 +77,6 @@ $string['analysis_dashboard:widget_recent_activity'] = 'View widget: Recent Acti
 $string['analysis_dashboard:widget_at_risk_students'] = 'View widget: At-Risk Students';
 $string['analysis_dashboard:widget_activity_heatmap'] = 'View widget: Activity Heatmap';
 $string['analysis_dashboard:widget_quiz_analytics'] = 'View widget: Quiz Analytics';
-$string['analysis_dashboard:widget_feedback_summary'] = 'View widget: Feedback Summary';
 $string['analysis_dashboard:widget_feedback_form_analysis'] = 'View widget: Feedback Form Analysis';
 $string['analysis_dashboard:widget_course_students_by_location'] = 'View widget: Course Participants by Location';
 $string['analysis_dashboard:widget_course_students_by_employee_type'] = 'View widget: Course Participants by Employee Type';
@@ -159,7 +158,6 @@ $string['widget_recent_activity'] = 'Recent Activity';
 $string['widget_at_risk_students'] = 'At-Risk Course Participant';
 $string['widget_activity_heatmap'] = 'Learner Activity Heatmap';
 $string['widget_quiz_analytics'] = 'Quiz Analytics';
-$string['widget_feedback_summary'] = 'Feedback Summary';
 $string['widget_feedback_form_analysis'] = 'Feedback Form Analysis';
 $string['feedback_analysis_section'] = 'Feedback Analysis';
 $string['feedback_analysis_desc'] = 'Response distribution across all feedback forms in this course.';
@@ -310,7 +308,10 @@ $string['no_feedback_activities'] = 'No feedback activities in this course.';
 $string['no_feedback_responses'] = 'No feedback responses have been submitted yet.';
 $string['responses'] = 'Responses';
 $string['export_csv'] = 'Export CSV';
+$string['export_xlsx'] = 'Export XLSX';
+$string['export_pdf'] = 'Export PDF';
 $string['export_excel'] = 'Export Excel';
+$string['export_feedback'] = 'Export';
 
 // Phase 4: Scheduled tasks.
 $string['task_calculate_disk_usage'] = 'Calculate disk usage';
